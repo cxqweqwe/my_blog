@@ -16,5 +16,9 @@
 </script>
 
 <style>
-
+	@import "assets/css/bootstrap.min.css";
+	@import "assets/css/all.min.css";
+	@import "assets/css/slick.css";
+	@import "assets/css/simple-line-icons.css";
+	@import "assets/css/style.css";
 </style>

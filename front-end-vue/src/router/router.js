@@ -5,7 +5,6 @@ Vue.use(Router);
 
 
 const Index = () => import('../views/index/Index');
-const Main = () => import('../components/content/main/Main');
 
 const routes = [
   {
@@ -17,11 +16,6 @@ const routes = [
     path: '/index',
     name: 'index',
     component: Index
-  },
-  {
-    path: '/main',
-    name: 'main',
-    component: Main
   }
 ];
 
