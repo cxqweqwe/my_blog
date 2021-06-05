@@ -5,15 +5,25 @@ import store from './store/store'
 
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
-Vue.use(ElementUI);
+
 import ViewUI from 'view-design';
 import 'view-design/dist/styles/iview.css';
-Vue.use(ViewUI);
 
-Vue.config.productionTip = false
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+
+
+// var mavonEditor = require('mavon-editor');
+Vue.use(ElementUI);
+Vue.use(mavonEditor)
+Vue.use(ViewUI);
+Vue.config.productionTip = false;
 
 new Vue({
   router,
   store,
+  data() {
+    return { value: '' }
+  },
   render: h => h(App)
 }).$mount('#app')
