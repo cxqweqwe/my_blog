@@ -2,4 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fang.backgroundapi.mapper.SysUsersAuthorityMapper">
 
+    <select id="querySysUsersAuthorityByAuthorId" parameterType="String" resultType="String">
+        SELECT DISTINCT authority_role FROM sys_users_authority WHERE author_id = #{authorId}
+    </select>
+
 </mapper>

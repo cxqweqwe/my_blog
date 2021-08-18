@@ -4,7 +4,6 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 import lombok.Data;
@@ -12,51 +11,41 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 用户表
+ * 
  * </p>
  *
  * @author Bernie_fang
- * @since 2021-08-15
+ * @since 2021-08-18
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class SysUsers implements Serializable {
+public class SystemSettings implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 作者id，全局唯一
-     */
-    @TableId(value = "author_id", type = IdType.ASSIGN_UUID)
-    private String authorId;
+    @TableId(value = "id", type = IdType.ASSIGN_UUID)
+    private String id;
 
     /**
-     * 用户名，登录使用
+     * 是否允许注册【1：允许，0：不允许】
      */
-    private String username;
+    private Integer allowRegister;
 
     /**
-     * 密文，验证密码用这个
+     * 是否允许使用邮箱注册【1：允许，0：不允许】
      */
-    private String password;
+    private Integer allowEmail;
 
     /**
-     * 创建时间
+     * 是否允许使用手机号注册【1：允许，0：不允许】
      */
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
+    private Integer allowPhone;
 
     /**
-     * 最后一次修改时间
+     * 最后修改时间
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date modifiedTime;
-
-    /**
-     * 0表示正常(可用)，1表示删除(不可用)
-     */
-    @TableLogic
-    private Integer deleted;
 
 
 }

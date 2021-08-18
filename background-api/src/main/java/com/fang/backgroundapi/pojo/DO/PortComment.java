@@ -46,7 +46,7 @@ public class PortComment implements Serializable {
     /**
      * 图片路径
      */
-    private String iamgePath;
+    private String imagePath;
 
     /**
      * 状态【0：违规，1：正常，2：等待审核】
@@ -56,12 +56,12 @@ public class PortComment implements Serializable {
     /**
      * 创建时间
      */
-    private Date created;
+    private Date createTime;
 
     /**
      * 修改时间
      */
-    private Date modify;
+    private Date modifiedTime;
 
     /**
      * 软删除

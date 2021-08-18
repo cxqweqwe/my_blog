@@ -51,12 +51,12 @@ public class FavoritesBar implements Serializable {
     /**
      * 创建时间
      */
-    private Date created;
+    private Date createTime;
 
     /**
      * 修改时间
      */
-    private Date modify;
+    private Date modifiedTime;
 
     /**
      * 软删除

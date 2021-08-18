@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
+        <!-- 打印查询语句 -->
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+        <!-- 设置全局变量，遵循驼峰命名法-->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- sql超时时间 -->
+        <setting name="defaultStatementTimeout" value="10"/>
+    </settings>
+
+    <typeAliases>
+        <package name="com.college.collegesystem.pojo.DO"/>
+    </typeAliases>
+
+    <!--    <mappers>-->
+    <!--        <mapper resource="mybatis/mapper/BatchControlLineMapper.xml"/>-->
+    <!--    </mappers>-->
+
+</configuration>
