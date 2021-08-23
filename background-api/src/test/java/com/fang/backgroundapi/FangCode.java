@@ -64,7 +64,7 @@ public class FangCode {
         //4、策略配置
         StrategyConfig strategy = new StrategyConfig();
         // TODO :表名字
-        strategy.setInclude("system_settings");//映射表名字，可以多个
+        strategy.setInclude("image_base64");//映射表名字，可以多个
         strategy.setNaming(NamingStrategy.underline_to_camel);//支持下划线转驼峰命名
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);//列的名字 也支持下划线转驼峰命名
         // strategy.setSuperEntityClass("你自己的父类实体,没有就不用设置!");
@@ -73,7 +73,7 @@ public class FangCode {
         strategy.setLogicDeleteFieldName("deleted");//设置逻辑删除字段
 
         //5、自动填充策略
-        TableFill create = new TableFill("created_time", FieldFill.INSERT);//设置create字段自动填充
+        TableFill create = new TableFill("create_time", FieldFill.INSERT);//设置create字段自动填充
         TableFill modified = new TableFill("modified_time", FieldFill.INSERT_UPDATE);//设置modified字段自动填充
         ArrayList<TableFill> tableFills = new ArrayList<>();
         tableFills.add(create);
