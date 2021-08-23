@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 
 /**
  * <p>
- * 
+ * 系统设置表
  * </p>
  *
  * @author Bernie_fang
@@ -27,19 +27,20 @@ public class SystemSettings implements Serializable {
     private String id;
 
     /**
-     * 是否允许注册【1：允许，0：不允许】
+     * 设置项名字
      */
-    private Integer allowRegister;
+    private String settingName;
 
     /**
-     * 是否允许使用邮箱注册【1：允许，0：不允许】
+     * 是否允许【1：允许，0：不允许】
      */
-    private Integer allowEmail;
+    private Integer allowOrNot;
 
     /**
-     * 是否允许使用手机号注册【1：允许，0：不允许】
+     * 创建时间
      */
-    private Integer allowPhone;
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
 
     /**
      * 最后修改时间

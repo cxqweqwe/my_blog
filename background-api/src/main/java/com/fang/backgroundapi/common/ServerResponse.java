@@ -36,6 +36,10 @@ public class ServerResponse {
         return new ServerResponse(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getDesc());
     }
 
+    public static ServerResponse success(String msg) {
+        return new ServerResponse(ResponseCode.SUCCESS.getCode(), msg);
+    }
+
     public static ServerResponse success(Object data) {
         return new ServerResponse(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getDesc(), data);
     }

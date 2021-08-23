@@ -17,9 +17,29 @@ public class CommonInfo {
     public static final Integer EXPIRATION_TIME_SECOND = 6 * 60 * 60;
 
     /**
-     *  登录用户的表示头
+     *  登录用户的标识头
      */
-    public static final String SYS_USER = "login:";
+    public static final String SYS_USER = "login_";
+
+    /**
+     *  记录邮箱发送验证码-标识头
+     */
+    public static final String EMAIL_CODE = "email_code_";
+
+    /**
+     * 记录最近请求的邮箱-标识头
+     */
+    public static final String EMAIL_RECENT_REQUEST = "recent_email_";
+
+/**
+     *  记录邮箱发送验证码-标识头
+     */
+    public static final String PHONE_CODE = "phone_code_";
+
+    /**
+     * 记录最近请求的邮箱-标识头
+     */
+    public static final String PHONE_RECENT_REQUEST = "recent_phone_";
 
 
 }

@@ -22,6 +22,7 @@ public enum ResponseCode {
     // 错误
     LOGIN_ERROR(5001,"登录出错，请检查用户名、密码。若确定检查无误，请联系管理人员"),
     AUTHENTICATION_ERROR(5002,"验证令牌出错，您的令牌可能失效，请重新登录"),
+    DATA_FORMAT_TYPE_ERROR(5003,"数据格式类型出错"),
     ERROR(5000,"服务出错,操作失败");
 
 

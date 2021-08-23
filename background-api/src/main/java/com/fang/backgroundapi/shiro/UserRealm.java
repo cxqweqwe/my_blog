@@ -79,6 +79,7 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         String token = principalCollection.toString();
         String authorId = JWTUtil.getAuthorId(token);
+        log.info("用户授权===============>{}", authorId);
         SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
         Set<String> role = new HashSet<>();
         List<String> authorIds = authorityService.querySysUsersAuthorityByAuthorId(authorId);
