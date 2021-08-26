@@ -50,7 +50,11 @@ public class ImageBase64ServiceImpl implements ImageBase64Service {
         ImageBase64 base64 = new ImageBase64();
         BeanUtils.copyProperties(imageBase64DTO, base64);
         String id = insertImageBase64(base64);
-        return ServerResponse.success(id);
+        return ServerResponse.success(2000,"操作成功", id);
+    }
+
+    public void getBase64ToPicture(String id){
+
     }
 
 }

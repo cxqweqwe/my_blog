@@ -47,11 +47,18 @@ public class ImageBase64Controller {
         return imageBase64Service.uploadImageBase64(imageBase64DTO);
     }
 
+    // @GetMapping("/download/image-base64/{id}")
+    // @ApiOperation(value = "获取图片Base64的数据",response = ServerResponse.class,httpMethod = "GET")
+    // public ServerResponse downloadImageBase64(@PathVariable("id") String id) {
+    //     ImageBase64 base64 = imageBase64Service.findImageBase64ByID(id);
+    //     return ServerResponse.success(base64);
+    // }
+
     @GetMapping("/download/image-base64/{id}")
     @ApiOperation(value = "获取图片Base64的数据",response = ServerResponse.class,httpMethod = "GET")
-    public ServerResponse downloadImageBase64(@PathVariable("id") String id) {
+    public String downloadImageBase64(@PathVariable("id") String id) {
         ImageBase64 base64 = imageBase64Service.findImageBase64ByID(id);
-        return ServerResponse.success(base64);
+        return base64.getBase64();
     }
 
 

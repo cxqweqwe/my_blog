@@ -36,7 +36,7 @@ public class ServerResponse {
         return new ServerResponse(ResponseCode.SUCCESS.getCode(), ResponseCode.SUCCESS.getDesc());
     }
 
-    public static ServerResponse success(String msg) {
+    public static ServerResponse successWithMessage(String msg) {
         return new ServerResponse(ResponseCode.SUCCESS.getCode(), msg);
     }
 
