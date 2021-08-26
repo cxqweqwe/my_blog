@@ -11,12 +11,10 @@ const BlogDetail = () => import('views/blog/BlogDetail');
 const routes = [
   {
     path: '/',
-    name: 'index',
     redirect: '/index'
   },
   {
     path: '/index',
-    name: 'index',
     component: Index
   },
   {
@@ -24,7 +22,7 @@ const routes = [
     component: BlogEdit
   },
   {
-    path: '/blogDetail',
+    path: '/blogDetail/:articleId',
     component: BlogDetail
   }
 ];
