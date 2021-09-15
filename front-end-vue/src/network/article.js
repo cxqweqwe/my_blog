@@ -7,23 +7,29 @@ export function deleteDetail(param) {
         url: requestUrl + "/delete/" + param
     })
 }
+
 export function articleDetail(param) {
     return request({
         url: requestUrl + "/detail/" + param
     })
 }
 
-export function releaseArticle(params){
+export function releaseArticle(params) {
     return request({
-        url: requestUrl+'/release',
+        url: requestUrl + '/release',
         method: 'post',
         data: params
     })
 }
-export function updateArticle(params){
+
+export function getPopular() {
     return request({
-        url: requestUrl+'/update',
-        method: 'post',
-        data: params
+        url: requestUrl + '/popular',
+    })
+}
+
+export function getRecent() {
+    return request({
+        url: requestUrl + "/recent/"
     })
 }

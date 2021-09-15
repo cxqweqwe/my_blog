@@ -1,7 +1,7 @@
 <template>
 	<div class="post post-over-content col-md-6">
 		<div class="details clearfix">
-			<a href="category.html" class="category-badge">Inspiration</a>
+      <a href="category.html" class="category-badge">Inspiration</a>
 			<h4 class="post-title"><a href="blog-single.html">Feel Like A Pro With The Help Of These 7 Tips</a></h4>
 			<ul class="meta list-inline mb-0">
 				<li class="list-inline-item"><a href="#">Katen Doe</a></li>

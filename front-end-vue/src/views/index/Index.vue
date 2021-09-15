@@ -5,7 +5,7 @@
 		<!-- 精选文章及其最近精选 -->
 		<FeaturedContent></FeaturedContent>
 
-		<!-- Editor’s Pick   MainContent -->
+		<!-- 编辑推荐 -->
 		<PickMainContent></PickMainContent>
 
 

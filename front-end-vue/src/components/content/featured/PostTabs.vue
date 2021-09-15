@@ -30,11 +30,11 @@
 					<PostItem v-for="(item,index) in itemData" :active="format" :key="index" :itemData="item"/>
 				</div>
 				<!-- recent posts -->
-				<!--					<div aria-labelledby="recent-tab" class="tab-pane fade" id="recent" role="tabpanel">-->
-				<!--						&lt;!&ndash;// TODO：Recent点击无反应&ndash;&gt;-->
-				<!--						&lt;!&ndash; post Recent 已做封装 &ndash;&gt;-->
-				<!--						<PostItem v-for="i in 4" :active="format"/>-->
-				<!--					</div>-->
+<!--        <div aria-labelledby="recent-tab" class="tab-pane fade" id="recent" role="tabpanel">-->
+<!--          &lt;!&ndash;// TODO：Recent点击无反应&ndash;&gt;-->
+<!--          &lt;!&ndash; post Recent 已做封装 &ndash;&gt;-->
+<!--          <PostItem v-for="i in 4" :active="format"/>-->
+<!--        </div>-->
 			</div>
 		</div>
 	</div>

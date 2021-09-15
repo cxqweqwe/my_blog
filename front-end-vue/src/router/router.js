@@ -7,6 +7,7 @@ Vue.use(Router);
 const Index = () => import('views/index/Index');
 const BlogEdit = () => import('views/blog/BlogEdit');
 const BlogDetail = () => import('views/blog/BlogDetail');
+const Login = () => import('views/login/Login');
 
 const routes = [
   {
@@ -24,6 +25,10 @@ const routes = [
   {
     path: '/blogDetail/:articleId',
     component: BlogDetail
+  },
+  {
+    path: '/login',
+    component: Login
   }
 ];
 

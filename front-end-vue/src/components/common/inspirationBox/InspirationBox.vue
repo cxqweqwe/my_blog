@@ -2,9 +2,9 @@
 	<div class="row post-carousel-twoCol post-carousel slick-initialized">
 		<div class="slick-list draggable">
 
-		</div>
-		<!-- post -->
-		<InspirationItem v-for="(i,index) in 3" :key="index"></InspirationItem>
+    </div>
+		  <!-- post -->
+    <InspirationItem v-for="(i,index) in 3" :key="index"></InspirationItem>
 
 	</div>
 </template>

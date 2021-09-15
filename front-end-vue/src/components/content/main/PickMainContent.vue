@@ -98,17 +98,18 @@
 
 					<div class="spacer" data-height="50"></div>
 
-					<!-- section header -->
-					<div class="section-header">
-						<h3 class="section-title">Inspiration</h3>
-						<img src="~assets/img/wave.svg" class="wave" alt="wave" />
-						<div class="slick-arrows-top">
-							<button type="button" data-role="none" class="carousel-topNav-prev slick-custom-buttons" aria-label="Previous"><i class="icon-arrow-left"></i></button>
-							<button type="button" data-role="none" class="carousel-topNav-next slick-custom-buttons" aria-label="Next"><i class="icon-arrow-right"></i></button>
-						</div>
-					</div>
-
-					<InspirationBox></InspirationBox>
+          <!-- 两格轮播图，取消掉 -->
+<!--					&lt;!&ndash; section header &ndash;&gt;-->
+<!--					<div class="section-header">-->
+<!--						<h3 class="section-title">Inspiration</h3>-->
+<!--						<img src="~assets/img/wave.svg" class="wave" alt="wave" />-->
+<!--						<div class="slick-arrows-top">-->
+<!--							<button type="button" data-role="none" class="carousel-topNav-prev slick-custom-buttons" aria-label="Previous"><i class="icon-arrow-left"></i></button>-->
+<!--							<button type="button" data-role="none" class="carousel-topNav-next slick-custom-buttons" aria-label="Next"><i class="icon-arrow-right"></i></button>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--          -->
+<!--					<InspirationBox></InspirationBox>-->
 
 					<div class="spacer" data-height="50"></div>
 

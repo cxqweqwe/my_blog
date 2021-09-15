@@ -185,7 +185,7 @@ export default {
       this.article.releaseOrNot = 1;
       this.article.content = this.content;
       this.article.html = this.html;
-      this.article.title = 'test';
+      // this.article.title = 'test';
       releaseArticle(this.article).then(res => {
         this.$message.success(res.msg);
         this.$notify({
