@@ -1,12 +1,22 @@
 package com.fang.backgroundapi.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.pojo.DO.SysUsers;
 import com.fang.backgroundapi.mapper.SysUsersMapper;
+import com.fang.backgroundapi.pojo.DO.UserInfo;
+import com.fang.backgroundapi.pojo.DTO.SystemUserDTO;
 import com.fang.backgroundapi.service.SysUsersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.fang.backgroundapi.utils.SnowflakeIdWorker;
+import nonapi.io.github.classgraph.json.Id;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * <p>
@@ -22,6 +32,10 @@ public class SysUsersServiceImpl implements SysUsersService {
     @Autowired
     private SysUsersMapper sysUsersMapper;
 
+    @Autowired
+    private UserInfoServiceImpl userInfoService;
+
+
     @Override
     public SysUsers findUserByUsername(String username) {
         QueryWrapper<SysUsers> wrapper = new QueryWrapper<>();
@@ -33,6 +47,18 @@ public class SysUsersServiceImpl implements SysUsersService {
     @Override
     public Integer insertUser(SysUsers sysUsers) {
         return sysUsersMapper.insert(sysUsers);
+    }
+
+    @Override
+    public Integer updatePassword(SysUsers sysUsers) {
+
+        return null;
+    }
+
+    @Override
+    public List<SysUsers> queryUser() {
+        List<SysUsers> usersList = sysUsersMapper.selectList(null);
+        return usersList;
     }
 
 }

@@ -7,6 +7,7 @@ import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.pojo.DO.Article;
 import com.fang.backgroundapi.mapper.ArticleMapper;
 import com.fang.backgroundapi.pojo.DTO.ArticleDTO;
+import com.fang.backgroundapi.pojo.VO.MostPopularInfoVO;
 import com.fang.backgroundapi.service.ArticleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.BeanUtils;
@@ -65,12 +66,32 @@ public class ArticleServiceImpl implements ArticleService {
         return data;
     }
 
+    /**
+     * @Description: 查找全部，管理员以上的级别使用
+     * @Author: Bernie_fang
+     * @Since: 2021/8/25 15:27
+     * @param currentPage: 当前页
+     * @param size: 页内容量
+     * @return: com.fang.backgroundapi.common.PagingData
+     **/
     @Override
     public PagingData queryArticleAuthorId(Integer currentPage, Integer size) {
         Page<Article> page = new Page<>(currentPage,size);
         articleMapper.selectPage(page, null);
         PagingData data = new PagingData(page.getTotal(), page.getRecords());
         return data;
+    }
+
+    @Override
+    public List<MostPopularInfoVO> queryMostPopular() {
+        List<MostPopularInfoVO> popular = articleMapper.queryMostPopular(5);
+        return popular;
+    }
+
+    @Override
+    public List<MostPopularInfoVO> queryRecent() {
+        List<MostPopularInfoVO> recent = articleMapper.queryRecent(5);
+        return recent;
     }
 
     /* **************************************************/
@@ -103,4 +124,5 @@ public class ArticleServiceImpl implements ArticleService {
         Integer integer = this.updateArticle(article);
         return ServerResponse.success(integer);
     }
+
 }

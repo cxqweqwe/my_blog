@@ -15,7 +15,7 @@ public enum ResponseCode {
     EMPTY_PASSWORD(4000,"密码不能为空"),
     ERROR_PASSWORD(4000,"密码错误"),
     LOGIN_FAIL(4001,"登录失败"),
-    UNAUTHORIZED(403,"对不起，您没有权限"),
+    UNAUTHORIZED(4003,"对不起，您没有权限"),
     NOT_FOUND(404,"未查询到数据"),
 
 

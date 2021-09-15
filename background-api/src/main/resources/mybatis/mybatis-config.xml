@@ -16,7 +16,8 @@
     </settings>
 
     <typeAliases>
-        <package name="com.college.collegesystem.pojo.DO"/>
+        <package name="com.fang.backgroundapi.pojo.DO"/>
+        <package name="com.fang.backgroundapi.pojo.VO"/>
     </typeAliases>
 
     <!--    <mappers>-->

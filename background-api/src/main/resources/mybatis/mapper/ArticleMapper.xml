@@ -2,4 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fang.backgroundapi.mapper.ArticleMapper">
 
+    <select id="queryMostPopular" parameterType="Integer" resultType="MostPopularInfoVO">
+        SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.modified_time
+        FROM article ar, blog_info info
+        WHERE ar.article_id = info.article_id
+        ORDER BY info.likes
+        LIMIT 0,#{quantity}
+    </select>
+
+    <select id="queryRecent" parameterType="Integer" resultType="MostPopularInfoVO">
+        SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.modified_time
+        FROM article ar
+        ORDER BY ar.modified_time
+        LIMIT 0,#{quantity}
+    </select>
+
 </mapper>

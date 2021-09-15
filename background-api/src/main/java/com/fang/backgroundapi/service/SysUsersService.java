@@ -3,6 +3,8 @@ package com.fang.backgroundapi.service;
 import com.fang.backgroundapi.pojo.DO.SysUsers;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户表 服务类
@@ -17,8 +19,8 @@ public interface SysUsersService {
 
     public Integer insertUser(SysUsers sysUsers);
 
-    // public Integer updatePassword(String password);
+    public Integer updatePassword(SysUsers sysUsers);
 
-    // public SysUsers queryUser();
+    public List<SysUsers> queryUser();
 
 }

@@ -2,6 +2,7 @@ package com.fang.backgroundapi.mapper;
 
 import com.fang.backgroundapi.pojo.DO.SysUsers;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 /**

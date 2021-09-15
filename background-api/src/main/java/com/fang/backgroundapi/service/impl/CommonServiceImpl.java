@@ -1,7 +1,5 @@
 package com.fang.backgroundapi.service.impl;
 
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.aliyun.dysmsapi20170525.Client;
 import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
@@ -13,27 +11,22 @@ import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.exception.MyException;
 import com.fang.backgroundapi.pojo.DO.SysUsers;
 import com.fang.backgroundapi.pojo.DO.SystemSettings;
+import com.fang.backgroundapi.pojo.DO.UserInfo;
+import com.fang.backgroundapi.pojo.DTO.RegisterDTO;
 import com.fang.backgroundapi.shiro.JWTToken;
 import com.fang.backgroundapi.utils.JWTUtil;
+import com.fang.backgroundapi.utils.PasswordUtil;
 import com.fang.backgroundapi.utils.RedisUtils;
+import com.fang.backgroundapi.utils.SnowflakeIdWorker;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import java.util.Date;
 
 /**
  * @author Bernie_fang
@@ -54,20 +47,19 @@ public class CommonServiceImpl {
     private SystemSettingsServiceImpl settingsService;
 
     @Autowired
-    private JavaMailSender mailSender;
+    private AsyncService asyncService;
 
     @Autowired
-    private TemplateEngine templateEngine;
+    private UserInfoServiceImpl userInfoService;
 
-    @Value("${spring.mail.username}")
-    public String emailFrom;
+
 
     /**
+     * @param username:
+     * @param password:
      * @Description: 用户根据用户名和密码登录
      * @Author: Bernie_fang
      * @Since: 2021/8/18 17:30
-     * @param username:
-     * @param password:
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
     public ServerResponse loginByUsername(String username, String password, HttpServletRequest request, HttpServletResponse response) throws MyException {
@@ -85,9 +77,8 @@ public class CommonServiceImpl {
         if (sysUser == null) {
             throw new MyException(ResponseCode.EMPTY_ACCOUNT.getDesc(), ResponseCode.EMPTY_ACCOUNT.getCode());
         }
-
-        // String sha1Password = PasswordUtil.sha1Encode(password); //暂时关闭，后面记得开启
-        if (!sysUser.getPassword().equals(password)) {
+        String encodePassword = PasswordUtil.sha1Encode(password); //暂时关闭，后面记得开启
+        if (!sysUser.getPassword().equals(encodePassword)) {
             // 密码错误
             throw new MyException(ResponseCode.ERROR_PASSWORD.getDesc(), ResponseCode.ERROR_PASSWORD.getCode());
         }
@@ -105,121 +96,83 @@ public class CommonServiceImpl {
             //发生异常，说明登录失败
             return ServerResponse.createLoginFail("登录出错，请检查用户名、密码");
         }
-        redisUtils.set(CommonInfo.SYS_USER+ sysUser.getAuthorId(),sysUser,CommonInfo.EXPIRATION_TIME_SECOND);
+        redisUtils.set(CommonInfo.SYS_USER + sysUser.getAuthorId(), sysUser, CommonInfo.EXPIRATION_TIME_SECOND);
         // TODO： 设置请求头的token
         response.setHeader("Authorization", token); //放到信息头部
-        return ServerResponse.success();
+        return ServerResponse.success(token);
     }
 
     /**
+     * @param request:
+     * @param response:
      * @Description: 退出登录接口
      * @Author: Bernie_fang
      * @Since: 2021/8/22 16:49
-     * @param request:
-     * @param response:
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
-    public ServerResponse loginOut(HttpServletRequest request, HttpServletResponse response) {String authorization = request.getHeader("Authorization");
+    public ServerResponse loginOut(HttpServletRequest request, HttpServletResponse response) {
+        String authorization = request.getHeader("Authorization");
         String authorId = JWTUtil.getAuthorId(authorization);
 
         request.removeAttribute("Authorization");//移除token
-        redisUtils.del(CommonInfo.SYS_USER+ authorId);
+        redisUtils.del(CommonInfo.SYS_USER + authorId);
         return ServerResponse.success();
     }
 
     /**
+     * @param email:
      * @Description: 检擦是否能发送验证码。获取验证码并发送到指定邮箱
      * @Author: Bernie_fang
      * @Since: 2021/8/23 14:15
-     * @param email:
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
     public ServerResponse getEmailCode(String email) {
         SystemSettings settings = settingsService.findSystemSetting("allow_email");
-        if (settings.getAllowOrNot() == 0){
+        if (settings.getAllowOrNot() == 0) {
             // 不允许使用邮箱
             return ServerResponse.error(400, "此功能暂时关闭", null);
         }
-        if (redisUtils.hasKey(CommonInfo.EMAIL_RECENT_REQUEST + email)){
+        if (redisUtils.hasKey(CommonInfo.EMAIL_RECENT_REQUEST + email)) {
             // 存在说明不久之前请求过
             return ServerResponse.error(400, "您的操作太快了，请稍后重试", null);
         }
         String numbers = RandomUtil.randomNumbers(6);//随机生成6位数号码
         redisUtils.set(CommonInfo.EMAIL_RECENT_REQUEST + email, email, 60); // 保存邮箱1分钟，1分钟内不允许重新请求
         redisUtils.set(CommonInfo.EMAIL_CODE + email, numbers, 5 * 60);     // 保验证码5分钟
-        sendEmailCode(email,numbers);//调用发送邮件
-        return ServerResponse.success("邮件已发送至邮箱[ + " + email + "],请稍后查收");
+        asyncService.sendEmailCode(email, numbers);//调用发送邮件
+        return ServerResponse.success("邮件已发送至邮箱[ " + email + " ],请稍后查收");
     }
 
     /**
-     * @Description: 发送验证码到邮箱封装方法
-     * @Author: Bernie_fang
-     * @Since: 2021/8/23 14:14
-     * @param email: 发送对象邮箱
-     * @param code: 验证码
-     * @return: void
-     **/
-    @Async
-    public void sendEmailCode(String email, String code) {
-        DateTime expireTime = DateUtil.offsetMinute(new Date(), 5);//5分钟过期
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-        try {
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,
-                    true);
-            // 设置渲染到html页面对应的值
-            Context context = new Context();
-            // context.setVariable("OJ_NAME", "ojName");
-            // context.setVariable("OJ_SHORT_NAME", "fang-test");
-            // context.setVariable("OJ_UR", "ojAddr");
-            // context.setVariable("EMAIL_BACKGROUND_IMG", "ojEmailBg");
-            context.setVariable("CODE", code);
-            context.setVariable("EXPIRE_TIME", expireTime.toString());
-
-            //利用模板引擎加载html文件进行渲染并生成对应的字符串
-            String emailContent = templateEngine.process("emailTemplate", context);
-            // 设置邮件标题
-            mimeMessageHelper.setSubject("来fangweb个人博客-论坛网站邮件");
-            mimeMessageHelper.setText(emailContent, true);
-            // 收件人
-            mimeMessageHelper.setTo(email);
-            // 发送人
-            mimeMessageHelper.setFrom(emailFrom);
-            mailSender.send(mimeMessage);
-        } catch (MessagingException e) {
-            System.out.println("用户注册的邮件任务发生异常------------>{}" + e.getMessage());
-        }
-    }
-
-    /**
+     * @param phone:
      * @Description: 检擦是否能发送验证码。获取验证码并发送到指定手机。功能暂时不完善。不可用
      * @Author: Bernie_fang
      * @Since: 2021/8/23 14:18
-     * @param phone:
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
     public ServerResponse getPhoneCode(String phone) throws Exception {
         SystemSettings settings = settingsService.findSystemSetting("allow_phone");//查询是否允许使用手机验证码
-        if (settings.getAllowOrNot() == 0){
+        if (settings.getAllowOrNot() == 0) {
             // 不允许手机验证码
             return ServerResponse.error(400, "此功能暂时关闭", null);
         }
-        if (redisUtils.hasKey(CommonInfo.PHONE_RECENT_REQUEST + phone)){
+        if (redisUtils.hasKey(CommonInfo.PHONE_RECENT_REQUEST + phone)) {
             // 存在说明不久之前请求过
             return ServerResponse.error(400, "您的操作太快了，请稍后重试", null);
         }
         String numbers = RandomUtil.randomNumbers(6);//随机生成6位数号码
         redisUtils.set(CommonInfo.PHONE_RECENT_REQUEST + phone, phone, 60); // 保存手机1分钟，1分钟内不允许重新请求
         redisUtils.set(CommonInfo.PHONE_CODE + phone, numbers, 5 * 60);     // 保验证码5分钟
-        this.sendPhoneCode(phone,numbers);
+        this.sendPhoneCode(phone, numbers);
         return null;
     }
 
     /**
+     * @param phoneNumber: 发送手机对象
+     * @param code:        验证码
      * @Description: 发送验证码到手机
      * @Author: Bernie_fang
      * @Since: 2021/8/23 14:10
-     * @param phoneNumber: 发送手机对象
-     * @param code: 验证码
      * @return: java.lang.String
      **/
     public String sendPhoneCode(String phoneNumber, String code) throws Exception {
@@ -237,11 +190,11 @@ public class CommonServiceImpl {
     }
 
     /**
+     * @param accessKeyId:
+     * @param accessKeySecret:
      * @Description: 阿里云的初始化Client方法，官方提供
      * @Author: Bernie_fang
      * @Since: 2021/8/23 14:10
-     * @param accessKeyId:
-     * @param accessKeySecret:
      * @return: com.aliyun.dysmsapi20170525.Client
      **/
     public static Client createClient(String accessKeyId, String accessKeySecret) throws Exception {
@@ -255,6 +208,49 @@ public class CommonServiceImpl {
         return new Client(config);
     }
 
+    /**
+     * @Description: 向两个表操作，需要开启事务
+     * @Author: Bernie_fang
+     * @Since: 2021/9/15 13:46
+     * @param registerDTO:
+     * @return: com.fang.backgroundapi.common.ServerResponse
+     **/
+    public ServerResponse registe(RegisterDTO registerDTO) {
+        // 做数据校验
+        String username = registerDTO.getUsername().trim();
+        String password = registerDTO.getPassword().trim();
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
+            return ServerResponse.error(ResponseCode.DATA_FORMAT_TYPE_ERROR.getCode(), ResponseCode.DATA_FORMAT_TYPE_ERROR.getDesc(),
+                    "用户名和密码均不能为空");
+        }
+        UserInfo infoByEmail = userInfoService.findUserInfoByEmail(registerDTO.getEmail());
+        if (infoByEmail != null){
+            return ServerResponse.error(4000,"该邮箱已经绑定账号，请更换邮箱",null);
+        }
+        String email = (String) redisUtils.get(CommonInfo.EMAIL_CODE + registerDTO.getEmail());//拿到之前报错的验证码
+        if (StringUtils.isEmpty(email)){
+            return ServerResponse.error(4000,"验证码不存在或已失效，请重新获取",null);
+        }
+        if (!email.equals(registerDTO.getEmailCaptcha())){
+            return ServerResponse.error(4000,"验证码错误",null);
+        }
+        String encodePwd = PasswordUtil.sha1Encode(password);//加密密码
+
+        Long id = SnowflakeIdWorker.generateId();
+        SysUsers users = new SysUsers();
+        users.setAuthorId(id.toString());
+        users.setPassword(encodePwd);
+        users.setUsername(registerDTO.getUsername());
+        sysUsersService.insertUser(users);
+
+        // 往用户信息表添加信息      空信息即可
+        UserInfo userInfo = new UserInfo();
+        userInfo.setAuthorId(id.toString());
+        userInfo.setNickName(id.toString());
+        userInfo.setEmail(registerDTO.getEmail());
+        userInfoService.insertUserInfo(userInfo);
+        return ServerResponse.success(2000, "成功注册！", null);// TODO: 需要返回数据，暂时先不处理
+    }
 
 
 }

@@ -4,8 +4,10 @@ package com.fang.backgroundapi.controller;
 import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.pojo.DO.Article;
 import com.fang.backgroundapi.pojo.DTO.ArticleDTO;
+import com.fang.backgroundapi.pojo.VO.MostPopularInfoVO;
 import com.fang.backgroundapi.service.impl.ArticleCommentServiceImpl;
 import com.fang.backgroundapi.service.impl.ArticleServiceImpl;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.swing.table.AbstractTableModel;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 /**
  * <p>
@@ -32,6 +35,7 @@ import javax.validation.constraints.NotBlank;
 @RestController
 @RequestMapping("/article")
 @Validated   // Get请求方法需要这个注解配合
+@Api(tags = "博客操作相关接口")
 public class ArticleController {
 
     @Autowired
@@ -61,6 +65,32 @@ public class ArticleController {
     public ServerResponse deleteArticle(@PathVariable("articleId") @NotBlank(message = "博文ID不能为空")String articleId) {
         Integer delete = articleService.deleteArticle(articleId);
         return ServerResponse.success(delete);
+    }
+
+    /**
+     * @Description: 查找最受欢迎(点赞最多)的的博客
+     * @Author: Bernie_fang
+     * @Since: 2021/9/12 22:10
+     * @return: com.fang.backgroundapi.common.ServerResponse
+     **/
+    @GetMapping("/popular")
+    @ApiOperation(value = "查找最受欢迎(点赞最多)的的博客", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse queryMostPopular() {
+        List<MostPopularInfoVO> popular = articleService.queryMostPopular();
+        return ServerResponse.success(popular);
+    }
+
+    /**
+     * @Description: 查找最近发布的博客
+     * @Author: Bernie_fang
+     * @Since: 2021/9/12 22:10
+     * @return: com.fang.backgroundapi.common.ServerResponse
+     **/
+    @GetMapping("/recent")
+    @ApiOperation(value = "查找最近发布的博客", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse queryRecent() {
+        List<MostPopularInfoVO> recent = articleService.queryRecent();
+        return ServerResponse.success(recent);
     }
 
 

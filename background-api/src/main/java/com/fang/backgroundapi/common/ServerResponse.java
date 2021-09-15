@@ -68,6 +68,17 @@ public class ServerResponse {
         return new ServerResponse(code, message, data);
     }
 
+    /**
+     * @Description:
+     * @Author: Bernie_fang
+     * @Since: 2021/9/13 21:24
+
+     * @return: com.fang.backgroundapi.common.ServerResponse
+     **/
+    public static ServerResponse notData() {
+        return new ServerResponse(ResponseCode.NOT_FOUND.getCode(), ResponseCode.NOT_FOUND.getDesc());
+    }
+
     //未都经过登录认证
     public static ServerResponse createUnLoginError(Object data) {
         return new ServerResponse(ResponseCode.UN_LOGIN.getCode(), ResponseCode.UN_LOGIN.getDesc(), data);

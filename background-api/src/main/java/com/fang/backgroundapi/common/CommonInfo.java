@@ -31,7 +31,7 @@ public class CommonInfo {
      */
     public static final String EMAIL_RECENT_REQUEST = "recent_email_";
 
-/**
+    /**
      *  记录邮箱发送验证码-标识头
      */
     public static final String PHONE_CODE = "phone_code_";

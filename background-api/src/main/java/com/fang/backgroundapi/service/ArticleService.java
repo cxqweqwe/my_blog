@@ -3,6 +3,7 @@ package com.fang.backgroundapi.service;
 import com.fang.backgroundapi.common.PagingData;
 import com.fang.backgroundapi.pojo.DO.Article;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.fang.backgroundapi.pojo.VO.MostPopularInfoVO;
 
 import java.util.List;
 
@@ -62,6 +63,25 @@ public interface ArticleService {
      * @return: com.fang.backgroundapi.common.PagingData
      **/
     public PagingData findArticleAuthorId(String authorId, Integer currentPage, Integer size);
+
+    /**
+     * @Description: 查找点赞最多的5条记录。做Popular推荐
+     * @Author: Bernie_fang
+     * @Since: 2021/9/12 21:13
+
+     * @return: com.fang.backgroundapi.common.PagingData
+     **/
+    public List<MostPopularInfoVO> queryMostPopular();
+
+    /**
+     * @Description: 查找最新的的5条记录。做Recent推荐
+     * @Author: Bernie_fang
+     * @Since: 2021/9/12 21:13
+     * @return: com.fang.backgroundapi.common.PagingData
+     **/
+    public List<MostPopularInfoVO> queryRecent();
+
+    /* ************************************************************************************** */
 
     /**
      * @Description: 查找全部，管理员以上的级别使用
