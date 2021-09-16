@@ -10,7 +10,8 @@ public class CommonInfo {
     /**
      * 6个小时，毫秒数
      */
-    public static final Integer EXPIRATION_TIME_MILLISECOND = 6 * 60 * 60 * 1000;
+    // public static final Integer EXPIRATION_TIME_MILLISECOND = 6 * 60 * 60 * 1000;
+    public static final Integer EXPIRATION_TIME_MILLISECOND = 10 * 1000;//10秒，测试用的
     /**
      * 6个小时，秒数
      */

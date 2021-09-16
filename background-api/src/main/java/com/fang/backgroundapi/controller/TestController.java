@@ -16,23 +16,25 @@ import java.util.Map;
  * @create 2021/5/24 11:46
  **/
 @RestController
-public class TestController {
+public class TestController extends BaseController {
 
     @GetMapping("/test")
-    @RequiresRoles(value = "test",logical = Logical.OR)
+    // @RequiresRoles(value = "test",logical = Logical.OR)
     public List<TestVO> test() {
-        TestVO testVO = new TestVO();
-        testVO.setHrefLink("blog-single.html");
-        testVO.setAuthorImg("");
-        testVO.setTitle("测试标题");
-        testVO.setAuthorName("testNam");
-        testVO.setArticleLink("文章标题");
-        testVO.setIntroduction("An Incredibly Easy Method That Works For All");
-        testVO.setTime("29 May 2021");
+        // TestVO testVO = new TestVO();
+        // testVO.setHrefLink("blog-single.html");
+        // testVO.setAuthorImg("");
+        // testVO.setTitle("测试标题");
+        // testVO.setAuthorName("testNam");
+        // testVO.setArticleLink("文章标题");
+        // testVO.setIntroduction("An Incredibly Easy Method That Works For All");
+        // testVO.setTime("29 May 2021");
         ArrayList<TestVO> testVOList = new ArrayList<>();
-        testVOList.add(testVO);
-        testVOList.add(testVO);
-        testVOList.add(testVO);
+        // testVOList.add(testVO);
+        // testVOList.add(testVO);
+        // testVOList.add(testVO);
+        String token = super.getToken();
+        System.out.println(token);
         return testVOList;
     }
 

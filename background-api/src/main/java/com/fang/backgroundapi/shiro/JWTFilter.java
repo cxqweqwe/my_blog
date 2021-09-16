@@ -1,5 +1,6 @@
 package com.fang.backgroundapi.shiro;
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.web.filter.authc.BasicHttpAuthenticationFilter;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @Slf4j
 public class JWTFilter extends BasicHttpAuthenticationFilter {
+
     /**
      * 判断用户是否登录
      * 检测请求头是否包含token
@@ -25,7 +27,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         return token != null;
     }
 
-      @Override
+    @Override
     protected boolean executeLogin(ServletRequest request, ServletResponse response) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String token = httpServletRequest.getHeader("Authorization");
@@ -34,14 +36,15 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         return true;
     }
 
+    @SneakyThrows
     @Override
     protected boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) {
         if (isLoginAttempt(request, response)) {
-            try {
+            // try {
                 executeLogin(request, response);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            // } catch (Exception e) {
+            //     e.printStackTrace();
+            // }
         }
         return true;
     }

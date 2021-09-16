@@ -5,11 +5,8 @@ import com.fang.backgroundapi.common.ServerResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthenticatedException;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +20,7 @@ import java.io.StringWriter;
  * @Description: spring boot 异常处理：主要处理shiro注解抛出的异常,统一返回异常结果（json数据）给前端验证
  * @create 2021/8/18 17:14
  **/
+@ControllerAdvice(basePackages = {"com.fang.backgroundapi"})
 @Slf4j
 @RestControllerAdvice
 public class BaseExceptionHandler {

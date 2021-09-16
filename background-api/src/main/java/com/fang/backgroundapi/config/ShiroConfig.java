@@ -69,7 +69,8 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setFilters(filterMap);
         Map<String, String> filterRuleMap = new HashMap<>();
         filterRuleMap.put("/**", "jwt");
-        // filterRuleMap.put("/common/login", "anon");//放行登录接口
+        filterRuleMap.put("/common/login", "anon");//放行登录接口
+        // filterRuleMap.put("/test", "anon");//放行
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterRuleMap);
         return shiroFilterFactoryBean;
     }
