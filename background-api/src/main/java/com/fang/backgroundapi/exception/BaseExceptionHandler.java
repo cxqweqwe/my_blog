@@ -3,6 +3,7 @@ package com.fang.backgroundapi.exception;
 import com.fang.backgroundapi.common.ResponseCode;
 import com.fang.backgroundapi.common.ServerResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthenticatedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -38,6 +39,11 @@ public class BaseExceptionHandler {
     @ExceptionHandler(value = UnauthenticatedException.class)
     public ServerResponse returnUnLoginErrorMsg(HttpServletRequest request, HttpServletResponse response, UnauthenticatedException exception){
         return ServerResponse.createUnLoginError("您还未登录");
+    }
+
+    @ExceptionHandler(value = UnknownAccountException.class)
+    public ServerResponse returnUnknownAccountException(HttpServletRequest request, HttpServletResponse response, UnknownAccountException exception) {
+        return ServerResponse.createUnLoginError("您的身份信息出错，请重新登录");
     }
 
 
