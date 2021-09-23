@@ -1,5 +1,6 @@
 package com.fang.backgroundapi.controller;
 
+import com.fang.backgroundapi.exception.MyException;
 import com.fang.backgroundapi.pojo.VO.TestVO;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
@@ -20,7 +21,7 @@ public class TestController extends BaseController {
 
     @GetMapping("/test")
     // @RequiresRoles(value = "test",logical = Logical.OR)
-    public List<TestVO> test() {
+    public List<TestVO> test() throws MyException {
         // TestVO testVO = new TestVO();
         // testVO.setHrefLink("blog-single.html");
         // testVO.setAuthorImg("");

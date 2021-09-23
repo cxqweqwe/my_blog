@@ -9,6 +9,7 @@ import com.fang.backgroundapi.service.impl.ArticleCommentServiceImpl;
 import com.fang.backgroundapi.service.impl.ArticleServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -73,10 +74,10 @@ public class ArticleController {
      * @Since: 2021/9/12 22:10
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
-    @GetMapping("/popular")
+    @GetMapping("/popular/{size}")
     @ApiOperation(value = "查找最受欢迎(点赞最多)的的博客", response = ServerResponse.class, httpMethod = "GET")
-    public ServerResponse queryMostPopular() {
-        List<MostPopularInfoVO> popular = articleService.queryMostPopular();
+    public ServerResponse queryMostPopular(@PathVariable("size") @ApiParam(value = "需要查询多少条") Integer size) {
+        List<MostPopularInfoVO> popular = articleService.queryMostPopular(size);
         return ServerResponse.success(popular);
     }
 

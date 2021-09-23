@@ -1,5 +1,6 @@
 package com.fang.backgroundapi.service;
 
+import com.fang.backgroundapi.pojo.DO.BlogInfo;
 import com.fang.backgroundapi.pojo.DO.LikesRecord;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -11,6 +12,14 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author Bernie_fang
  * @since 2021-08-15
  */
-public interface LikesRecordService extends IService<LikesRecord> {
+public interface LikesRecordService {
+
+    public Integer recodeLikeBlog(String authorId, String articleId);
+
+    public Integer deleteRecode(String id);
+
+    public LikesRecord findLikeRecord(String authorId, String articleId);
+
+
 
 }

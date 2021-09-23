@@ -2,4 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fang.backgroundapi.mapper.BlogInfoMapper">
 
+    <update id="likeBlog" parameterType="String" >
+        UPDATE `blog_info` SET `likes` = `likes` + 1 WHERE article_id = #{articleId};
+    </update>
+
+    <update id="unLikeBlog" parameterType="String">
+        UPDATE `blog_info` SET `likes` = `likes` - 1 WHERE article_id = #{articleId};
+    </update>
+
+    <update id="readBlog" parameterType="String">
+        UPDATE `blog_info` SET `pageviews` = `pageviews` + 1 WHERE article_id = #{articleId};
+    </update>
+
+
+
 </mapper>

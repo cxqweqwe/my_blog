@@ -1,5 +1,8 @@
 package com.fang.backgroundapi.controller;
 
+import com.fang.backgroundapi.common.ResponseCode;
+import com.fang.backgroundapi.exception.MyException;
+import com.fang.backgroundapi.utils.JWTUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,16 +40,18 @@ public class BaseController {
         return session;
     }
 
-    public Long getLong(String key) {
-        String value = request.getParameter(key);
-        if (StringUtils.isNotBlank(value)) {
-            return Long.parseLong(value.trim());
+    protected String getToken() throws MyException {
+        String token = request.getHeader("Authorization");
+        if (StringUtils.isEmpty(token)){
+            throw new MyException(ResponseCode.UN_LOGIN.getDesc(), ResponseCode.UN_LOGIN.getCode());
         }
-        return null;
+        return token;
     }
 
-    protected String getToken() {
-        return request.getHeader("Authorization");
+    protected String getAuthorId() throws MyException {
+        String token = getToken();
+        String authorId = JWTUtil.getAuthorId(token);
+        return authorId;
     }
 
 }

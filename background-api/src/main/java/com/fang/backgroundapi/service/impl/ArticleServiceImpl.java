@@ -83,14 +83,14 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<MostPopularInfoVO> queryMostPopular() {
-        List<MostPopularInfoVO> popular = articleMapper.queryMostPopular(5);
+    public List<MostPopularInfoVO> queryMostPopular(Integer size) {
+        List<MostPopularInfoVO> popular = articleMapper.queryMostPopular(size);
         return popular;
     }
 
     @Override
     public List<MostPopularInfoVO> queryRecent() {
-        List<MostPopularInfoVO> recent = articleMapper.queryRecent(5);
+        List<MostPopularInfoVO> recent = articleMapper.queryRecent(4);
         return recent;
     }
 

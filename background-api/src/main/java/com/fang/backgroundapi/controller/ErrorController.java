@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
  **/
 @RestController
 @RequestMapping("/error")
-@Api(tags = "请无请求此接口集的任何请求")
+@Api(tags = "请勿请求此接口集的任何请求")
 public class ErrorController {
 
     @RequestMapping("/throw")

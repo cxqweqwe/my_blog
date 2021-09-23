@@ -59,7 +59,7 @@ public interface ArticleService {
      * @Since: 2021/8/25 15:27
      * @param authorId:
      * @param currentPage: 当前页
-     * @param size: 页内容量
+
      * @return: com.fang.backgroundapi.common.PagingData
      **/
     public PagingData findArticleAuthorId(String authorId, Integer currentPage, Integer size);
@@ -68,10 +68,10 @@ public interface ArticleService {
      * @Description: 查找点赞最多的5条记录。做Popular推荐
      * @Author: Bernie_fang
      * @Since: 2021/9/12 21:13
-
+     * @param size: 查询数量
      * @return: com.fang.backgroundapi.common.PagingData
      **/
-    public List<MostPopularInfoVO> queryMostPopular();
+    public List<MostPopularInfoVO> queryMostPopular(Integer size);
 
     /**
      * @Description: 查找最新的的5条记录。做Recent推荐
