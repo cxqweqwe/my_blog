@@ -1,7 +1,6 @@
 <template>
   <div class="markdown-container">
     <div class="container">
-      <div class="space"></div>
       <Row>
         <Col :sm="3">
           <div class="title-text">请输入标题:</div>
@@ -163,7 +162,6 @@ export default {
       console.log('dsgdfg');
     },
     submit() {
-
       if (this.article.title == '') {
         loading.close();
         this.$notify({
@@ -185,6 +183,7 @@ export default {
       this.article.releaseOrNot = 1;
       this.article.content = this.content;
       this.article.html = this.html;
+      this.article.label = this.dynamicTags.toString();
       // this.article.title = 'test';
       releaseArticle(this.article).then(res => {
         this.$message.success(res.msg);

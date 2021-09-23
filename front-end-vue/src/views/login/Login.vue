@@ -26,13 +26,14 @@
         <div class="captcha">
           <div class="captcha-left">
             <el-input
+                @keyup.enter="sendLogin"
                 placeholder="请输入右边验证码"
                 v-model="loginFrom.captcha"
                 prefix-icon="el-icon-s-grid">
             </el-input>
           </div>
           <div class="captcha-right" title="看不清楚？换一张" @click="changeImgCode">
-            <img :src="imgCode" alt="服务器回传图片">
+            <img :src="imgCode" alt="图片验证码">
           </div>
         </div>
       </div>
@@ -370,7 +371,8 @@ export default {
             message: res.msg,
             type: 'success'
           });
-          // this.$router.push("");
+          this.loginFrom.passwrod = '';
+          this.$router.push("/index");
         } else if (res.status == 4000) {
           this.$notify.error({
             title: '错误',

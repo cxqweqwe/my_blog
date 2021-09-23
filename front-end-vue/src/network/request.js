@@ -1,5 +1,8 @@
 import axios from 'axios'
 import {base_url} from "../common/common_variable";
+import { MessageBox, Message, Notification } from 'element-ui';
+// import store from '@/store';
+import router from '../router/router';
 
 export function request(config) {
   // 1.创建axios的实例
@@ -26,11 +29,20 @@ export function request(config) {
   // 2.2.响应拦截
   instance.interceptors.response.use(res => {
     if (res.data.status == 4003){
-      this.$notify({
+      Notification({
         title: '警告',
         message: res.data.msg,
         type: 'warning'
       });
+    }
+    if (res.data.status == 4001){
+      Notification({
+        title: '警告',
+        message: res.data.msg + ", 请重新登录",
+        type: 'warning'
+      });
+      router.push('/login');
+      return ;
     }
     return res.data
   }, err => {

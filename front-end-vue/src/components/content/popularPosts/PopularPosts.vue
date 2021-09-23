@@ -7,7 +7,7 @@
 		</div>
 		<div class="widget-content">
 			<!-- post -->
-			<PostItem v-for="(item,index) in itemData" :active="'smallPicture'" :key="index" :itemData="item"/>
+<!--			<PostItem v-for="(item,index) in itemData" :active="'smallPicture'" :key="index" :itemData="item"/>-->
 		</div>
 	</div>
 
@@ -27,7 +27,7 @@
       itemData: {
         type: Object,
         default: () => {
-          return []
+          return {}
         }
       }
     },

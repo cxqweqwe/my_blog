@@ -1,6 +1,5 @@
 <template>
 
-
 	<div class="col-lg-4">
 		<!-- post tabs -->
 		<div class="post-tabs rounded bordered">
@@ -25,16 +24,15 @@
 				<!-- loader -->
 				<div class="lds-dual-ring"></div>
 				<!-- popular posts -->
-				<div aria-labelledby="popular-tab" class="tab-pane fade show active" id="popular" role="tabpanel">
+				<div aria-labelledby="popular-tab" class="tab-pane fade show" id="popular" role="tabpanel" :class="{active:isActive=='popular'}">
 					<!-- post Popular 已做封装-->
-					<PostItem v-for="(item,index) in itemData" :active="format" :key="index" :itemData="item"/>
+					<PostItem v-for="(item,index) in popularData" :key="index" :itemData="item" />
 				</div>
 				<!-- recent posts -->
-<!--        <div aria-labelledby="recent-tab" class="tab-pane fade" id="recent" role="tabpanel">-->
-<!--          &lt;!&ndash;// TODO：Recent点击无反应&ndash;&gt;-->
-<!--          &lt;!&ndash; post Recent 已做封装 &ndash;&gt;-->
-<!--          <PostItem v-for="i in 4" :active="format"/>-->
-<!--        </div>-->
+        <div aria-labelledby="recent-tab" class="tab-pane fade show" id="recent" role="tabpanel" :class="{active:isActive=='recent'}">
+          <!-- post Recent 已做封装 -->
+          <PostItem v-for="(item,index) in recentData" :key="index" :itemData="item"/>
+        </div>
 			</div>
 		</div>
 	</div>
@@ -45,7 +43,8 @@
 <script>
   import PostItem from "components/common/post/PostItem";
 
-  import {test} from "../../../network/test"
+  import {getPopular} from "network/article";
+  import {getRecent} from "../../../network/article";
 
   export default {
     name: "PostTabs",
@@ -56,24 +55,33 @@
       return {
         format: "smallPicture",
         isActive: "popular",
-
-        itemData: []
+        popularData: [],
+        recentData: []
       }
+    },
+    created() {
+      this.sendPopular();
+      this.sendRecent();
     },
     methods: {
       tabNavsClick(select) {
         this.isActive = select;
+        console.log(this.isActive)
       },
-      test(){
-        test().then(res => {
-          // console.log(res);
-          this.itemData = res;
-          // console.log(this.itemData);
+      sendPopular(){
+        getPopular(5).then(res => {
+          this.popularData = res.data;
+          this.popularData.shift();
+          // console.log(this.popularData)
+        })
+      },
+      sendRecent(){
+        getRecent().then(res => {
+
+          this.recentData  = res.data;
+          console.log(res);
         })
       }
-    },
-    created() {
-      this.test();
     }
   }
 </script>

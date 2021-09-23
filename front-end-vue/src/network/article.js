@@ -22,14 +22,14 @@ export function releaseArticle(params) {
     })
 }
 
-export function getPopular() {
+export function getPopular(param) {
     return request({
-        url: requestUrl + '/popular',
+        url: requestUrl + '/popular/' + param,
     })
 }
 
 export function getRecent() {
     return request({
-        url: requestUrl + "/recent/"
+        url: requestUrl + "/recent"
     })
 }

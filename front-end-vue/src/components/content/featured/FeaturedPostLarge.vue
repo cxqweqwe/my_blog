@@ -1,5 +1,4 @@
 <template>
-
   <!-- featured post large -->
   <div class="col-lg-8">
     <div class="post featured-post-lg">
@@ -22,8 +21,6 @@
       </div>
     </div>
   </div>
-
-
 </template>
 
 <script>
@@ -48,14 +45,15 @@ export default {
   },
   methods: {
     getPopularFromServer() {
-      console.log('asdsadfas');
-      getPopular().then(res => {
+      // console.log('asdsadfas');
+      getPopular(1).then(res => {
         this.articleInfo = res.data[0];
-        console.log(this.articleInfo);
+        // console.log(this.articleInfo);
       })
     },
     toDetail() {
-      console.log('ques')
+      console.log('ques');
+      this.$router.push('/blog/' + this.articleInfo.articleId);
     }
   }
 }
