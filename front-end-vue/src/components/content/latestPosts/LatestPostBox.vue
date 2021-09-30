@@ -10,7 +10,7 @@
 					<div class="thumb rounded">
 						<a href="blog-single.html">
 							<div class="inner">
-								<img src="images/posts/latest-sm-2.jpg" alt="post-title" />
+								<img src="~assets/img/posts/latest-sm-2.jpg" alt="post-title" />
 							</div>
 						</a>
 					</div>
@@ -51,7 +51,7 @@
 										</span>
 						<a href="blog-single.html">
 							<div class="inner">
-								<img src="images/posts/latest-sm-3.jpg" alt="post-title" />
+								<img src="~assets/img/posts/latest-sm-3.jpg" alt="post-title" />
 							</div>
 						</a>
 					</div>
@@ -89,7 +89,7 @@
 					<div class="thumb rounded">
 						<a href="blog-single.html">
 							<div class="inner">
-								<img src="images/posts/latest-sm-4.jpg" alt="post-title" />
+								<img src="~assets/img/posts/latest-sm-4.jpg" alt="post-title" />
 							</div>
 						</a>
 					</div>

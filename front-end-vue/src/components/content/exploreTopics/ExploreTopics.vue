@@ -1,30 +1,49 @@
 <template>
 
-	<div class="widget rounded">
-		<div class="widget-header text-center">
-			<h3 class="widget-title">Explore Topics</h3>
-			<img src="images/wave.svg" class="wave" alt="wave"/>
-		</div>
-		<div class="widget-content">
-			<ul class="list">
-				<li><a href="#">Lifestyle</a><span>(5)</span></li>
-				<li><a href="#">Inspiration</a><span>(2)</span></li>
-				<li><a href="#">Fashion</a><span>(4)</span></li>
-				<li><a href="#">Politic</a><span>(1)</span></li>
-				<li><a href="#">Trending</a><span>(7)</span></li>
-				<li><a href="#">Culture</a><span>(3)</span></li>
-			</ul>
-		</div>
-	</div>
+  <div class="widget rounded">
+    <div class="widget-header text-center">
+      <h3 class="widget-title">Explore Topics</h3>
+      <img src="~assets/img/wave.svg" class="wave" alt="wave"/>
+    </div>
+    <div class="widget-content">
+      <ul class="list">
+        <li v-for="(item,index) in labels"><a @click="toSearchPage">{{item.labelName}}</a><span>{{item.times}}</span></li>
+      </ul>
+    </div>
+  </div>
 
 </template>
 
 <script>
-  export default {
-    name: "ExploreTopics"
+import {getQuery} from 'network/labelRecord';
+
+export default {
+  name: "ExploreTopics",
+  data() {
+    return {
+      labels: []
+    }
+  },
+  created() {
+    this.getLabel();
+  },
+  methods: {
+    getLabel() {
+      getQuery(0,10).then(res => {
+        this.labels = res.data.data;
+      })
+    },
+    toSearchPage(){
+      // TODO：搜索，跳转页面
+    }
+
+
   }
+}
 </script>
 
 <style scoped>
-
+.a-line:hover{
+  color: #FE4F70;;
+}
 </style>

@@ -23,7 +23,7 @@
 					<div class="ads-horizontal text-md-center">
 						<span class="ads-title">- Sponsored Ad -</span>
 						<a href="#">
-							<img src="images/ads/ad-750.png" alt="Advertisement" />
+							<img src="~assets/img/ads/ad-750.png" alt="Advertisement" />
 						</a>
 					</div>
 
@@ -142,7 +142,7 @@
 						</div>-->
 
 						<!-- widget popular posts -->
-						<PopularPosts></PopularPosts>
+<!--						<PopularPosts></PopularPosts>-->
 						<!--<div class="widget rounded">
 							<div class="widget-header text-center">
 								<h3 class="widget-title">Popular Posts</h3>

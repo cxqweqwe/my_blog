@@ -1,6 +1,6 @@
 <template>
 
-  <div class="col-lg-8 blog blogDetail">
+  <div class="blog blogDetail">
     <div class="blog-info">
       <h1>&nbsp;&nbsp;&nbsp;{{ article.title }}</h1>
       <div class="line-1">
@@ -174,6 +174,7 @@ export default {
 
 <style scoped>
 .blog {
+  width: 100%;
   padding: 20px 10px;
   border: 1px solid #746060;
   border-radius: 15px;

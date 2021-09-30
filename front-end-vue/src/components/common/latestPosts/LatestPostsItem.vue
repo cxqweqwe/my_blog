@@ -22,7 +22,7 @@
 				<p class="excerpt mb-0">A wonderful serenity has taken possession of my entire soul, like these sweet mornings</p>
 				<div class="post-bottom clearfix d-flex align-items-center">
 					<div class="social-share me-auto">
-<!--						<button class="toggle-button icon-share"></button>-->
+						<button class="toggle-button icon-share"></button>
 						<ul class="icons list-unstyled list-inline mb-0">
 							<li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
 							<li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>

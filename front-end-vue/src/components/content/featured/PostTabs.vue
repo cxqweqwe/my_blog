@@ -1,6 +1,6 @@
 <template>
 
-	<div class="col-lg-4">
+	<div class="post-tab">
 		<!-- post tabs -->
 		<div class="post-tabs rounded bordered">
 			<!-- tab navs -->
@@ -36,7 +36,6 @@
 			</div>
 		</div>
 	</div>
-
 
 </template>
 
@@ -77,9 +76,8 @@
       },
       sendRecent(){
         getRecent().then(res => {
-
           this.recentData  = res.data;
-          console.log(res);
+          // console.log(res);
         })
       }
     }
@@ -87,5 +85,7 @@
 </script>
 
 <style scoped>
-
+.post-tab{
+  width: 100%;
+}
 </style>

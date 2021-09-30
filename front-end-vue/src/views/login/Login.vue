@@ -24,9 +24,8 @@
         <div class="space"></div>
         <div class="space"></div>
         <div class="captcha">
-          <div class="captcha-left">
+          <div class="captcha-left" @keyup.enter="sendLogin">
             <el-input
-                @keyup.enter="sendLogin"
                 placeholder="请输入右边验证码"
                 v-model="loginFrom.captcha"
                 prefix-icon="el-icon-s-grid">

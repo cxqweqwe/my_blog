@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     init() {
-      console.log(this.itemData);
+      // console.log(this.itemData);
     },
     toDetail() {
       console.log('ques');

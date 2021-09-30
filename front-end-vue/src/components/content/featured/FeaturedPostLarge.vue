@@ -1,6 +1,6 @@
 <template>
   <!-- featured post large -->
-  <div class="col-lg-8">
+  <div>
     <div class="post featured-post-lg">
       <div class="details clearfix">
         <a href="#" class="category-badge">Inspiration</a>

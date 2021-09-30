@@ -6,8 +6,8 @@
 			<img src="~assets/img/wave.svg" class="wave" alt="wave" />
 		</div>
 		<div class="widget-content">
-			<!-- post -->
-<!--			<PostItem v-for="(item,index) in itemData" :active="'smallPicture'" :key="index" :itemData="item"/>-->
+      <!-- post -->
+			<PostItem v-for="(item,index) in itemData" :active="'smallPicture'" :key="index" :itemData="item"/>
 		</div>
 	</div>
 

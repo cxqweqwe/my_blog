@@ -58,7 +58,7 @@
 
             <!-- header buttons -->
             <div class="header-buttons">
-              <button class="search icon-button">
+              <button class="search icon-button" @click="toSearch">
                 <i class="icon-magnifier"></i>
               </button>
               <button class="burger-menu icon-button">
@@ -69,12 +69,47 @@
         </div>
       </nav>
     </header>
+    <!--  搜索框  -->
+    <div class="search-popup" :class="{visible:isShowSearch}" @keyup.esc="cLoseShowSearch">
+      <!-- close button -->
+      <button type="button" class="btn-close" aria-label="Close" @click="cLoseShowSearch"></button>
+      <!-- content -->
+      <div class="search-content" @keyup.esc="cLoseShowSearch">
+        <div class="text-center">
+          <h3 class="mb-4 mt-0">Press ESC to close</h3>
+        </div>
+        <!-- form -->
+        <form class="d-flex search-form">
+          <input class="form-control me-2" type="search" placeholder="Search and press enter ..." aria-label="Search">
+          <button class="btn btn-default btn-lg" type="submit"><i class="icon-magnifier"></i></button>
+        </form>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "TabBar"
+  name: "TabBar",
+  data() {
+    return {
+      isShowSearch: false,
+      isTextShow: false
+    }
+  },
+  created() {
+
+  },
+  methods: {
+    toSearch() {
+      this.isShowSearch = true;
+    },
+    cLoseShowSearch() {
+      this.isShowSearch = false;
+      this.isTextShow = false;
+    },
+
+  }
 }
 </script>
 
