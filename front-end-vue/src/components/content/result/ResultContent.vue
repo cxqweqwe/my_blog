@@ -2,9 +2,11 @@
   <div class=" result-content">
     <div class="search-info">
       您搜索的关键词：
-      <Tag color="#ff5d74" v-for="(item,index) in tags">{{ item }}</Tag>
+      <Tag color="#ff5d74" v-for="(item,index) in tags" :key="index">{{ item }}</Tag>
     </div>
-    <SearchItem :search-data="searchData"></SearchItem>
+    <SearchItem v-for="(searchData,index) in searchDataList" :key="index" :search-data="searchData"></SearchItem>
+    <div class="space"></div>
+
   </div>
 </template>
 
@@ -18,23 +20,28 @@ export default {
   },
   props: {
     tags: [],
+    searchDataList:[]
   },
   data() {
     return {
-      searchData: {
-        title: '我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题',
-        avatarPath: '我是头像地址',
-        nickName: '我是昵称我是昵称我是昵称我是昵称',
-        briefIntroduction: '我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介',
-        pageviews: '678',
-        likes: '89',
-        collection: '32',
-      }
+      // searchData: {
+      //   articleId: 'abs',
+      //   title: '我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题我是标题',
+      //   avatarPath: '我是头像地址',
+      //   nickName: '我是昵称我是昵称我是昵称我是昵称',
+      //   briefIntroduction: '我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介我是简介',
+      //   pageviews: '678',
+      //   likes: '89',
+      //   collection: '32',
+      // },
+
     }
   },
   created() {
   },
-  methods: {}
+  methods: {
+
+  }
 }
 </script>
 
@@ -53,5 +60,10 @@ export default {
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, .25)
 }
+
+.space{
+  height: 10px;
+}
+
 
 </style>

@@ -17,4 +17,42 @@
         LIMIT 0,#{quantity}
     </select>
 
+    <select id="searchBlog" resultType="SearchBlogVO">
+        SELECT DISTINCT ar.article_id, ar.title, ar.brief_introduction, uin.author_id, uin.avatar_path, uin.nick_name, bin.pageviews, bin.likes,
+        bin.collection
+        FROM article ar,blog_info bin, user_info uin
+        WHERE ar.author_id = uin.author_id AND bin.article_id = ar.article_id
+        AND (
+        <foreach collection="keywordList" open="(" separator="or" close=")" item="keyword" index="index">
+            ar.title like concat("%",#{keyword},"%")
+        </foreach>
+        or
+        <foreach collection="keywordList" open="(" separator="or" close=")" item="keyword" index="index">
+            ar.brief_introduction like concat("%",#{keyword},"%")
+        </foreach>
+        or
+        <foreach collection="keywordList" open="(" separator="or" close=")" item="keyword" index="index">
+            ar.label like concat("%",#{keyword},"%")
+        </foreach>)
+        LIMIT #{currentPage},#{size}
+    </select>
+
+    <select id="searchBlogCount" resultType="Integer">
+        SELECT count(1)
+        FROM article ar,blog_info bin, user_info uin
+        WHERE ar.author_id = uin.author_id AND bin.article_id = ar.article_id
+        AND (
+        <foreach collection="keywordList" open="(" separator="or" close=")" item="keyword" index="index">
+            ar.title like concat("%",#{keyword},"%")
+        </foreach>
+        or
+        <foreach collection="keywordList" open="(" separator="or" close=")" item="keyword" index="index">
+            ar.brief_introduction like concat("%",#{keyword},"%")
+        </foreach>
+        or
+        <foreach collection="keywordList" open="(" separator="or" close=")" item="keyword" index="index">
+            ar.label like concat("%",#{keyword},"%")
+        </foreach>)
+    </select>
+
 </mapper>

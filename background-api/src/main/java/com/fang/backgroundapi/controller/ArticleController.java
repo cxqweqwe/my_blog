@@ -1,10 +1,12 @@
 package com.fang.backgroundapi.controller;
 
 
+import com.fang.backgroundapi.common.PagingData;
 import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.pojo.DO.Article;
 import com.fang.backgroundapi.pojo.DTO.ArticleDTO;
 import com.fang.backgroundapi.pojo.VO.MostPopularInfoVO;
+import com.fang.backgroundapi.pojo.VO.SearchBlogVO;
 import com.fang.backgroundapi.service.impl.ArticleCommentServiceImpl;
 import com.fang.backgroundapi.service.impl.ArticleServiceImpl;
 import io.swagger.annotations.Api;
@@ -92,6 +94,23 @@ public class ArticleController {
     public ServerResponse queryRecent() {
         List<MostPopularInfoVO> recent = articleService.queryRecent();
         return ServerResponse.success(recent);
+    }
+
+    /**
+     * @Description: 这里是对应博客搜索
+     * @Author: Bernie_fang
+     * @Since: 2021/10/13 15:09
+     * @param keyword:
+     * @return: com.fang.backgroundapi.common.ServerResponse
+     **/
+    @GetMapping("/search/{keyword}/{currentPage}/{size}")
+    @ApiOperation(value = "搜索博客名字、简介、标签含有的关键词", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse searchBlog(@PathVariable("keyword") @NotBlank(message = "关键词不能为空") String keyword,
+                                     @PathVariable("currentPage") Integer currentPage,
+                                     @PathVariable("size") Integer size) {
+
+        PagingData data = articleService.searchBlog(keyword, currentPage, size);
+        return ServerResponse.success(data);
     }
 
 

@@ -1,27 +1,31 @@
 <template>
   <div class="search-item">
     <div class="head">
-      <h4 class="div-text">{{ searchData.title }}</h4>
+      <router-link :to="{path:'/blog/'+searchData.articleId}" target="_blank">
+        <h4 class="div-text" :title="searchData.title">{{ searchData.title }}</h4>
+      </router-link>
     </div>
+    <div class="hidden-id">{{searchData.articleId}}</div>
+    <div class="hidden-id">{{searchData.authorId}}</div>
     <div class="body">
       <Row class-name="Row">
-        <Col span="5" class="div-text">
+        <Col span="5" class="div-text nick-text" :title="searchData.nickName">
           <Avatar src="https://i.loli.net/2017/08/21/599a521472424.jpg" size="small"/>
           {{ searchData.nickName }}
         </Col>
-        <Col span="14" class="div-text">
+        <Col span="13" class="div-text">
           {{ searchData.briefIntroduction }}
         </Col>
-        <Col span="5">
+        <Col span="6">
           <Row>
-            <Col span="8">
+            <Col span="8" class="div-text" :title="searchData.pageviews">
               <i class="el-icon-view">{{ searchData.pageviews }}</i>
             </Col>
-            <Col span="8">
+            <Col span="8" class="div-text" :title="searchData.collection">
               <Icon type="md-star"/>
               {{ searchData.collection }}
             </Col>
-            <Col span="8">
+            <Col span="8" class="div-text" :title="searchData.likes">
               <Icon type="ios-thumbs-up"/>
               {{ searchData.likes }}
             </Col>
@@ -37,6 +41,8 @@ export default {
   name: "SearchItem",
   props: {
     searchData: {
+      articleId: '',
+      authorId: '',
       title: '',
       avatarPath: '',
       nickName: '',
@@ -94,6 +100,14 @@ export default {
   height: 25px;
   line-height: 25px;
   /*background-color: #0dcaf0;*/
+}
+
+.nick-text{
+  font-size: 16px;
+}
+
+.hidden-id{
+  display: none;
 }
 
 .Row {

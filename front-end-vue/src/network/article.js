@@ -33,3 +33,9 @@ export function getRecent() {
         url: requestUrl + "/recent"
     })
 }
+
+export function getSearchBlog(keyword,currentPage,size){
+    return request({
+        url: requestUrl + "/search/" + keyword +"/" + currentPage + "/" + size
+    })
+}

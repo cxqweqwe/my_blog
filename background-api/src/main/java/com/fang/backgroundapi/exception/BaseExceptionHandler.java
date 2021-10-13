@@ -68,7 +68,7 @@ public class BaseExceptionHandler {
      **/
     @ExceptionHandler(ConstraintViolationException.class)
     public ServerResponse handleConstraintViolationException(ConstraintViolationException ex) {
-        log.error("邮箱检验异常-----------------{}", ex.getMessage());
+        log.error("数据校验异常处理-----------------{}", ex.getMessage());
         int index = ex.getMessage().indexOf(":"); //  ex.getMessage()的格式【方法.参数名字:  错误提示】
         return ServerResponse.error(ResponseCode.DATA_FORMAT_TYPE_ERROR.getCode(), ResponseCode.DATA_FORMAT_TYPE_ERROR.getDesc(),
                 ex.getMessage().substring(index + 2));// 只把错误提示给前端，其他的一律不泄漏
