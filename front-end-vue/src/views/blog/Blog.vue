@@ -11,6 +11,7 @@
           </div>
           <div class="col-lg-4">
             <PostTabs></PostTabs>
+            <div class="space"></div>
             <Celebration></Celebration>
 
           </div>
@@ -50,5 +51,7 @@ export default {
 </script>
 
 <style scoped>
-
+.space{
+  height: 15px;
+}
 </style>

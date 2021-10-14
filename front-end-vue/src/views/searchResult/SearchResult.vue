@@ -25,7 +25,7 @@
         </div>
       </div>
     </section>
-
+    <Footer></Footer>
   </div>
 </template>
 
@@ -34,7 +34,8 @@ import TabBar from "components/common/tabBar/TabBar";
 import PostTabs from "components/content/featured/PostTabs";
 import Celebration from "components/common/celebration/Celebration";
 import ResultContent from "components/content/result/ResultContent";
-import {getSearchBlog} from "network/article"
+import {getSearchBlog} from "network/article";
+import Footer from "components/common/footer/Footer";
 
 export default {
   name: "SearchResult",
@@ -42,7 +43,8 @@ export default {
     TabBar,
     PostTabs,
     Celebration,
-    ResultContent
+    ResultContent,
+    Footer
   },
   data() {
     return {

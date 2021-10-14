@@ -7,7 +7,12 @@
     </div>
     <div class="widget-content">
       <ul class="list">
-        <li v-for="(item,index) in labels"><a @click="toSearchPage">{{item.labelName}}</a><span>{{item.times}}</span></li>
+        <li v-for="(item,index) in labels" :key="index">
+          <router-link :to="{path:'/searchResult/'+ item.labelName}" target="_blank">
+            {{item.labelName}}
+          </router-link>
+          <span>{{item.times}}</span>
+        </li>
       </ul>
     </div>
   </div>
