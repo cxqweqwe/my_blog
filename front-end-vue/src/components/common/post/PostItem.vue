@@ -25,7 +25,7 @@
     </div>
     <div class="details clearfix">
       <h6 class="post-title my-0">
-        <div class="details-title" @click="toDetail" :title="itemData.title">{{ itemData.title }}</div>
+        <div class="details-title div-text-box" @click="toDetail" :title="itemData.title">{{ itemData.title }}</div>
       </h6>
       <ul class="meta list-inline mt-1 mb-0">
         <li class="list-inline-item">{{ itemData.modifiedTime }}</li>
@@ -70,7 +70,7 @@ export default {
       // console.log(this.itemData);
     },
     toDetail() {
-      console.log('ques');
+      // console.log('ques');
       this.$router.push('/blog/' + this.itemData.articleId);
 
     }
@@ -86,5 +86,16 @@ export default {
 }
 .details-title:hover {
   color: #fe4f70;
+}
+.div-text-box{
+  height: 45px;
+  width: 100%;
+
+  word-break: break-all;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 </style>

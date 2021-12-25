@@ -362,7 +362,7 @@ export default {
       this.loginFrom.password = encodePassword;
 
       login(this.loginFrom).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.status == 2000) {
           sessionStorage.setItem('Authorization',res.data);
           this.$notify({
