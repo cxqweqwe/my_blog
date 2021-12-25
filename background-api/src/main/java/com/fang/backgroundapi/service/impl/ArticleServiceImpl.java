@@ -135,10 +135,27 @@ public class ArticleServiceImpl implements ArticleService {
         String[] keywords = keyword.trim().split("\\s+");
         List<String> list = Arrays.asList(keywords);
         List<SearchBlogVO> searchBlogVOS = articleMapper.searchBlog(list, currentPage, size);
+        for (SearchBlogVO blogVO : searchBlogVOS) {
+            System.out.println(blogVO);
+        }
         Integer total = articleMapper.searchBlogCount(list);
         PagingData data = new PagingData(Long.valueOf(total), searchBlogVOS);
         return data;
     }
 
-
+    /**
+     * @param curPage:
+     * @param size:
+     * @Description: 查找点赞最多(最受欢迎)的博客, 分页
+     * @Author: Bernie_fang
+     * @Since: 2021/10/21 14:10
+     * @return: com.fang.backgroundapi.common.PagingData
+     **/
+    public PagingData queryMostPopularPaging(Integer curPage, Integer size) {
+        curPage = (curPage - 1) * size;
+        List<MostPopularInfoVO> popular = articleMapper.queryMostPopularPaging(curPage, size);
+        Integer total = articleMapper.queryMostPopularCount();
+        PagingData data = new PagingData(Long.valueOf(total), popular);
+        return data;
+    }
 }

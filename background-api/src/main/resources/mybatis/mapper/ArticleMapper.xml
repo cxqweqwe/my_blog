@@ -10,6 +10,21 @@
         LIMIT 0,#{quantity}
     </select>
 
+    <select id="queryMostPopularPaging" parameterType="Integer" resultType="MostPopularInfoVO">
+        SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.modified_time
+        FROM article ar, blog_info info
+        WHERE ar.article_id = info.article_id
+        ORDER BY info.likes
+        LIMIT #{curPage},#{size}
+    </select>
+
+    <select id="queryMostPopularCount" resultType="Integer">
+        SELECT count(ar.article_id)
+        FROM article ar, blog_info info
+        WHERE ar.article_id = info.article_id
+        ORDER BY info.likes
+    </select>
+
     <select id="queryRecent" parameterType="Integer" resultType="MostPopularInfoVO">
         SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.modified_time
         FROM article ar

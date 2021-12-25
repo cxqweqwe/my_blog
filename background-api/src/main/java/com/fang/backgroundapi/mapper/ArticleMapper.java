@@ -59,4 +59,22 @@ public interface ArticleMapper extends BaseMapper<Article> {
      **/
     public Integer searchBlogCount(@Param("keywordList") List<String> keywordList);
 
+    /**
+     * @param curPage:
+     * @param size:
+     * @Description: 查找点赞最多(最受欢迎)的博客, 分页
+     * @Author: Bernie_fang
+     * @Since: 2021/10/21 14:08
+     * @return: java.util.List<com.fang.backgroundapi.pojo.VO.MostPopularInfoVO>
+     **/
+    public List<MostPopularInfoVO> queryMostPopularPaging(@Param("curPage") Integer curPage, @Param("size") Integer size);
+
+    /**
+     * @Description: 查找点赞最多(最受欢迎)的博客总条数, 分页
+     * @Author: Bernie_fang
+     * @Since: 2021/10/21 14:12
+     * @return: java.lang.Integer
+     **/
+    public Integer queryMostPopularCount();
+
 }

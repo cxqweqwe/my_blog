@@ -39,3 +39,13 @@ export function getSearchBlog(keyword,currentPage,size){
         url: requestUrl + "/search/" + keyword +"/" + currentPage + "/" + size
     })
 }
+
+export function getPopularPaging(currentPage,size){
+    return request({
+        url: requestUrl + "/popular/paging",
+        params: {
+            curPage: currentPage,
+            size: size
+        }
+    })
+}

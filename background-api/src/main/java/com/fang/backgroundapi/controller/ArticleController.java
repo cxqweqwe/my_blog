@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.swing.table.AbstractTableModel;
@@ -81,6 +82,20 @@ public class ArticleController {
     public ServerResponse queryMostPopular(@PathVariable("size") @ApiParam(value = "需要查询多少条") Integer size) {
         List<MostPopularInfoVO> popular = articleService.queryMostPopular(size);
         return ServerResponse.success(popular);
+    }
+
+    /**
+     * @Description: 查找最受欢迎(点赞最多)的的博客
+     * @Author: Bernie_fang
+     * @Since: 2021/9/12 22:10
+     * @return: com.fang.backgroundapi.common.ServerResponse
+     **/
+    @GetMapping("/popular/paging")
+    @ApiOperation(value = "查找最受欢迎(点赞最多)的的博客", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse queryMostPopularPaging(@RequestParam @ApiParam(value = "当前页") Integer curPage,
+                                                 @RequestParam @ApiParam(value = "需要查询多少条") Integer size) {
+        PagingData pagingData = articleService.queryMostPopularPaging(curPage, size);
+        return ServerResponse.success(pagingData);
     }
 
     /**
