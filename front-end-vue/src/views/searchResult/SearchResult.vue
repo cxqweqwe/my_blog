@@ -32,7 +32,7 @@
 <script>
 import TabBar from "components/common/tabBar/TabBar";
 import PostTabs from "components/content/featured/PostTabs";
-import Celebration from "components/common/celebration/Celebration";
+import Celebration from "components/content/celebration/Celebration";
 import ResultContent from "components/content/result/ResultContent";
 import {getSearchBlog} from "network/article";
 import Footer from "components/common/footer/Footer";

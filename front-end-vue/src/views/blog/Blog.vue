@@ -27,7 +27,7 @@
 import BlogDetail from "components/content/blog/BlogDetail";
 import TabBar from "components/common/tabBar/TabBar";
 import PostTabs from "components/content/featured/PostTabs";
-import Celebration from "components/common/celebration/Celebration";
+import Celebration from "components/content/celebration/Celebration";
 
 export default {
   name: "Blog",
