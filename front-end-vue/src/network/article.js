@@ -49,3 +49,9 @@ export function getPopularPaging(currentPage,size){
         }
     })
 }
+
+export function getLatestPosts(currentPage, size) {
+    return request({
+        url: requestUrl + "/latestPosts/" + currentPage + "/" + size,
+    })
+}

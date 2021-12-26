@@ -9,6 +9,7 @@ import com.fang.backgroundapi.pojo.DO.Article;
 import com.fang.backgroundapi.mapper.ArticleMapper;
 import com.fang.backgroundapi.pojo.DTO.ArticleDTO;
 import com.fang.backgroundapi.pojo.VO.MostPopularInfoVO;
+import com.fang.backgroundapi.pojo.VO.PostShowVO;
 import com.fang.backgroundapi.pojo.VO.SearchBlogVO;
 import com.fang.backgroundapi.service.ArticleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -158,4 +159,29 @@ public class ArticleServiceImpl implements ArticleService {
         PagingData data = new PagingData(Long.valueOf(total), popular);
         return data;
     }
+
+    /**
+     * Description: 查找最新的
+     * @Author: Bernie_fang
+     * @Since: 2021/12/25 15:09
+     * @param curPage: -1表示不分页
+     * @param size:
+     * @return: com.fang.backgroundapi.common.PagingData
+     **/
+    public PagingData latestPosts(Integer curPage, Integer size){
+        curPage = (curPage - 1) * size;
+        PagingData pagingData = new PagingData();
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("create_time","modified_time");
+        if (curPage != null && curPage != -1){
+            // 做分页
+            Integer integer = articleMapper.latestPostsCount();
+            pagingData.setTotal(Long.valueOf(integer));
+        }
+        List<PostShowVO> postShowVOList = articleMapper.latestPosts(curPage, size);
+        pagingData.setData(postShowVOList);
+        return pagingData;
+    }
+
+
 }

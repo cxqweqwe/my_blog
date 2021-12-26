@@ -129,6 +129,15 @@ public class ArticleController {
     }
 
 
+    @GetMapping("/latestPosts/{currentPage}/{size}")
+    @ApiOperation(value = "最新帖子", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse latestPosts(@PathVariable("currentPage") Integer currentPage,
+                                     @PathVariable("size") Integer size) {
+        PagingData data = articleService.latestPosts(currentPage, size);
+        return ServerResponse.success(data);
+    }
+
+
 
 }
 

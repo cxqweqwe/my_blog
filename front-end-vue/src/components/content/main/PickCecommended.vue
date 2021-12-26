@@ -3,7 +3,6 @@
     <!-- post -->
     <div class="post">
       <div class="thumb rounded">
-        <!--  // TODO: 看看这个是干嘛的-->
       </div>
       <ul class="meta list-inline mt-4 mb-0">
         <li class="list-inline-item"><a href="#">
@@ -50,14 +49,14 @@ export default {
     }
   },
   created() {
-    // TODO: 等待连接接口
+    // 等待连接接口
     this.getPickEdict();
   },
   methods: {
     getPickEdict(){
       getPopularPaging(2,1).then(res => {
         this.pickData = res.data.data[0];
-        console.log(this.pickData);
+        // console.log(this.pickData);
       })
     }
   }

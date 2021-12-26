@@ -22,7 +22,6 @@
         SELECT count(ar.article_id)
         FROM article ar, blog_info info
         WHERE ar.article_id = info.article_id
-        ORDER BY info.likes
     </select>
 
     <select id="queryRecent" parameterType="Integer" resultType="MostPopularInfoVO">
@@ -68,6 +67,36 @@
         <foreach collection="keywordList" open="(" separator="or" close=")" item="keyword" index="index">
             ar.label like concat("%",#{keyword},"%")
         </foreach>)
+    </select>
+
+    <select id="latestPosts" resultType="PostShowVO">
+        SELECT
+            art.article_id,
+            art.author_id,
+            art.title,
+            art.brief_introduction,
+            art.create_time,
+            art.modified_time,
+            art.deleted,
+            info.nick_name,
+            info.avatar_path
+        FROM
+            article art, user_info info
+        WHERE
+            art.deleted = 0
+            AND art.author_id = info.author_id
+        ORDER BY
+            create_time DESC,
+            modified_time DESC
+        <if test="curPage != null &amp;&amp; curPage != -1">
+            LIMIT #{curPage},#{size}
+        </if>
+    </select>
+
+    <select id="latestPostsCount" resultType="Integer">
+        select count(1)
+        from article art, user_info info
+        WHERE art.deleted = 0 AND art.author_id = info.author_id
     </select>
 
 </mapper>

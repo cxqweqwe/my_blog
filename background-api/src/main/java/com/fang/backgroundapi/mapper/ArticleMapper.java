@@ -3,6 +3,7 @@ package com.fang.backgroundapi.mapper;
 import com.fang.backgroundapi.pojo.DO.Article;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.fang.backgroundapi.pojo.VO.MostPopularInfoVO;
+import com.fang.backgroundapi.pojo.VO.PostShowVO;
 import com.fang.backgroundapi.pojo.VO.SearchBlogVO;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -77,4 +78,21 @@ public interface ArticleMapper extends BaseMapper<Article> {
      **/
     public Integer queryMostPopularCount();
 
+    /**
+     * Description: 查询最新博客
+     * @Author: Bernie_fang
+     * @Since: 2021/12/25 16:14
+     * @param curPage:
+     * @param size:
+     * @return: com.fang.backgroundapi.pojo.VO.SearchBlogVO
+     **/
+    public List<PostShowVO> latestPosts(@Param("curPage") Integer curPage, @Param("size") Integer size);
+
+    /**
+     * Description: 查询最新博客条数
+     * @Author: Bernie_fang
+     * @Since: 2021/12/25 16:14
+     * @return: com.fang.backgroundapi.pojo.VO.SearchBlogVO
+     **/
+    public Integer latestPostsCount();
 }
