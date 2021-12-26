@@ -55,3 +55,9 @@ export function getLatestPosts(currentPage, size) {
         url: requestUrl + "/latestPosts/" + currentPage + "/" + size,
     })
 }
+
+export function getMostCollection(currentPage, size) {
+    return request({
+        url: requestUrl + "/mostCollection/" + currentPage + "/" + size,
+    })
+}

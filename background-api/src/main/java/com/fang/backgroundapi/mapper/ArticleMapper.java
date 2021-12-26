@@ -95,4 +95,16 @@ public interface ArticleMapper extends BaseMapper<Article> {
      * @return: com.fang.backgroundapi.pojo.VO.SearchBlogVO
      **/
     public Integer latestPostsCount();
+
+    /**
+     * Description: 被收藏最多的
+     * @Author: Bernie_fang
+     * @Since: 2021/12/25 16:14
+     * @param curPage:
+     * @param size:
+     * @return: com.fang.backgroundapi.pojo.VO.SearchBlogVO
+     **/
+    public List<PostShowVO> mostCollection(@Param("curPage") Integer curPage, @Param("size") Integer size);
+
+
 }

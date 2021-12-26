@@ -76,6 +76,10 @@ public class Article implements Serializable {
      * 属性，0未发布，1已发布
      */
     private Integer releaseOrNot;
+    /**
+     * 封面路径
+     */
+    private String coverPath;
 
     /**
      * 创建时间

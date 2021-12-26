@@ -5,13 +5,17 @@
 			<!--			<Index/>-->
 		</div>
 		<router-view/>
+    <Footer></Footer>
 	</div>
 </template>
 
 <script>
+  import Footer from "components/content/footer/Footer";
   export default {
     name: 'app',
-    components: {}
+    components: {
+      Footer
+    }
   }
 </script>
 

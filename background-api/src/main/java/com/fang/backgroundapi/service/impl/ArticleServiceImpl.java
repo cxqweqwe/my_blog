@@ -171,14 +171,32 @@ public class ArticleServiceImpl implements ArticleService {
     public PagingData latestPosts(Integer curPage, Integer size){
         curPage = (curPage - 1) * size;
         PagingData pagingData = new PagingData();
-        QueryWrapper<Article> wrapper = new QueryWrapper<>();
-        wrapper.orderByDesc("create_time","modified_time");
         if (curPage != null && curPage != -1){
             // 做分页
             Integer integer = articleMapper.latestPostsCount();
             pagingData.setTotal(Long.valueOf(integer));
         }
         List<PostShowVO> postShowVOList = articleMapper.latestPosts(curPage, size);
+        pagingData.setData(postShowVOList);
+        return pagingData;
+    }
+/**
+     * Description: 被收藏最多的
+     * @Author: Bernie_fang
+     * @Since: 2021/12/25 15:09
+     * @param curPage: -1表示不分页
+     * @param size:
+     * @return: com.fang.backgroundapi.common.PagingData
+     **/
+    public PagingData mostCollection(Integer curPage, Integer size){
+        curPage = (curPage - 1) * size;
+        PagingData pagingData = new PagingData();
+        if (curPage != null && curPage != -1){
+            // 做分页
+            Integer integer = articleMapper.latestPostsCount();//此方法可在这重复使用
+            pagingData.setTotal(Long.valueOf(integer));
+        }
+        List<PostShowVO> postShowVOList = articleMapper.mostCollection(curPage, size);
         pagingData.setData(postShowVOList);
         return pagingData;
     }

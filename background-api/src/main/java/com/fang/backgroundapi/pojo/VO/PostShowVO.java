@@ -22,6 +22,7 @@ public class PostShowVO {
     private String title;
     private String avatarPath;
     private String nickName;
+    private String coverPath;
     private String briefIntroduction;//简介
     private Integer pageviews;
     private Integer likes;

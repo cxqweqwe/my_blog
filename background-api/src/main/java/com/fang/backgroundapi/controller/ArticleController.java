@@ -137,6 +137,14 @@ public class ArticleController {
         return ServerResponse.success(data);
     }
 
+    @GetMapping("/mostCollection/{currentPage}/{size}")
+    @ApiOperation(value = "被收藏最多", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse mostCollection(@PathVariable("currentPage") Integer currentPage,
+                                      @PathVariable("size") Integer size) {
+        PagingData data = articleService.mostCollection(currentPage, size);
+        return ServerResponse.success(data);
+    }
+
 
 
 }
