@@ -1,6 +1,5 @@
 <template>
-
-  <div class="widget rounded">
+  <div class="widget rounded" v-loading="loading">
     <div class="widget-header text-center">
       <h3 class="widget-title">Collection</h3>
       <img src="~assets/img/wave.svg" class="wave" alt="wave"/>
@@ -34,6 +33,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       dataList: [],
       curPage: 1,
       size: 2,
@@ -52,6 +52,7 @@ export default {
       })
     },
     turnPage(curPage) {
+      this.loading = true;
       this.curPage += curPage;
       // console.log(this.curPage);
       if (this.curPage <= 0) {
@@ -66,7 +67,9 @@ export default {
         this.dataList = res.data.data;
         this.total = res.data.total;
       }).finally(() => {
-
+        setTimeout(() => {
+          this.loading = false;
+        }, 200);
       })
 
     }
