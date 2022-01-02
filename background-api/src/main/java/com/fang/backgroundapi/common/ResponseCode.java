@@ -18,6 +18,7 @@ public enum ResponseCode {
     UNAUTHORIZED(4003,"对不起，您没有权限"),
     NOT_FOUND(404,"未查询到数据"),
 
+    FAIL(4000,"操作失败"),
 
     // 错误
     LOGIN_ERROR(5001,"登录出错，请检查用户名、密码。若确定检查无误，请联系管理人员"),

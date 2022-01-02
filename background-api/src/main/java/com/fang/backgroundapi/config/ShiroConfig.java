@@ -72,6 +72,7 @@ public class ShiroConfig {
         filterRuleMap.put("/common/login", "anon");//放行登录接口
         // filterRuleMap.put("/test", "anon");//放行
         filterRuleMap.put("/error/**", "anon"); // 重定向到这个的都是错误的，全部放行
+        filterRuleMap.put("/image/**", "anon");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterRuleMap);
         return shiroFilterFactoryBean;
     }

@@ -22,9 +22,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -51,7 +51,6 @@ public class CommonServiceImpl {
 
     @Autowired
     private UserInfoServiceImpl userInfoService;
-
 
 
     /**
@@ -209,30 +208,30 @@ public class CommonServiceImpl {
     }
 
     /**
+     * @param registerDTO:
      * @Description: 向两个表操作，需要开启事务
      * @Author: Bernie_fang
      * @Since: 2021/9/15 13:46
-     * @param registerDTO:
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
     public ServerResponse registe(RegisterDTO registerDTO) {
         // 做数据校验
         String username = registerDTO.getUsername().trim();
         String password = registerDTO.getPassword().trim();
-        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             return ServerResponse.error(ResponseCode.DATA_FORMAT_TYPE_ERROR.getCode(), ResponseCode.DATA_FORMAT_TYPE_ERROR.getDesc(),
                     "用户名和密码均不能为空");
         }
         UserInfo infoByEmail = userInfoService.findUserInfoByEmail(registerDTO.getEmail());
-        if (infoByEmail != null){
-            return ServerResponse.error(4000,"该邮箱已经绑定账号，请更换邮箱",null);
+        if (infoByEmail != null) {
+            return ServerResponse.error(4000, "该邮箱已经绑定账号，请更换邮箱", null);
         }
         String email = (String) redisUtils.get(CommonInfo.EMAIL_CODE + registerDTO.getEmail());//拿到之前报错的验证码
-        if (StringUtils.isEmpty(email)){
-            return ServerResponse.error(4000,"验证码不存在或已失效，请重新获取",null);
+        if (StringUtils.isEmpty(email)) {
+            return ServerResponse.error(4000, "验证码不存在或已失效，请重新获取", null);
         }
-        if (!email.equals(registerDTO.getEmailCaptcha())){
-            return ServerResponse.error(4000,"验证码错误",null);
+        if (!email.equals(registerDTO.getEmailCaptcha())) {
+            return ServerResponse.error(4000, "验证码错误", null);
         }
         String encodePwd = PasswordUtil.sha1Encode(password);//加密密码
 

@@ -1,5 +1,6 @@
 package com.fang.backgroundapi.service.impl;
 
+import cn.hutool.core.util.IdUtil;
 import com.alibaba.druid.sql.parser.Keywords;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -110,11 +111,12 @@ public class ArticleServiceImpl implements ArticleService {
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
     public ServerResponse addArticle(ArticleDTO articleDTO) {
-
         Article article = new Article();
         BeanUtils.copyProperties(articleDTO, article);
+        String simpleUUID = IdUtil.simpleUUID();
+        article.setArticleId(simpleUUID);
         Integer integer = this.insertArticle(article);
-        return ServerResponse.success(integer);
+        return ServerResponse.success(simpleUUID);
     }
 
     /**

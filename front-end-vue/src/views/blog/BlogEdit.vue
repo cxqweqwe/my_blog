@@ -84,6 +84,10 @@
 
     </div>
     <div class="space"></div>
+
+    <ImageUpload :centerDialogVisible="centerDialogVisible" :articleId="article.authorId"
+                 :upload-title="uploadTitle" :upload-url="uploadUrl" @item-click="closeUpload()">
+    </ImageUpload>
   </div>
 </template>
 
@@ -96,6 +100,7 @@ import {uploadBase64} from 'network/base64-request';
 import {base64_request_url} from 'common/common_variable';
 import {releaseArticle} from 'network/article';
 import 'mavon-editor/dist/markdown/github-markdown.min.css'
+import ImageUpload from "components/common/loading/ImageUpload";
 
 
 export default {
@@ -126,12 +131,16 @@ export default {
       },
       dynamicTags: [],
       inputVisible: false,
-      inputValue: ''
+      inputValue: '',
+      centerDialogVisible: false,
+      uploadTitle: '上传封面',
+      uploadUrl: 'asdfj'
     };
   },
-  // components: {
-  //   mavonEditor
-  // },
+  components: {
+    // mavonEditor
+    ImageUpload
+  },
   methods: {
     // 将图片上传到服务器，返回地址替换到md中
     imgAdd(pos, $file) {
@@ -158,12 +167,13 @@ export default {
     },
     // 保存草稿
     save() {
-      console.log(this.html);
-      console.log('dsgdfg');
+      // console.log(this.html);
+      // console.log('dsgdfg');
+
     },
     submit() {
       if (this.article.title == '') {
-        loading.close();
+        // loading.close();
         this.$notify({
           title: '警告',
           message: '文章标题必须填写',
@@ -172,7 +182,7 @@ export default {
         return;
       }
       if (this.article.attributes == -1) {
-        loading.close();
+        // loading.close();
         this.$notify({
           title: '警告',
           message: '必须选择文章是否为原创',
@@ -185,13 +195,25 @@ export default {
       this.article.html = this.html;
       this.article.label = this.dynamicTags.toString();
       // this.article.title = 'test';
+
+
       releaseArticle(this.article).then(res => {
-        this.$message.success(res.msg);
-        this.$notify({
-          title: '成功',
-          message: res.msg,
-          type: 'success'
-        });
+        if (res.status == '2000') {
+          this.$notify({
+            title: '成功',
+            message: res.msg,
+            type: 'success'
+          });
+          this.article.authorId = res.data;
+          // 打开上传分页页面
+          this.centerDialogVisible = true;
+        }else {
+          this.$notify.info({
+            title: '出现了一些问题',
+            message: res.msg
+          });
+        }
+
       }).catch(res => {
         console.log(res);
         this.$notify.error({
@@ -199,9 +221,13 @@ export default {
           message: res.msg
         });
       }).finally(() => {
-        loading.close();
+
       })
 
+
+    },
+    closeUpload(){
+      this.centerDialogVisible = false;//关闭上传页面
     },
 
 
