@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import {getToken} from "../../../common/cookieUtils";
+import {getCookie} from "common/cookieUtils";
 
 export default {
   name: "TabBar",
@@ -104,7 +104,7 @@ export default {
     },
 
     goNewPage(path){
-      if (!getToken() || !sessionStorage.getItem('Authorization')){
+      if (!getCookie() || !sessionStorage.getItem('Authorization')){
         this.$router.push("/login");
         return;
       }

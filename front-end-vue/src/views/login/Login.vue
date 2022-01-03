@@ -182,7 +182,7 @@ import {getCaptchaCode, getEmailCode, register, login} from 'network/login';
 import {image_code_url} from "../../common/common_variable";
 import {checkEmail, randomCode} from "common/commonUtils";
 import sha1 from "common/sha1";
-import {getCookie,setCookie,removeCookie} from "common/cookieUtils";
+import {getCookie, setCookie, removeCookie} from "common/cookieUtils";
 
 export default {
   name: "Login",
@@ -207,13 +207,13 @@ export default {
   },
   created() {
     this.changeImgCode();
+    this.start();
   },
   methods: {
     changeImgCode() {
       this.codeString = randomCode(5);
       this.imgCode = image_code_url + "?codeString=" + this.codeString;
     },
-
     getEmailCaptcha() {
       let isEmail = checkEmail(this.register.email);
       if (!isEmail) {
@@ -365,8 +365,8 @@ export default {
       login(this.loginFrom).then(res => {
         // console.log(res);
         if (res.status == 2000) {
-          sessionStorage.setItem('Authorization',res.data.token);
-          sessionStorage.setItem('authorId',res.data.authorId);
+          sessionStorage.setItem('Authorization', res.data.token);
+          sessionStorage.setItem('authorId', res.data.authorId);
           setCookie(res.data.token);//设置Cookie
           this.loginFrom.passwrod = '';
           this.$router.push("/index");
@@ -387,7 +387,7 @@ export default {
         }
       })
 
-    }
+    },
   }
 }
 </script>
@@ -408,8 +408,8 @@ export default {
   border: 1px solid #fe767b;
   background-color: #fff;
   position: absolute;
-  top: 16vh;
-  right: 18vw;
+  top: calc(50vh - 170px);
+  left: calc(50vw - 175px);
   border-radius: 10px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
@@ -497,8 +497,8 @@ export default {
   border: 1px solid #fe767b;
   background-color: #fff;
   position: absolute;
-  top: 16vh;
-  right: 18vw;
+  top: calc(50vh - 240px);
+  left: calc(50vw - 175px);
   border-radius: 10px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
@@ -523,8 +523,8 @@ export default {
   border: 1px solid #fe767b;
   background-color: #fff;
   position: absolute;
-  top: 16vh;
-  right: 18vw;
+  top: calc(50vh - 200px);
+  left: calc(50vw - 175px);
   border-radius: 10px;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
