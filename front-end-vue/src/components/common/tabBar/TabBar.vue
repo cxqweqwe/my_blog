@@ -11,36 +11,27 @@
           <div class="collapse navbar-collapse">
             <!-- menus -->
             <ul class="navbar-nav mr-auto">
-              <li class="nav-item dropdown active">
+              <li class="nav-item dropdown" :class="{active:isAction==1}">
                 <a class="nav-link dropdown-toggle" href="index.html">Home</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="index.html">杂志 </a></li>
-                  <li><a class="dropdown-item" href="personal.html">个人的 </a></li>
-                  <li><a class="dropdown-item" href="personal-alt.html">Personal Alt 个人替代的</a></li>
-                  <li><a class="dropdown-item" href="minimal.html">Minimal 最小的</a></li>
-                  <li><a class="dropdown-item" href="classic.html">Classic 经典的</a></li>
+                  <li><a class="dropdown-item" @click="goNewPage('/personal')">我的</a></li>
                 </ul>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="category.html">Blog</a>
+<!--              <li class="nav-item">-->
+<!--                <a class="nav-link" href="category.html">Lifestyle</a>-->
+<!--              </li>-->
+<!--              <li class="nav-item">-->
+<!--                <a class="nav-link" href="category.html">Inspiration</a>-->
+<!--              </li>-->
+              <li class="nav-item dropdown" :class="{active:isAction==2}">
+                <a class="nav-link dropdown-toggle" href="#">Blog</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" @click="goNewPage('/blogEdit')">撰写博客</a></li>
+                </ul>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Forum</a>
+              <li class="nav-item" :class="{active:isAction==3}">
+                <a class="nav-link" href="contact.html">Forum</a>
               </li>
-              <!--						<li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#">Pages</a>
-                            <ul class="dropdown-menu">
-                              <li><a class="dropdown-item" href="category.html">Category</a></li>
-                              <li><a class="dropdown-item" href="blog-single.html">Blog Single</a></li>
-                              <li><a class="dropdown-item" href="blog-single-alt.html">Blog Single Alt</a></li>
-                              <li><a class="dropdown-item" href="about.html">About</a></li>
-                              <li><a class="dropdown-item" href="contact.html">Contact</a></li>
-                            </ul>
-                          </li>
-
-                          <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Contact</a>
-                          </li>-->
             </ul>
           </div>
 
@@ -48,11 +39,6 @@
           <div class="header-right">
             <!-- social icons -->
             <ul class="social-icons list-unstyled list-inline mb-0">
-              <!--							<li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f"></i></a></li>-->
-              <!--							<li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>-->
-              <!--							<li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i></a></li>-->
-              <!--							<li class="list-inline-item"><a href="#"><i class="fab fa-pinterest"></i></a></li>-->
-              <!--							<li class="list-inline-item"><a href="#"><i class="fab fa-medium"></i></a></li>-->
               <li class="list-inline-item"><a href="#"><i class="fab fa-github"></i></a></li>
             </ul>
 
@@ -89,8 +75,16 @@
 </template>
 
 <script>
+import {getToken} from "../../../common/cookieUtils";
+
 export default {
   name: "TabBar",
+  props: {
+    isAction: {
+      type: Number,
+      default: 1
+    }
+  },
   data() {
     return {
       isShowSearch: false,
@@ -109,6 +103,18 @@ export default {
       this.isTextShow = false;
     },
 
+    goNewPage(path){
+      if (!getToken() || !sessionStorage.getItem('Authorization')){
+        this.$router.push("/login");
+        return;
+      }
+      const { href } = this.$router.resolve({
+        path: path,
+        query: {
+        },
+      });
+      window.open(href, "_blank");
+    }
   }
 }
 </script>

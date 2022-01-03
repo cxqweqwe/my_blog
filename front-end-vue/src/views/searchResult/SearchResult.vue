@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TabBar></TabBar>
+<!--    <TabBar></TabBar>-->
     <section class="main-content">
       <div class="container-xl">
         <div class="row gy-4">
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import TabBar from "components/common/tabBar/TabBar";
+// import TabBar from "components/common/tabBar/TabBar";
 import PostTabs from "components/content/featured/PostTabs";
 import Celebration from "components/content/celebration/Celebration";
 import ResultContent from "components/content/result/ResultContent";
@@ -40,7 +40,7 @@ import Footer from "components/common/footer/Footer";
 export default {
   name: "SearchResult",
   components: {
-    TabBar,
+    // TabBar,
     PostTabs,
     Celebration,
     ResultContent,

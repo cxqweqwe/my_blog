@@ -1,7 +1,6 @@
 <template>
   <div id="blog">
-    <TabBar></TabBar>
-
+    <TabBar :isAction=isAction></TabBar>
 
     <section class="main-content">
       <div class="container-xl">
@@ -39,7 +38,8 @@ export default {
   },
   data() {
     return {
-      articleId: ''
+      articleId: '',
+      isAction: 2
     }
   },
   created() {
