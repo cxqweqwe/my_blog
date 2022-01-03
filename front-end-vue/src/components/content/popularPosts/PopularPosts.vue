@@ -16,7 +16,6 @@
 <script>
 	import PostItem from "components/common/post/PostItem";
 
-  import {test} from "../../../network/test"
 
   export default {
     name: "PopularPosts",
@@ -33,13 +32,10 @@
         this.isActive = select;
       },
       test(){
-        test().then(res => {
-          this.itemData = res;
-        })
+
       }
     },
     created() {
-      this.test();
     }
   }
 </script>
