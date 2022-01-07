@@ -25,10 +25,8 @@ module.exports = {
       .end()
   },
   devServer: {
-    port: 8080,   //默认是8080
-    open: false,  //取消启动自动打开页面
-    hot: true,    //自动刷新页面
-    // host : "0.0.0.0"
+    disableHostCheck: true,//webpack4.0 开启热更新
+    port: 8080
   },
 };
 

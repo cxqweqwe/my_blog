@@ -12,7 +12,7 @@
             <!-- menus -->
             <ul class="navbar-nav mr-auto">
               <li class="nav-item dropdown" :class="{active:isAction==1}">
-                <a class="nav-link dropdown-toggle" href="index.html">Home</a>
+                <a class="nav-link dropdown-toggle" href="index">Home</a>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" @click="goNewPage('/personal')">我的</a></li>
                 </ul>
