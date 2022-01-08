@@ -182,7 +182,7 @@ import {getCaptchaCode, getEmailCode, register, login} from 'network/login';
 import {image_code_url} from "../../common/common_variable";
 import {checkEmail, randomCode} from "common/commonUtils";
 import sha1 from "common/sha1";
-import {getCookie, setCookie, removeCookie} from "common/cookieUtils";
+import {getCookie, setCookie, removeCookie,getCookieAuthorId,setCookieAuthorId,removeCookieAuthorId} from "common/cookieUtils";
 
 export default {
   name: "Login",
@@ -368,6 +368,7 @@ export default {
           sessionStorage.setItem('Authorization', res.data.token);
           sessionStorage.setItem('authorId', res.data.authorId);
           setCookie(res.data.token);//设置Cookie
+          setCookieAuthorId(res.data.authorId);
           this.loginFrom.passwrod = '';
           this.$router.push("/index");
         } else if (res.status == 4000) {

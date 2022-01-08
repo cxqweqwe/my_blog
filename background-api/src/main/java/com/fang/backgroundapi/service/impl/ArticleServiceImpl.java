@@ -204,4 +204,25 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
 
+    /**
+     * Description:
+     * @Author: Bernie_fang
+     * @Since: 2022/1/7 22:01
+     * @param currentPage:
+     * @param size:
+     * @param authorId:
+     * @return: com.fang.backgroundapi.common.PagingData
+     **/
+    @Override
+    public PagingData getPersonal(Integer currentPage, Integer size, String authorId) {
+        // if (currentPage != null && currentPage == -1){
+        //     // 不做分页
+        // }
+        currentPage = (currentPage - 1) * size;
+        List<MostPopularInfoVO> popular = articleMapper.queryPersonal(currentPage, size, authorId);
+        Integer total = articleMapper.queryPersonalCount(authorId);
+        PagingData data = new PagingData(Long.valueOf(total), popular);
+        return data;
+    }
+
 }

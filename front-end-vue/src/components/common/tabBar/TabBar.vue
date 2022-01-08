@@ -14,7 +14,7 @@
               <li class="nav-item dropdown" :class="{active:isAction==1}">
                 <a class="nav-link dropdown-toggle" href="index">Home</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" @click="goNewPage('/personal')">我的</a></li>
+                  <li><a class="dropdown-item" @click="goNewPage('/user/')">我的</a></li>
                 </ul>
               </li>
 <!--              <li class="nav-item">-->
@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import {getCookie} from "common/cookieUtils";
+import {getCookie,getCookieAuthorId} from "common/cookieUtils";
 
 export default {
   name: "TabBar",
@@ -88,11 +88,12 @@ export default {
   data() {
     return {
       isShowSearch: false,
-      isTextShow: false
+      isTextShow: false,
+      authorId: '',
     }
   },
   created() {
-
+    this.authorId = getCookieAuthorId();
   },
   methods: {
     toSearch() {
@@ -104,12 +105,12 @@ export default {
     },
 
     goNewPage(path){
-      if (!getCookie() || !sessionStorage.getItem('Authorization')){
+      if (!getCookie() || this.authorId == undefined || this.authorId == ''){
         this.$router.push("/login");
         return;
       }
       const { href } = this.$router.resolve({
-        path: path,
+        path: path + this.authorId,
         query: {
         },
       });

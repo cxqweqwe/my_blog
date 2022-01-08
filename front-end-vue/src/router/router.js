@@ -37,7 +37,7 @@ const routes = [
     component: SearchResult
   },
   {
-    path: '/Personal',
+    path: '/user/:authorId',
     component: Personal
   },
 

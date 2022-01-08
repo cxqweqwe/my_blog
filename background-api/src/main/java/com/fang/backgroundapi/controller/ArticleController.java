@@ -3,6 +3,7 @@ package com.fang.backgroundapi.controller;
 
 import com.fang.backgroundapi.common.PagingData;
 import com.fang.backgroundapi.common.ServerResponse;
+import com.fang.backgroundapi.exception.MyException;
 import com.fang.backgroundapi.pojo.DO.Article;
 import com.fang.backgroundapi.pojo.DTO.ArticleDTO;
 import com.fang.backgroundapi.pojo.VO.MostPopularInfoVO;
@@ -40,7 +41,7 @@ import java.util.List;
 @RequestMapping("/article")
 @Validated   // Get请求方法需要这个注解配合
 @Api(tags = "博客操作相关接口")
-public class ArticleController {
+public class ArticleController extends BaseController {
 
     @Autowired
     private ArticleServiceImpl articleService;
@@ -142,6 +143,15 @@ public class ArticleController {
     public ServerResponse mostCollection(@PathVariable("currentPage") Integer currentPage,
                                       @PathVariable("size") Integer size) {
         PagingData data = articleService.mostCollection(currentPage, size);
+        return ServerResponse.success(data);
+    }
+
+    @GetMapping("/personal/{currentPage}/{size}/{authorId}")
+    @ApiOperation(value = "被收藏最多", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse getPersonal(@PathVariable("currentPage") Integer currentPage,
+                                      @PathVariable("size") Integer size,
+                                      @PathVariable("authorId") String authorId){
+        PagingData data = articleService.getPersonal(currentPage, size, authorId);
         return ServerResponse.success(data);
     }
 

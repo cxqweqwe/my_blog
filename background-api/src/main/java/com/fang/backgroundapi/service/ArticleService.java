@@ -93,4 +93,14 @@ public interface ArticleService {
      **/
     public PagingData queryArticleAuthorId(Integer currentPage, Integer size);
 
+    /**
+     * Description:
+     * @Author: Bernie_fang
+     * @Since: 2022/1/7 22:01
+     * @param currentPage:
+     * @param size:
+     * @return: com.fang.backgroundapi.common.PagingData
+     **/
+    public PagingData getPersonal(Integer currentPage, Integer size, String authorId);
+
 }

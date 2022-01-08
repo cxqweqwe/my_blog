@@ -52,10 +52,10 @@ public interface ArticleMapper extends BaseMapper<Article> {
                                          @Param("size") Integer size);
 
     /**
-     * @Description:  搜索关键词-条数。多字段、多参数查询
+     * @param keywordList:
+     * @Description: 搜索关键词-条数。多字段、多参数查询
      * @Author: Bernie_fang
      * @Since: 2021/10/13 20:29
-     * @param keywordList:
      * @return: java.lang.Integer
      **/
     public Integer searchBlogCount(@Param("keywordList") List<String> keywordList);
@@ -80,16 +80,18 @@ public interface ArticleMapper extends BaseMapper<Article> {
 
     /**
      * Description: 查询最新博客
-     * @Author: Bernie_fang
-     * @Since: 2021/12/25 16:14
+     *
      * @param curPage:
      * @param size:
+     * @Author: Bernie_fang
+     * @Since: 2021/12/25 16:14
      * @return: com.fang.backgroundapi.pojo.VO.SearchBlogVO
      **/
     public List<PostShowVO> latestPosts(@Param("curPage") Integer curPage, @Param("size") Integer size);
 
     /**
      * Description: 查询最新博客条数
+     *
      * @Author: Bernie_fang
      * @Since: 2021/12/25 16:14
      * @return: com.fang.backgroundapi.pojo.VO.SearchBlogVO
@@ -98,13 +100,19 @@ public interface ArticleMapper extends BaseMapper<Article> {
 
     /**
      * Description: 被收藏最多的
-     * @Author: Bernie_fang
-     * @Since: 2021/12/25 16:14
+     *
      * @param curPage:
      * @param size:
+     * @Author: Bernie_fang
+     * @Since: 2021/12/25 16:14
      * @return: com.fang.backgroundapi.pojo.VO.SearchBlogVO
      **/
     public List<PostShowVO> mostCollection(@Param("curPage") Integer curPage, @Param("size") Integer size);
 
+
+    List<MostPopularInfoVO> queryPersonal(@Param("curPage") Integer curPage, @Param("size") Integer size,
+                                          @Param("authorId") String authorId);
+
+    Integer queryPersonalCount(@Param("authorId") String authorId);
 
 }

@@ -51,6 +51,7 @@
         getLatestPosts(this.curPage,this.size).then(res => {
           // console.log(res);
           this.dataList.push(...res.data.data);
+					this.total = res.data.total;
         })
 
       }

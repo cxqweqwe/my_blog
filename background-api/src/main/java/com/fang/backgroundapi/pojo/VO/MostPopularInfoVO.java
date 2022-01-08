@@ -26,6 +26,14 @@ public class MostPopularInfoVO {
     @ApiModelProperty("作者id")
     private String authorId;
 
+    @ApiModelProperty("作者昵称")
+    private String nickName;
+
+    @ApiModelProperty("博主头像")
+    private String avatarPath;
+    // @ApiModelProperty("")
+    // private String nickName;
+
     @ApiModelProperty("标题")
     private String title;
 
@@ -33,7 +41,7 @@ public class MostPopularInfoVO {
     private String briefIntroduction;
 
     @ApiModelProperty("修改时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @JsonFormat(pattern = "dd MMMM,yyyy",timezone = "US")
     private Date modifiedTime;
 
 }

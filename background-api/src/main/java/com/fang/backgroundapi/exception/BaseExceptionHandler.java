@@ -38,7 +38,7 @@ public class BaseExceptionHandler {
      */
     @ExceptionHandler(value = UnauthenticatedException.class)
     public ServerResponse returnUnLoginErrorMsg(HttpServletRequest request, HttpServletResponse response, UnauthenticatedException exception){
-        return ServerResponse.createUnLoginError("您还未登录");
+        return ServerResponse.createUnLoginError("您还未登录或登录信息已失效");
     }
 
     @ExceptionHandler(value = UnknownAccountException.class)

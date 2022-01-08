@@ -61,3 +61,9 @@ export function getMostCollection(currentPage, size) {
         url: requestUrl + "/mostCollection/" + currentPage + "/" + size,
     })
 }
+
+export function getPersonalArticle(currentPage, size, authorId) {
+    return request({
+        url: requestUrl + "/personal/" + currentPage + "/" + size + "/" + authorId,
+    })
+}
