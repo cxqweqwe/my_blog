@@ -7,3 +7,11 @@ export function getAuthorInfo(param){
         url: requestUrl + "/inquire/" + param
     })
 }
+
+export function updateUserInfo(params) {
+    return request({
+        url: requestUrl + '/updateUserInfo',
+        method: 'post',
+        data: params
+    })
+}
