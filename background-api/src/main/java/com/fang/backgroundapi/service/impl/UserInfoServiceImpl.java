@@ -6,16 +6,11 @@ import com.fang.backgroundapi.common.PagingData;
 import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.pojo.DO.UserInfo;
 import com.fang.backgroundapi.mapper.UserInfoMapper;
-import com.fang.backgroundapi.pojo.VO.UserInfoDTO;
+import com.fang.backgroundapi.pojo.DTO.UserInfoDTO;
 import com.fang.backgroundapi.service.UserInfoService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fang.backgroundapi.utils.SnowflakeIdWorker;
-import com.fasterxml.jackson.datatype.jsr310.ser.YearSerializer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * <p>

@@ -2,7 +2,7 @@ package com.fang.backgroundapi.controller;
 
 import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.pojo.DO.UserInfo;
-import com.fang.backgroundapi.pojo.VO.UserInfoDTO;
+import com.fang.backgroundapi.pojo.DTO.UserInfoDTO;
 import com.fang.backgroundapi.service.impl.UserInfoServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
