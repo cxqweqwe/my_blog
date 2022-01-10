@@ -86,7 +86,7 @@
     <div class="space"></div>
 
     <ImageUpload :centerDialogVisible="centerDialogVisible" :articleId="article.authorId"
-                 :upload-title="uploadTitle" :upload-url="uploadUrl" @item-click="closeUpload()">
+                 :upload-title="uploadTitle" :upload-url="uploadUrl" @item-click="closeUpload">
     </ImageUpload>
   </div>
 </template>
@@ -226,8 +226,12 @@ export default {
 
 
     },
-    closeUpload(){
+    closeUpload(flag){
       this.centerDialogVisible = false;//关闭上传页面
+      if (flag){
+        // TODO： 成功跳转页面
+
+      }
     },
 
 
