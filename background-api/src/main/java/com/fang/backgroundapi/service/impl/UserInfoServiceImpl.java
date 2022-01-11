@@ -1,13 +1,17 @@
 package com.fang.backgroundapi.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fang.backgroundapi.common.CommonInfo;
 import com.fang.backgroundapi.common.PagingData;
 import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.pojo.DO.UserInfo;
 import com.fang.backgroundapi.mapper.UserInfoMapper;
 import com.fang.backgroundapi.pojo.DTO.UserInfoDTO;
 import com.fang.backgroundapi.service.UserInfoService;
+import com.fang.backgroundapi.utils.RedisUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +30,8 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
+    @Autowired
+    private RedisUtils redisUtils;
 
     @Override
     public Integer insertUserInfo(UserInfo userInfo) {
@@ -94,5 +100,65 @@ public class UserInfoServiceImpl implements UserInfoService {
         wrapper.eq("email", email);
         UserInfo userInfo = userInfoMapper.selectOne(wrapper);
         return userInfo;
+    }
+
+    @Override
+    public UserInfo findUserInfoByPhone(String phone) {
+        QueryWrapper<UserInfo> wrapper = new QueryWrapper<>();
+        wrapper.eq("phone_number", phone);
+        UserInfo userInfo = userInfoMapper.selectOne(wrapper);
+        return userInfo;
+    }
+
+    public ServerResponse updatePhone(String phone, String verificationCode, String authorId) {
+        UserInfo info = this.findUserInfoByPhone(phone);
+        if (info != null){
+            return ServerResponse.error(400, "同个手机号码不允许绑定多个账号", null);
+        }
+        Object o = redisUtils.get(CommonInfo.PHONE_RECENT_REQUEST + phone);// 获取手机对应的验证码
+        String code = String.valueOf(o);
+        if (StringUtils.isEmpty(code)){
+            return ServerResponse.error(400, "验证码不存在", null);
+        }
+        if (!code.equals(verificationCode)){
+            return ServerResponse.error(400, "验证码正确", null);
+        }
+        // 修改
+        UpdateWrapper<UserInfo> wrapper = new UpdateWrapper<>();
+        wrapper.set("phone_number", phone)
+                .eq("author_id", authorId);
+        userInfoMapper.update(null, wrapper);
+        redisUtils.setRemove(CommonInfo.PHONE_RECENT_REQUEST + phone);//移除验证码
+        return ServerResponse.success();
+    }
+
+    public ServerResponse updateEmail(String email,String verificationCode,String authorId) {
+        UserInfo info = this.findUserInfoByEmail(email);
+        if (info != null){
+            return ServerResponse.error(400, "同个邮箱不允许绑定多个账号", null);
+        }
+        Object o = redisUtils.get(CommonInfo.EMAIL_RECENT_REQUEST + email);// 获取邮箱对应的验证码
+        String code = String.valueOf(o);
+        if (StringUtils.isEmpty(code)){
+            return ServerResponse.error(400, "验证码不存在", null);
+        }
+        if (!code.equals(verificationCode)){
+            return ServerResponse.error(400, "验证码不正确", null);
+        }
+        // 修改
+        UpdateWrapper<UserInfo> wrapper = new UpdateWrapper<>();
+        wrapper.set("email", email)
+                .eq("author_id", authorId);
+        userInfoMapper.update(null, wrapper);
+        redisUtils.setRemove(CommonInfo.PHONE_RECENT_REQUEST + email);//移除验证码
+        return ServerResponse.success();
+    }
+
+    public ServerResponse updateAvatar(String avatar, String authorId) {
+        UpdateWrapper<UserInfo> wrapper = new UpdateWrapper<>();
+        wrapper.set("avatar_path", avatar)
+                .eq("author_id", authorId);
+        userInfoMapper.update(null, wrapper);
+        return ServerResponse.success();
     }
 }

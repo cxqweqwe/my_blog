@@ -45,7 +45,7 @@ public class ImageUploadController extends BaseController {
 
 
     @PostMapping("/upload")
-    @ApiOperation(value = "登录接口", response = ServerResponse.class, httpMethod = "POST")
+    @ApiOperation(value = "上传接口", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse upload(MultipartFile file,String articleOrPostId) throws MyException {
         if (StringUtils.isEmpty(articleOrPostId)){
             log.info("文章ID为空");
