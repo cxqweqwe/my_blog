@@ -41,18 +41,18 @@ public class UserInfoController extends BaseController {
     private UserInfoServiceImpl userInfoService;
 
 
-    /**
-     * @Description: 接口信息排掉了邮箱和手机号码. 此接口不需要，为空接口
-     * @Author: Bernie_fang
-     * @Since: 2021/9/13 16:24
-     * @param userInfoDTO:
-     * @return: com.fang.backgroundapi.common.ServerResponse
-     **/
-    @PostMapping("/addUserInfo")
-    @ApiOperation(value = "添加用户信息", response = ServerResponse.class, httpMethod = "POST")
-    public ServerResponse addUserInfo(@RequestBody @Valid UserInfoDTO userInfoDTO) {
-        return userInfoService.addUserInfo(userInfoDTO);
-    }
+    // /**
+    //  * @Description: 接口信息排掉了邮箱和手机号码. 此接口不需要，为空接口
+    //  * @Author: Bernie_fang
+    //  * @Since: 2021/9/13 16:24
+    //  * @param userInfoDTO:
+    //  * @return: com.fang.backgroundapi.common.ServerResponse
+    //  **/
+    // @PostMapping("/addUserInfo")
+    // @ApiOperation(value = "添加用户信息", response = ServerResponse.class, httpMethod = "POST")
+    // public ServerResponse addUserInfo(@RequestBody @Valid UserInfoDTO userInfoDTO) {
+    //     return userInfoService.addUserInfo(userInfoDTO);
+    // }
 
     /**
      * @Description: 接口信息排掉了邮箱和手机号码.

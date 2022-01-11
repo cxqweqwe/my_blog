@@ -129,7 +129,9 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .eq("author_id", authorId);
         userInfoMapper.update(null, wrapper);
         redisUtils.setRemove(CommonInfo.PHONE_RECENT_REQUEST + phone);//移除验证码
-        return ServerResponse.success();
+        StringBuffer stringBuffer = new StringBuffer(phone.substring(0, 3));
+        stringBuffer.append("****").append(phone.substring(7));
+        return ServerResponse.success(stringBuffer.toString());
     }
 
     public ServerResponse updateEmail(String email,String verificationCode,String authorId) {
@@ -151,7 +153,10 @@ public class UserInfoServiceImpl implements UserInfoService {
                 .eq("author_id", authorId);
         userInfoMapper.update(null, wrapper);
         redisUtils.setRemove(CommonInfo.PHONE_RECENT_REQUEST + email);//移除验证码
-        return ServerResponse.success();
+        int index = email.lastIndexOf("@") - 1;
+        StringBuffer stringBuffer = new StringBuffer(email.substring(0, 2));
+        stringBuffer.append("****").append(email.substring(index));
+        return ServerResponse.success(stringBuffer.toString());
     }
 
     public ServerResponse updateAvatar(String avatar, String authorId) {
