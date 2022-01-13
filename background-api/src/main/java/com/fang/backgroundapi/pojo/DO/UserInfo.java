@@ -63,7 +63,7 @@ public class UserInfo implements Serializable {
 
     /**
      * 用户手机号
-     */
+     */ // TODO: 加密的完成，后续需要调整
     private Encrypt phoneNumber;
 
     /**

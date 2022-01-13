@@ -10,8 +10,10 @@ import com.fang.backgroundapi.pojo.DO.UserInfo;
 import com.fang.backgroundapi.mapper.UserInfoMapper;
 import com.fang.backgroundapi.pojo.DTO.UserInfoDTO;
 import com.fang.backgroundapi.service.UserInfoService;
+import com.fang.backgroundapi.typehandler.Encrypt;
 import com.fang.backgroundapi.utils.RedisUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.poifs.crypt.Encryptor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -95,7 +97,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public UserInfo findUserInfoByEmail(String email) {
+    public UserInfo findUserInfoByEmail(Encrypt email) {
         QueryWrapper<UserInfo> wrapper = new QueryWrapper<>();
         wrapper.eq("email", email);
         UserInfo userInfo = userInfoMapper.selectOne(wrapper);
@@ -135,11 +137,12 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     public ServerResponse updateEmail(String email,String verificationCode,String authorId) {
-        UserInfo info = this.findUserInfoByEmail(email);
+        Encrypt encryptEmail = new Encrypt(email);
+        UserInfo info = this.findUserInfoByEmail(encryptEmail);
         if (info != null){
             return ServerResponse.error(400, "同个邮箱不允许绑定多个账号", null);
         }
-        Object o = redisUtils.get(CommonInfo.EMAIL_RECENT_REQUEST + email);// 获取邮箱对应的验证码
+        Object o = redisUtils.get(CommonInfo.EMAIL_CODE + email);// 获取邮箱对应的验证码
         String code = String.valueOf(o);
         if (StringUtils.isEmpty(code)){
             return ServerResponse.error(400, "验证码不存在", null);
@@ -149,7 +152,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
         // 修改
         UpdateWrapper<UserInfo> wrapper = new UpdateWrapper<>();
-        wrapper.set("email", email)
+        wrapper.set("email", encryptEmail)
                 .eq("author_id", authorId);
         userInfoMapper.update(null, wrapper);
         redisUtils.setRemove(CommonInfo.PHONE_RECENT_REQUEST + email);//移除验证码

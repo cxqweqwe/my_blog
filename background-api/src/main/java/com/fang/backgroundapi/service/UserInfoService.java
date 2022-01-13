@@ -2,6 +2,7 @@ package com.fang.backgroundapi.service;
 
 import com.fang.backgroundapi.pojo.DO.UserInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.fang.backgroundapi.typehandler.Encrypt;
 
 import java.util.List;
 
@@ -25,7 +26,8 @@ public interface UserInfoService {
 
     /* ***************   以上 基本方法   ******************  */
 
-    public UserInfo findUserInfoByEmail(String email);
+    // public UserInfo findUserInfoByEmail(String email);
+    public UserInfo findUserInfoByEmail(Encrypt email);
 
     public UserInfo findUserInfoByPhone(String phone);
 

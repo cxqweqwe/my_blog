@@ -14,6 +14,7 @@ import com.fang.backgroundapi.pojo.DO.SystemSettings;
 import com.fang.backgroundapi.pojo.DO.UserInfo;
 import com.fang.backgroundapi.pojo.DTO.RegisterDTO;
 import com.fang.backgroundapi.shiro.JWTToken;
+import com.fang.backgroundapi.typehandler.Encrypt;
 import com.fang.backgroundapi.utils.JWTUtil;
 import com.fang.backgroundapi.utils.PasswordUtil;
 import com.fang.backgroundapi.utils.RedisUtils;
@@ -225,7 +226,8 @@ public class CommonServiceImpl {
             return ServerResponse.error(ResponseCode.DATA_FORMAT_TYPE_ERROR.getCode(), ResponseCode.DATA_FORMAT_TYPE_ERROR.getDesc(),
                     "用户名和密码均不能为空");
         }
-        UserInfo infoByEmail = userInfoService.findUserInfoByEmail(registerDTO.getEmail());
+        // UserInfo infoByEmail = userInfoService.findUserInfoByEmail(registerDTO.getEmail());
+        UserInfo infoByEmail = userInfoService.findUserInfoByEmail(new Encrypt(registerDTO.getEmail()));
         if (infoByEmail != null) {
             return ServerResponse.error(4000, "该邮箱已经绑定账号，请更换邮箱", null);
         }
@@ -249,7 +251,7 @@ public class CommonServiceImpl {
         UserInfo userInfo = new UserInfo();
         userInfo.setAuthorId(id.toString());
         userInfo.setNickName(id.toString());
-        userInfo.setEmail(registerDTO.getEmail());
+        userInfo.setEmail(new Encrypt(registerDTO.getEmail()));
         userInfoService.insertUserInfo(userInfo);
         return ServerResponse.success(2000, "成功注册！", null);// TODO: 需要返回数据，暂时先不处理
     }
