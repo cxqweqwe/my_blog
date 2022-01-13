@@ -14,12 +14,6 @@ export function getEmailCode(param) {
     })
 }
 
-export function getPhoneCode(param) {
-    return request({
-        url: requestUrl + '/code/phone/' + param
-    })
-}
-
 export function register(params) {
     return request({
         url: requestUrl + '/registe',

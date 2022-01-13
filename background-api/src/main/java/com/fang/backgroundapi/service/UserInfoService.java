@@ -25,8 +25,6 @@ public interface UserInfoService {
 
     /* ***************   以上 基本方法   ******************  */
 
-    public UserInfo findUserInfoByEmail(String email);
-
-    public UserInfo findUserInfoByPhone(String phone);
+    public UserInfo findUserInfoByEmail(String authorId);
 
 }

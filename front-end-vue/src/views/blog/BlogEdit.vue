@@ -86,7 +86,7 @@
     <div class="space"></div>
 
     <ImageUpload :centerDialogVisible="centerDialogVisible" :articleId="article.authorId"
-                 :upload-title="uploadTitle" :upload-url="uploadUrl" @item-click="closeUpload">
+                 :upload-title="uploadTitle" :upload-url="uploadUrl" @item-click="closeUpload()">
     </ImageUpload>
   </div>
 </template>
@@ -95,9 +95,9 @@
 //该组件中注释掉的代码为局部注册的方式。
 // import { mavonEditor } from "mavon-editor";
 // import "mavon-editor/dist/css/index.css";
-// import {getBase64} from 'common/imageUtils';
-// import {uploadBase64} from 'network/base64-request';
-// import {base64_request_url} from 'common/common_variable';
+import {getBase64} from 'common/imageUtils';
+import {uploadBase64} from 'network/base64-request';
+import {base64_request_url} from 'common/common_variable';
 import {releaseArticle} from 'network/article';
 import 'mavon-editor/dist/markdown/github-markdown.min.css'
 import ImageUpload from "components/common/loading/ImageUpload";
@@ -226,12 +226,8 @@ export default {
 
 
     },
-    closeUpload(flag){
+    closeUpload(){
       this.centerDialogVisible = false;//关闭上传页面
-      if (flag){
-        // TODO： 成功跳转页面
-
-      }
     },
 
 

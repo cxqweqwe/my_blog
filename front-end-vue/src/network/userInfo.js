@@ -15,27 +15,3 @@ export function updateUserInfo(params) {
         data: params
     })
 }
-
-export function updatePhone(phoneNumber,code) {
-    return request({
-        url: requestUrl + '/update/phone',
-        method: 'post',
-        params: {
-            phoneNumber: phoneNumber,
-            code: code
-        }
-    })
-}
-
-export function updateEmail(email,code) {
-    return request({
-        url: requestUrl + '/update/email',
-        method: 'post',
-        params: {
-            email: email,
-            code: code
-        }
-    })
-}
-
-

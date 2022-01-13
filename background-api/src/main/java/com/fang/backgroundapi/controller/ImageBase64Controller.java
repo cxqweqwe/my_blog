@@ -60,7 +60,12 @@ public class ImageBase64Controller {
         ImageBase64 base64 = imageBase64Service.findImageBase64ByID(id);
         return base64.getBase64();
     }
-
+        // MultipartFile转base64
+        // String base64 = "";
+        // byte[] bytes = file.getBytes();
+        // Base64.Encoder encoder = Base64.getEncoder();
+        // base64 = encoder.encodeToString(bytes);
+        // System.out.println(base64.length());
 
 }
 

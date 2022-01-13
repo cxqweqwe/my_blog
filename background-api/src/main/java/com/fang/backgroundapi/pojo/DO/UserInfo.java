@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 
-import com.fang.backgroundapi.typehandler.Encrypt;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -64,12 +63,12 @@ public class UserInfo implements Serializable {
     /**
      * 用户手机号
      */
-    private Encrypt phoneNumber;
+    private String phoneNumber;
 
     /**
      * 用户邮箱
      */
-    private Encrypt email;
+    private String email;
 
     /**
      * 个人简介

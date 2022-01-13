@@ -68,7 +68,6 @@ export default {
       labels: [],
       nickName: '',
       blogViews: 0,
-      pageviews: 0,
       blogCollection: 0,
       likes: 0
     }
@@ -157,8 +156,8 @@ export default {
           message: res.msg
         });
       })
-    },
-
+    }
+    ,
     getBlogInfo(articleId) {
       getBlogInfo(articleId).then(res => {
         this.blogCollection = res.data.collection;
