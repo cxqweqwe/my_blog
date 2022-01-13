@@ -1,6 +1,7 @@
 package com.fang.backgroundapi.controller;
 
 import com.fang.backgroundapi.common.ServerResponse;
+import com.fang.backgroundapi.exception.MyException;
 import com.fang.backgroundapi.pojo.DO.UserInfo;
 import com.fang.backgroundapi.pojo.DTO.UserInfoDTO;
 import com.fang.backgroundapi.service.impl.UserInfoServiceImpl;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 /**
@@ -33,24 +35,24 @@ import javax.validation.constraints.NotBlank;
 @RequestMapping("/userInfo")
 @Api(tags = "系统用户信息相关接口")
 @Validated   // Get请求方法需要这个注解配合
-public class UserInfoController {
+public class UserInfoController extends BaseController {
 
     @Autowired
     private UserInfoServiceImpl userInfoService;
 
 
-    /**
-     * @Description: 接口信息排掉了邮箱和手机号码. 此接口不需要，为空接口
-     * @Author: Bernie_fang
-     * @Since: 2021/9/13 16:24
-     * @param userInfoDTO:
-     * @return: com.fang.backgroundapi.common.ServerResponse
-     **/
-    @PostMapping("/addUserInfo")
-    @ApiOperation(value = "添加用户信息", response = ServerResponse.class, httpMethod = "POST")
-    public ServerResponse addUserInfo(@RequestBody @Valid UserInfoDTO userInfoDTO) {
-        return userInfoService.addUserInfo(userInfoDTO);
-    }
+    // /**
+    //  * @Description: 接口信息排掉了邮箱和手机号码. 此接口不需要，为空接口
+    //  * @Author: Bernie_fang
+    //  * @Since: 2021/9/13 16:24
+    //  * @param userInfoDTO:
+    //  * @return: com.fang.backgroundapi.common.ServerResponse
+    //  **/
+    // @PostMapping("/addUserInfo")
+    // @ApiOperation(value = "添加用户信息", response = ServerResponse.class, httpMethod = "POST")
+    // public ServerResponse addUserInfo(@RequestBody @Valid UserInfoDTO userInfoDTO) {
+    //     return userInfoService.addUserInfo(userInfoDTO);
+    // }
 
     /**
      * @Description: 接口信息排掉了邮箱和手机号码.
@@ -63,6 +65,48 @@ public class UserInfoController {
     @ApiOperation(value = "修改/填写 用户信息", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse updateUserInfo(@RequestBody @Valid UserInfoDTO userInfoDTO) {
         return userInfoService.updateUserInfo(userInfoDTO);
+    }
+
+    /**
+     * Description: 修改手机号码
+     * @param phoneNumber:
+     * @Author: Bernie_fang
+     * @Since: 2022/1/9 17:11
+     * @return: com.fang.backgroundapi.common.ServerResponse
+     **/
+    @PostMapping("/update/phone")
+    @ApiOperation(value = "修改手机号码", response = ServerResponse.class, httpMethod = "POST")
+    public ServerResponse updatePhone(@NotBlank(message = "参数不能为空")  @RequestParam String phoneNumber,@NotBlank(message = "参数不能为空") @RequestParam String code) throws MyException {
+        String authorId = super.getAuthorId();
+        return userInfoService.updatePhone(phoneNumber,code,authorId);
+    }
+
+    /**
+     * Description: 修改邮箱
+     * @param email:
+     * @Author: Bernie_fang
+     * @Since: 2022/1/9 17:11
+     * @return: com.fang.backgroundapi.common.ServerResponse
+     **/
+    @PostMapping("/update/email")
+    @ApiOperation(value = "修改邮箱", response = ServerResponse.class, httpMethod = "POST")
+    public ServerResponse updateEmail(@Email(message = "email不合法") @RequestParam String email,@NotBlank(message = "参数不能为空") @RequestParam String code) throws MyException {
+        String authorId = super.getAuthorId();
+        return userInfoService.updateEmail(email,code,authorId);
+    }
+
+    /**
+     * Description: 修改头像
+     * @param avatar: 图片的base64编码
+     * @Author: Bernie_fang
+     * @Since: 2022/1/9 17:11
+     * @return: com.fang.backgroundapi.common.ServerResponse
+     **/
+    @PostMapping("/update/avatar")
+    @ApiOperation(value = "修改手机号码", response = ServerResponse.class, httpMethod = "POST")
+    public ServerResponse updateAvatar(@NotBlank(message = "email不合法") String avatar) throws MyException {
+        String authorId = super.getAuthorId();
+        return userInfoService.updateAvatar(avatar, authorId);
     }
 
     @GetMapping("/inquire/{authorId}")

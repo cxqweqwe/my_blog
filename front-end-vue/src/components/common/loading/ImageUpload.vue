@@ -23,8 +23,8 @@
 
     <span slot="footer" class="dialog-footer">
         <el-button @click="closeUpload()">取 消</el-button>
-        <el-button type="primary" @click="uploadImage()">确定上传</el-button>
-        <el-button type="primary" @click="closeUpload()">确 定</el-button>
+<!--        <el-button type="primary" @click="uploadImage()">确定上传</el-button>-->
+<!--        <el-button type="primary" @click="closeUpload()"></el-button>-->
       </span>
   </el-dialog>
 </template>
@@ -33,6 +33,7 @@
 
 import {uploadImage} from "network/imageUpload";
 import {base_url} from "common/common_variable";
+import {getCookie,getCookieAuthorId} from "common/cookieUtils";
 
 export default {
   name: "ImageUpload",
@@ -58,7 +59,8 @@ export default {
     return {
       UPLOAD_URL: base_url + '/image/upload',
       imageAddress: '',
-      params: {}
+      params: {},
+      isUploadSuccess: false,
     }
   },
   created() {
@@ -67,7 +69,7 @@ export default {
   computed:{
     addHeader(){
       return {
-        'Authorization': sessionStorage.Authorization
+        'Authorization': getCookie()
       }
     }
   },
@@ -78,8 +80,8 @@ export default {
           message: response.msg,
           type: 'success'
         });
-
-
+        this.isUploadSuccess = true;
+        this.closeUpload();
       }else {
         this.$notify.info({
           title: '封面图片上传失败',
@@ -97,14 +99,14 @@ export default {
     },
     closeUpload() {
       // this.$parent.centerDialogVisible = false;// 直接改会报错
-      this.$emit('item-click');
+      this.$emit('item-click',this.isUploadSuccess);
     }
 
   },
   watch: {
     articleId (newValue, oldValue) {
       this.articleId = newValue;
-      console.log(this.articleId);
+      // console.log(this.articleId);
       this.params['articleOrPostId'] = this.articleId;
     }
   }
