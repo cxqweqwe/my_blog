@@ -1,39 +1,29 @@
-package com.fang.backgroundapi.pojo.DO;
+package com.fang.backgroundapi.pojo.VO;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableField;
-import java.io.Serializable;
-
 import com.fang.backgroundapi.typehandler.Encrypt;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
- * <p>
- * 用户信息表
- * </p>
- *
  * @author Bernie_fang
- * @since 2021-08-15
- */
+ * @Description:
+ * @create 2022/1/16 10:36
+ **/
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserInfo implements Serializable {
+public class UserInfoVO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 用户ID
      */
-    @TableId(value = "author_id", type = IdType.ASSIGN_ID)
     private String authorId;
 
     /**
@@ -64,12 +54,12 @@ public class UserInfo implements Serializable {
     /**
      * 用户手机号
      */
-    private Encrypt phoneNumber;
+    private String phoneNumber;
 
     /**
      * 用户邮箱
      */
-    private Encrypt email;
+    private String email;
 
     /**
      * 个人简介
@@ -110,29 +100,4 @@ public class UserInfo implements Serializable {
      * 所属行业
      */
     private String industry;
-
-    /**
-     * 创建时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private Date createTime;
-
-    /**
-     * 修改信息时间
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
-    private Date modifiedTime;
-
-    /**
-     * 0表示删除(不可用)，1表示正常
-     */
-    @TableLogic
-    private Integer deleted;
-
-    public UserInfo(String authorId) {
-        this.authorId = authorId;
-    }
-
 }

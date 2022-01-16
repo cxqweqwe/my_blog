@@ -4,10 +4,12 @@ import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.exception.MyException;
 import com.fang.backgroundapi.pojo.DO.UserInfo;
 import com.fang.backgroundapi.pojo.DTO.UserInfoDTO;
+import com.fang.backgroundapi.pojo.VO.UserInfoVO;
 import com.fang.backgroundapi.service.impl.UserInfoServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -116,7 +118,11 @@ public class UserInfoController extends BaseController {
         if (info == null){
             return ServerResponse.notData();
         }
-        return ServerResponse.success(info);
+        UserInfoVO infoVO = new UserInfoVO();
+        BeanUtils.copyProperties(info, infoVO);
+        infoVO.setPhoneNumber(info.getPhoneNumber().getValue());
+        infoVO.setEmail(info.getEmail().getValue());
+        return ServerResponse.success(infoVO);
     }
 
     @GetMapping("/inquire/all")
