@@ -1,5 +1,6 @@
 <template>
   <div id="login">
+    <particles-bg type="polygon" :bg="true" color="#3ea9ee" />
     <div class="loginFrom" v-show="show == 1">
       <div class="head">
         登录
@@ -183,9 +184,13 @@ import {image_code_url} from "../../common/common_variable";
 import {checkEmail, randomCode} from "common/commonUtils";
 import sha1 from "common/sha1";
 import {getCookie, setCookie, removeCookie,getCookieAuthorId,setCookieAuthorId,removeCookieAuthorId} from "common/cookieUtils";
+import { ParticlesBg } from "particles-bg-vue";
 
 export default {
   name: "Login",
+  components: {
+    ParticlesBg
+  },
   data() {
     return {
       loginFrom: {
@@ -395,7 +400,6 @@ export default {
 
 <style scoped>
 #login {
-  background-image: url("../../assets/img/login-background.jpg");
   width: 100%;
   height: 100%; /**宽高100%是为了图片铺满屏幕 */
   z-index: -1;
