@@ -12,21 +12,15 @@
             <!-- menus -->
             <ul class="navbar-nav mr-auto">
               <li class="nav-item dropdown" :class="{active:isAction==1}">
-                <a class="nav-link dropdown-toggle" href="index">Home</a>
+                <a class="nav-link dropdown-toggle" @click="goNewPage2('/')">Home</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" @click="goNewPage('/user/')">我的</a></li>
+                  <li><a class="dropdown-item" @click="goNewPage1('/user/')">我的</a></li>
                 </ul>
               </li>
-<!--              <li class="nav-item">-->
-<!--                <a class="nav-link" href="category.html">Lifestyle</a>-->
-<!--              </li>-->
-<!--              <li class="nav-item">-->
-<!--                <a class="nav-link" href="category.html">Inspiration</a>-->
-<!--              </li>-->
               <li class="nav-item dropdown" :class="{active:isAction==2}">
                 <a class="nav-link dropdown-toggle" href="#">Blog</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" @click="goNewPage('/blogEdit')">撰写博客</a></li>
+                  <li><a class="dropdown-item" @click="goNewPage2('/blogEdit')">撰写博客</a></li>
                 </ul>
               </li>
               <li class="nav-item" :class="{active:isAction==3}">
@@ -48,7 +42,8 @@
                 <i class="icon-magnifier"></i>
               </button>
               <button class="burger-menu icon-button">
-                <span class="burger-icon"></span>
+<!--                <span class="log-out-icon"></span>-->
+                <Icon type="md-log-out" />
               </button>
             </div>
           </div>
@@ -104,13 +99,25 @@ export default {
       this.isTextShow = false;
     },
 
-    goNewPage(path){
+    goNewPage1(path){
       if (!getCookie() || this.authorId == undefined || this.authorId == ''){
         this.$router.push("/login");
         return;
       }
       const { href } = this.$router.resolve({
         path: path + this.authorId,
+        query: {
+        },
+      });
+      window.open(href, "_blank");
+    },
+    goNewPage2(path){
+      if (!getCookie() || this.authorId == undefined || this.authorId == ''){
+        this.$router.push("/login");
+        return;
+      }
+      const { href } = this.$router.resolve({
+        path: path,
         query: {
         },
       });
