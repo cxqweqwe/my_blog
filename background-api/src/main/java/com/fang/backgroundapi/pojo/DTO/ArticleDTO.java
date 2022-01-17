@@ -44,4 +44,7 @@ public class ArticleDTO implements Serializable {
     @ApiModelProperty("属性，0未发布，1已发布")
     private Integer releaseOrNot;
 
+    @ApiModelProperty("封面路径")
+    private String coverPath;
+
 }

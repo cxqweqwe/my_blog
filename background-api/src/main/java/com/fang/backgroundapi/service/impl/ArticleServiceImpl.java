@@ -1,7 +1,6 @@
 package com.fang.backgroundapi.service.impl;
 
 import cn.hutool.core.util.IdUtil;
-import com.alibaba.druid.sql.parser.Keywords;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fang.backgroundapi.common.PagingData;
@@ -13,13 +12,11 @@ import com.fang.backgroundapi.pojo.VO.MostPopularInfoVO;
 import com.fang.backgroundapi.pojo.VO.PostShowVO;
 import com.fang.backgroundapi.pojo.VO.SearchBlogVO;
 import com.fang.backgroundapi.service.ArticleService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -113,6 +110,20 @@ public class ArticleServiceImpl implements ArticleService {
     public ServerResponse addArticle(ArticleDTO articleDTO) {
         Article article = new Article();
         BeanUtils.copyProperties(articleDTO, article);
+
+        if (StringUtils.isNotEmpty(article.getArticleId())){
+            // 数据库已有了记录，就更新
+            Article articleId = this.findArticleArticleId(article.getArticleId());
+            articleId.setAttributes(articleDTO.getAttributes());
+            articleId.setBriefIntroduction(articleDTO.getBriefIntroduction());
+            articleId.setContent(articleDTO.getContent());
+            articleId.setCoverPath(articleDTO.getCoverPath());
+            articleId.setHtml(articleDTO.getHtml());
+            articleId.setLabel(articleDTO.getLabel());
+            articleId.setTitle(articleDTO.getTitle());
+            this.updateArticle(articleId);
+            return ServerResponse.success(article.getArticleId());
+        }
         String simpleUUID = IdUtil.simpleUUID();
         article.setArticleId(simpleUUID);
         Integer integer = this.insertArticle(article);

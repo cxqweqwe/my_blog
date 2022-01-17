@@ -48,13 +48,15 @@ public class ArticleController extends BaseController {
 
     @PostMapping("/release")
     @ApiOperation(value = "博客发布", response = ServerResponse.class, httpMethod = "POST")
-    public ServerResponse releaseArticle(@RequestBody @Valid ArticleDTO articleDTO) {
+    public ServerResponse releaseArticle(@RequestBody @Valid ArticleDTO articleDTO) throws MyException {
+        articleDTO.setAuthorId(super.getAuthorId());
         return articleService.addArticle(articleDTO);
     }
 
     @PostMapping("/update")
-    @ApiOperation(value = "博客发布", response = ServerResponse.class, httpMethod = "POST")
-    public ServerResponse updateArticle(@RequestBody @Valid ArticleDTO articleDTO) {
+    @ApiOperation(value = "博客更新", response = ServerResponse.class, httpMethod = "POST")
+    public ServerResponse updateArticle(@RequestBody @Valid ArticleDTO articleDTO) throws MyException {
+        articleDTO.setAuthorId(super.getAuthorId());
         return articleService.updateArticle(articleDTO);
     }
 

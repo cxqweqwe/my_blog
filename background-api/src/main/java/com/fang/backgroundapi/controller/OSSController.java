@@ -17,7 +17,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -103,7 +102,7 @@ public class OSSController extends BaseController {
             imageUpload.setUploader(authorId);
             imageUpload.setType(fileType[1]);
             imageUploadService.save(imageUpload);
-            return ServerResponse.success();
+            return ServerResponse.success(imageUpload.getAddress());
         }
         return ServerResponse.error(5000,"oss存储失败", "NullPointerException");
     }

@@ -86,7 +86,7 @@
     <div class="space"></div>
 
     <ImageUpload :centerDialogVisible="centerDialogVisible" :articleId="article.authorId"
-                 :upload-title="uploadTitle" :upload-url="uploadUrl" @item-click="closeUpload">
+                 :upload-title="uploadTitle" @item-click="closeUpload">
     </ImageUpload>
   </div>
 </template>
@@ -109,15 +109,15 @@ export default {
     return {
       content: "",
       html: "",
-      configs: {},
+      // configs: {},
       //标题
       input: '',
-      updateBase: {
-        id: '',
-        base64: '',
-        imageName: '',
-        fileExtName: ''
-      },
+      // updateBase: {
+      //   id: '',
+      //   base64: '',
+      //   imageName: '',
+      //   fileExtName: ''
+      // },
       article: {
         articleId: '',
         attributes: -1,
@@ -127,6 +127,7 @@ export default {
         html: '',
         label: '',
         releaseOrNot: 0,
+        coverPath: '',
         title: ''
       },
       dynamicTags: [],
@@ -134,7 +135,7 @@ export default {
       inputValue: '',
       centerDialogVisible: false,
       uploadTitle: '上传封面',
-      uploadUrl: 'asdfj'
+      // uploadUrl: ''
     };
   },
   components: {
@@ -167,9 +168,30 @@ export default {
     },
     // 保存草稿
     save() {
-      // console.log(this.html);
-      // console.log('dsgdfg');
+      if (this.article.title == '') {
+        // loading.close();
+        this.$notify({
+          title: '警告',
+          message: '文章标题必须填写',
+          type: 'warning'
+        });
+        return;
+      }
+      if (this.article.attributes == -1) {
+        // loading.close();
+        this.$notify({
+          title: '警告',
+          message: '必须选择文章是否为原创',
+          type: 'warning'
+        });
+        return;
+      }
+      this.article.releaseOrNot = 0;
+      this.article.content = this.content;
+      this.article.html = this.html;
+      this.article.label = this.dynamicTags.toString();
 
+      this.releaseBlog();
     },
     submit() {
       if (this.article.title == '') {
@@ -194,9 +216,12 @@ export default {
       this.article.content = this.content;
       this.article.html = this.html;
       this.article.label = this.dynamicTags.toString();
-      // this.article.title = 'test';
 
+      this.centerDialogVisible = true;
+    },
 
+    releaseBlog(){
+      // 发布博客
       releaseArticle(this.article).then(res => {
         if (res.status == '2000') {
           this.$notify({
@@ -204,9 +229,11 @@ export default {
             message: res.msg,
             type: 'success'
           });
-          this.article.authorId = res.data;
-          // 打开上传分页页面
-          this.centerDialogVisible = true;
+          this.article.articleId = res.data;
+          if (this.article.releaseOrNot == 1){
+            // 已发布，跳转到毕博客页面
+            this.$router.push("/blog/" + this.article.articleId);
+          }
         }else {
           this.$notify.info({
             title: '出现了一些问题',
@@ -223,15 +250,17 @@ export default {
       }).finally(() => {
 
       })
-
-
     },
-    closeUpload(flag){
-      this.centerDialogVisible = false;//关闭上传页面
-      if (flag){
-        // TODO： 成功跳转页面
-
+    closeUpload(data){
+      if (data.isUploadSuccess == true){
+        this.article.coverPath = data.address;
+        this.releaseBlog();
       }
+      this.centerDialogVisible = false;//关闭上传页面
+      // if (data.){
+      //   // TODO： 成功跳转页面
+      //
+      // }
     },
 
 
