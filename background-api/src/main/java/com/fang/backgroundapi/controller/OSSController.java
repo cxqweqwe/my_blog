@@ -36,17 +36,12 @@ import java.io.IOException;
 @Slf4j
 public class OSSController extends BaseController {
 
-    @Value("${com.fang.uploadSize}")
-    private String uploadSize;
-
     @Autowired
     private ImageUploadServiceImpl imageUploadService;
-
 
     private final String ACCESS_KEY = "ahJvPH-dwkB5v3kLnexV08lvUeIjtZ4GiQtOBq8d";
     private final String SECRET_KEY = "JIXqFaujPeqg1ska3wKtgjdWFoNpSi2pPix3xVj9";
     private final String BUCKET = "fangweb";
-
 
     @PostMapping("/upload")
     @ApiOperation(value = "上传接口", response = ServerResponse.class, httpMethod = "POST")
@@ -63,11 +58,7 @@ public class OSSController extends BaseController {
             log.info("不支持上传{}类型", fileType);
             return ServerResponse.error(ResponseCode.FAIL.getCode(), ResponseCode.FAIL.getDesc(), null);
         }
-        //检查文件大小
-        long imageSize = file.getSize();
-        if (imageSize > Long.valueOf(uploadSize)) {
-            return ServerResponse.error(ResponseCode.FAIL.getCode(), "图片太大", null);
-        }
+        //文件大小做了整体配置，超过2M无法上传
 
         // 自检通过，上传到七牛云,这些都是默认配置
         Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
@@ -107,7 +98,7 @@ public class OSSController extends BaseController {
             ImageUpload imageUpload = new ImageUpload();
             imageUpload.setAuthorId(authorId);
             imageUpload.setOriginalName(file.getOriginalFilename());
-            imageUpload.setSize(imageSize);
+            imageUpload.setSize(file.getSize());
             imageUpload.setAddress("http://image.fangweb.top/" + putRet.key);
             imageUpload.setUploader(authorId);
             imageUpload.setType(fileType[1]);

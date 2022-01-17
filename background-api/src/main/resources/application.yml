@@ -30,6 +30,12 @@ spring:
     # 连接超时时间（毫秒）
     timeout: 60000
     password: test123456
+  # 限制上传的文件大小
+  servlet:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 20MB
+
 
 mybatis-plus:
   # 日志配置 控制台输出
@@ -42,5 +48,4 @@ mybatis-plus:
       logic-delete-value: 1
       logic-not-delete-value: 0
   type-handlers-package: com.fang.backgroundapi.typehandler
-
 

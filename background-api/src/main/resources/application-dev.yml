@@ -23,9 +23,3 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
-
-com:
-  fang:
-    uploadAddress: D:\tmp\upload-image\
-    uploadSize: 1007000   # 500K
-    imageAddress: /article/
