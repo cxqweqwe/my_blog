@@ -39,7 +39,7 @@
       <div class="box">
         <div class="left">
           是否原创: &nbsp;
-          <el-radio v-model="article.attributes" label="1">原创</el-radio>
+          <el-radio v-model="article.attributes" label="1" select>原创</el-radio>
           <el-radio v-model="article.attributes" label="0">转载</el-radio>
         </div>
         <div class="middle">
@@ -92,13 +92,7 @@
 </template>
 
 <script>
-//该组件中注释掉的代码为局部注册的方式。
-// import { mavonEditor } from "mavon-editor";
-// import "mavon-editor/dist/css/index.css";
-// import {getBase64} from 'common/imageUtils';
-// import {uploadBase64} from 'network/base64-request';
-// import {base64_request_url} from 'common/common_variable';
-import {releaseArticle} from 'network/article';
+import {releaseArticle, articleDetail} from 'network/article';
 import 'mavon-editor/dist/markdown/github-markdown.min.css'
 import ImageUpload from "components/common/loading/ImageUpload";
 
@@ -112,12 +106,6 @@ export default {
       // configs: {},
       //标题
       input: '',
-      // updateBase: {
-      //   id: '',
-      //   base64: '',
-      //   imageName: '',
-      //   fileExtName: ''
-      // },
       article: {
         articleId: '',
         attributes: -1,
@@ -135,14 +123,36 @@ export default {
       inputValue: '',
       centerDialogVisible: false,
       uploadTitle: '上传封面',
-      // uploadUrl: ''
+      md: ''
     };
   },
   components: {
-    // mavonEditor
     ImageUpload
   },
+  created() {
+    this.md = this.$route.params.md;
+    console.log(this.md);
+    this.check();
+  },
   methods: {
+    // 检测是新增还是修改
+    check(){
+      if (this.md !== 'not_checkout'){
+        articleDetail(this.md).then(res => {
+          console.log(res)
+          this.article = res.data;
+          this.content = this.article.content;
+          this.html = this.article.html;
+          this.dynamicTags = this.article.label.split(",");
+          this.article.attributes = -1
+        }).catch(res => {
+          this.$notify.error({
+            title: '调取原文失败',
+            message: res.msg
+          });
+        })
+      }
+    },
     // 将图片上传到服务器，返回地址替换到md中
     imgAdd(pos, $file) {
       // console.log(pos);
@@ -254,13 +264,11 @@ export default {
     closeUpload(data){
       if (data.isUploadSuccess == true){
         this.article.coverPath = data.address;
+      }
+      if (data.isRelease == true){
         this.releaseBlog();
       }
       this.centerDialogVisible = false;//关闭上传页面
-      // if (data.){
-      //   // TODO： 成功跳转页面
-      //
-      // }
     },
 
 

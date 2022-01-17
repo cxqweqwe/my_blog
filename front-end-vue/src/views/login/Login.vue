@@ -212,7 +212,6 @@ export default {
   },
   created() {
     this.changeImgCode();
-    this.start();
   },
   methods: {
     changeImgCode() {

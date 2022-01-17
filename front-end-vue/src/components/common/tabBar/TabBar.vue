@@ -20,7 +20,9 @@
               <li class="nav-item dropdown" :class="{active:isAction==2}">
                 <a class="nav-link dropdown-toggle" href="#">Blog</a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" @click="goNewPage2('/blogEdit')">撰写博客</a></li>
+                  <li>
+                    <router-link target="_blank" :to="{path:'/blogEdit/8e54e4d765e2b20b4b2761ca48807bf4'}"><a class="dropdown-item">撰写博客</a></router-link>
+                  </li>
                 </ul>
               </li>
               <li class="nav-item" :class="{active:isAction==3}">

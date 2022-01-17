@@ -66,6 +66,7 @@ export default {
       returnData: {
         address: '',
         isUploadSuccess: false,
+        isRelease: false,
       },
 
     }
@@ -120,7 +121,7 @@ export default {
     closeUpload(select) {
       // this.$parent.centerDialogVisible = false;// 直接改会报错
       if (select === 2){
-        this.returnData.isUploadSuccess = true;//必须设置为true，才会上传
+        this.returnData.isRelease = true;//必须设置为true，才会上传
       }
       this.$emit('item-click',this.returnData);
     }
