@@ -16,7 +16,6 @@ import com.qiniu.util.Auth;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,11 +50,7 @@ public class OSSController extends BaseController {
 
     @PostMapping("/upload")
     @ApiOperation(value = "上传接口", response = ServerResponse.class, httpMethod = "POST")
-    public ServerResponse upload(MultipartFile file, String articleOrPostId) throws MyException {
-        if (StringUtils.isEmpty(articleOrPostId)) {
-            log.info("文章ID为空");
-            return ServerResponse.error(ResponseCode.FAIL.getCode(), ResponseCode.FAIL.getDesc(), null);
-        }
+    public ServerResponse upload(MultipartFile file) throws MyException {
         if (file.isEmpty()) {
             return ServerResponse.error(ResponseCode.FAIL.getCode(), ResponseCode.FAIL.getDesc(), null);
         }
@@ -110,7 +105,7 @@ public class OSSController extends BaseController {
         if (putRet != null){
             // 数据库保存
             ImageUpload imageUpload = new ImageUpload();
-            imageUpload.setArticleOrPostId(articleOrPostId);
+            imageUpload.setAuthorId(authorId);
             imageUpload.setOriginalName(file.getOriginalFilename());
             imageUpload.setSize(imageSize);
             imageUpload.setAddress("http://image.fangweb.top/" + putRet.key);

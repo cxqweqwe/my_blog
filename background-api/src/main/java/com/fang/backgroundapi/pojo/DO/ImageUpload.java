@@ -21,9 +21,9 @@ public class ImageUpload extends Base {
      */
     private String uploader;
     /**
-     * 博客或者论坛id
+     * 作者id
      */
-    private String articleOrPostId;
+    private String authorId;
     /**
      * 原名字
      */
