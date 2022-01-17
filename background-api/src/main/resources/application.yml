@@ -43,7 +43,4 @@ mybatis-plus:
       logic-not-delete-value: 0
   type-handlers-package: com.fang.backgroundapi.typehandler
 
-com:
-  fang:
-    mybatisEncryptKey: fangweb.123
 
