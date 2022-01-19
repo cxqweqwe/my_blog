@@ -14,7 +14,11 @@ const Personal = () => import('views/personal/Personal')
 const routes = [
   {
     path: '/',
-    redirect: '/index'
+    redirect: '/index',
+    meta: {
+      hidden: true,
+      title:"fangweb的首页"
+    }
   },
   {
     path: '/index',
@@ -26,7 +30,11 @@ const routes = [
   },
   {
     path: '/blogEdit/:md',
-    component: BlogEdit
+    component: BlogEdit,
+    meta: {
+      hidden: true,
+      title:"撰写博客"
+    }
   },
   {
     path: '/blog/:articleId',
@@ -34,11 +42,19 @@ const routes = [
   },
   {
     path: '/login',
-    component: Login
+    component: Login,
+    meta: {
+      hidden: true,
+      title:"请您登录"
+    }
   },
   {
     path: '/searchResult/:keyWord',
-    component: SearchResult
+    component: SearchResult,
+    meta: {
+      hidden: true,
+      title:"查找博客"
+    }
   },
   {
     path: '/user/:authorId',
