@@ -28,6 +28,16 @@ module.exports = {
     disableHostCheck: true,//webpack4.0 开启热更新
     port: 8080
   },
+  // 修改icon图标
+  pwa: {
+    iconPaths: {
+      favicon32: 'FANG-Logo.svg',
+      favicon16: 'FANG-Logo.svg',
+      appleTouchIcon: 'FANG-Logo.svg',
+      maskIcon: 'FANG-Logo.svg',
+      msTileImage: 'FANG-Logo.svg'
+    }
+  },
 };
 
 

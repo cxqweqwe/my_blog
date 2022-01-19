@@ -18,7 +18,11 @@ const routes = [
   },
   {
     path: '/index',
-    component: Index
+    component: Index,
+    meta: {
+      hidden: true,
+      title:"fangweb的首页"
+    }
   },
   {
     path: '/blogEdit/:md',

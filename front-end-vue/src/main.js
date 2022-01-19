@@ -20,6 +20,14 @@ Vue.use(mavonEditor)
 Vue.use(ViewUI);
 Vue.config.productionTip = false;
 
+// 配置修改页面title
+router.beforeEach((to, from, next)=>{
+  if(to.meta.title){
+    document.title = to.meta.title
+  }
+  next()
+})
+
 new Vue({
   router,
   store,
