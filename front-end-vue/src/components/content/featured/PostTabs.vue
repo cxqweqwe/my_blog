@@ -70,7 +70,7 @@
       sendPopular(){
         getPopular(5).then(res => {
           this.popularData = res.data;
-          this.popularData.shift();
+          this.popularData.shift(); // 把数组的第一个元素从其中删除，并返回第一个元素的值
           // console.log(this.popularData)
         })
       },

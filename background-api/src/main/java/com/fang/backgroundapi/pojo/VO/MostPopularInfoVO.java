@@ -31,8 +31,9 @@ public class MostPopularInfoVO {
 
     @ApiModelProperty("博主头像")
     private String avatarPath;
-    // @ApiModelProperty("")
-    // private String nickName;
+
+    @ApiModelProperty("封面图片")
+    private String coverPath;
 
     @ApiModelProperty("标题")
     private String title;

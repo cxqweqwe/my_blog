@@ -1,7 +1,7 @@
 <template>
   <!-- featured post large -->
   <div>
-    <div class="post featured-post-lg">
+    <div class="post featured-post-lg" @click="toDetail">
       <div class="details clearfix">
         <a href="#" class="category-badge">Inspiration</a>
         <h2 class="post-title">
@@ -12,7 +12,7 @@
           <li class="list-inline-item">{{articleInfo.modifiedTime}}</li>
         </ul>
       </div>
-      <div class="mouse-hand" @click="toDetail">
+      <div class="mouse-hand">
         <div class="thumb rounded">
           <div class="inner data-bg-image">
             <img src="~assets/img/posts/featured-lg.jpg" alt="">
@@ -53,8 +53,12 @@ export default {
       })
     },
     toDetail() {
-      console.log('ques');
-      this.$router.push('/blog/' + this.articleInfo.articleId);
+      // this.$router.push('/blog/' + this.articleInfo.articleId);
+      const {href} = this.$router.resolve({
+        path: "/blog/" + this.articleInfo.articleId,
+        query: {},
+      });
+      window.open(href, "_blank");
     }
   }
 }

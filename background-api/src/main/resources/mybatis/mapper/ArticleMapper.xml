@@ -4,7 +4,7 @@
 
     <select id="queryMostPopular" parameterType="Integer" resultType="MostPopularInfoVO">
         SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.modified_time,
-                uinfo.nick_name
+                uinfo.nick_name, ar.cover_path
         FROM article ar, blog_info info, user_info uinfo
         WHERE ar.article_id = info.article_id AND ar.author_id = uinfo.author_id
         ORDER BY info.likes
@@ -26,7 +26,7 @@
     </select>
 
     <select id="queryRecent" parameterType="Integer" resultType="MostPopularInfoVO">
-        SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.modified_time
+        SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.modified_time, ar.cover_path
         FROM article ar
         ORDER BY ar.modified_time
         LIMIT 0,#{quantity}

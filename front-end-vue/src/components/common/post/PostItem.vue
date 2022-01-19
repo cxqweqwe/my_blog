@@ -4,7 +4,7 @@
     <div class="thumb rounded">
       <a :href="itemData.hrefLink">
         <div class="inner">
-          <img :src="itemData.imgLink" alt="post-title"/>
+          <img :src="itemData.coverPath" alt="post-title"/>
         </div>
       </a>
     </div>
@@ -19,7 +19,7 @@
     <div class="thumb rounded">
       <a :href="itemData.hrefLink">
         <div class="inner">
-          <img :src="itemData.authorImg" alt="post-title"/>
+          <img :src="itemData.coverPath" alt="post-title"/>
         </div>
       </a>
     </div>
@@ -70,9 +70,12 @@ export default {
       // console.log(this.itemData);
     },
     toDetail() {
-      // console.log('ques');
-      this.$router.push('/blog/' + this.itemData.articleId);
-
+      // this.$router.push('/blog/' + this.itemData.articleId);
+      const {href} = this.$router.resolve({
+        path: "/blog/" + this.itemData.articleId,
+        query: {},
+      });
+      window.open(href, "_blank");
     }
   }
 }
