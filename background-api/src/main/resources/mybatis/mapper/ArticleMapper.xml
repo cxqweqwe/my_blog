@@ -3,9 +3,10 @@
 <mapper namespace="com.fang.backgroundapi.mapper.ArticleMapper">
 
     <select id="queryMostPopular" parameterType="Integer" resultType="MostPopularInfoVO">
-        SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.modified_time
-        FROM article ar, blog_info info
-        WHERE ar.article_id = info.article_id
+        SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.modified_time,
+                uinfo.nick_name
+        FROM article ar, blog_info info, user_info uinfo
+        WHERE ar.article_id = info.article_id AND ar.author_id = uinfo.author_id
         ORDER BY info.likes
         LIMIT 0,#{quantity}
     </select>

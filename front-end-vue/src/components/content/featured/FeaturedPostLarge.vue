@@ -5,10 +5,10 @@
       <div class="details clearfix">
         <a href="#" class="category-badge">Inspiration</a>
         <h2 class="post-title">
-          <div class="title mouse-hand" href="blog-single.html">{{articleInfo.title}}</div>
+          <div class="title mouse-hand" ><router-link target="_blank" :to="{path:'/blog/' + articleInfo.articleId}">{{articleInfo.title}}</router-link></div>
         </h2>
         <ul class="meta list-inline mb-0">
-          <li class="list-inline-item"><a href="#">{{articleInfo.articleId}}</a></li><!-- 这里的链接再处理 -->
+          <li class="list-inline-item"><a ><router-link target="_blank" :to="{path:'/user/' + articleInfo.articleId}">{{articleInfo.nickName}}</router-link></a></li><!-- 这里的链接再处理 -->
           <li class="list-inline-item">{{articleInfo.modifiedTime}}</li>
         </ul>
       </div>
@@ -37,6 +37,7 @@ export default {
         briefIntroduction: '',
         modifiedTime: '',
         title: '',
+        nickeName: '',
       }
     }
   },
