@@ -6,6 +6,7 @@ import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.exception.MyException;
 import com.fang.backgroundapi.pojo.DO.Article;
 import com.fang.backgroundapi.pojo.DTO.ArticleDTO;
+import com.fang.backgroundapi.pojo.VO.ArticleVO;
 import com.fang.backgroundapi.pojo.VO.MostPopularInfoVO;
 import com.fang.backgroundapi.pojo.VO.SearchBlogVO;
 import com.fang.backgroundapi.service.impl.ArticleCommentServiceImpl;
@@ -13,6 +14,7 @@ import com.fang.backgroundapi.service.impl.ArticleServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,7 +66,9 @@ public class ArticleController extends BaseController {
     @ApiOperation(value = "获取博客详情", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse articleDetail(@PathVariable("articleId") @NotBlank(message = "博文ID不能为空")String articleId) {
         Article article = articleService.findArticleArticleId(articleId);
-        return ServerResponse.success(article);
+        ArticleVO articleVO = new ArticleVO();
+        BeanUtils.copyProperties(article, articleVO);
+        return ServerResponse.success(articleVO);
     }
 
     @GetMapping("/delete/{articleId}")
