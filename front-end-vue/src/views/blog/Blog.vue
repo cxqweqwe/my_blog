@@ -17,7 +17,7 @@
         </div>
       </div>
     </section>
-
+    <Footer></Footer>
 
   </div>
 </template>
@@ -27,6 +27,7 @@ import BlogDetail from "components/content/blog/BlogDetail";
 import TabBar from "components/common/tabBar/TabBar";
 import PostTabs from "components/content/featured/PostTabs";
 import Celebration from "components/content/celebration/Celebration";
+import Footer from "components/content/footer/Footer";
 
 export default {
   name: "Blog",
@@ -34,7 +35,8 @@ export default {
     TabBar,
     BlogDetail,
     PostTabs,
-    Celebration
+    Celebration,
+    Footer,
   },
   data() {
     return {
