@@ -50,7 +50,6 @@
 </template>
 
 <script>
-  // import demo from '../../static/lib/release.md';
   import 'github-markdown-css/github-markdown.css';
   import {articleDetail} from 'network/article';
   import {getAuthorInfo} from "network/userInfo";
