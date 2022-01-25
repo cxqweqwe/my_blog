@@ -59,6 +59,11 @@ public class ArticleComment implements Serializable {
     private String commentContent;
 
     /**
+     * 评论内容html
+     */
+    private String commentContentHtml;
+
+    /**
      * 评论回复，填写评论的ID
      */
     private String reply;

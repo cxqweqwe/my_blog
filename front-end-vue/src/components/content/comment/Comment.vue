@@ -32,10 +32,11 @@
     >
       <el-avatar class="header-img" :size="40" :src="item.headImg"></el-avatar>
       <div class="author-info">
-        <span class="author-name">{{ item.name }}</span>
+        <span class="author-name">{{ item.nickName }}</span>
         <span class="author-time">{{ item.time }}</span>
       </div>
       <div class="icon-btn">
+        <!-- 评论回复按钮以及条数 -->
         <span @click="showReplyInput(i, '0',item.name, item.id)">
           <i class="iconfont el-icon-s-comment"></i>
           {{ item.commentNum }}
@@ -44,11 +45,11 @@
         <i class="iconfont el-icon-caret-top"></i>
         {{ item.like }}
         </span> -->
-        <span class="xin" @click="countlikeNumber('1',i,item.id)">
-          <i class="iconfont el-icon-caret-top " v-if="item.isLike">&#xe607;</i>
-          <i class="iconfont el-icon-caret-top" v-else>&#xe68b;</i>
-          {{ item.like }}
-        </span>
+<!--        <span class="xin" @click="countlikeNumber('1',i,item.id)">-->
+<!--          <i class="iconfont el-icon-caret-top " v-if="item.isLike">&#xe607;</i>-->
+<!--          <i class="iconfont el-icon-caret-top" v-else>&#xe68b;</i>-->
+<!--          {{ item.like }}-->
+<!--        </span>-->
       </div>
       <div class="talk-box">
         <p>
@@ -67,14 +68,15 @@
             <span class="author-time">{{ reply.time }}</span>
           </div>
           <div class="icon-btn">
+            <!-- 评论回复按钮以及条数 -->
             <span @click="showReplyInput(i,j, reply.from, reply.id)">
               <i class="iconfont el-icon-s-comment"></i>
               {{ reply.commentNum }}
             </span>
-            <span  @click="countlikeNumber('2',i,j,reply)">
-            <i class="iconfont el-icon-caret-top"></i>
-            {{ reply.like }}
-            </span>
+<!--            <span  @click="countlikeNumber('2',i,j,reply)">-->
+<!--            <i class="iconfont el-icon-caret-top"></i>-->
+<!--            {{ reply.like }}-->
+<!--            </span>-->
           </div>
           <div class="talk-box">
             <p>
@@ -140,6 +142,12 @@
   }
   export default {
     name: "Comment",
+    props: {
+      type: {
+        type: Number,
+        default: 0, //类型
+      },
+    },
     data() {
       return {
         btnShow: false,
@@ -154,16 +162,13 @@
         toId: -1,
         comments: [
           {
-            name: 'Lana Del Rey',
+            nickName: 'Lana Del Rey',
             id: 19870621,
             headImg:
               'https://ae01.alicdn.com/kf/Hd60a3f7c06fd47ae85624badd32ce54dv.jpg',
             comment: '我发布一张新专辑Norman Fucking Rockwell,大家快来听啊',
             time: '2019年9月16日 18:43',
             commentNum: 2, // 评论回复数量
-            like: 15,
-            isLike: false,
-            likeListId:[],//存放已点赞用户的id
             inputShow: false,
             reply: [
               {
@@ -176,9 +181,6 @@
                 comment: '我很喜欢你的新专辑！！',
                 time: '2019年9月16日 18:43',
                 commentNum: 1,
-                like: 15,
-                isLike:false,
-                likeListId:[],
                 inputShow: false,
               },
               {
@@ -191,23 +193,20 @@
                 comment: '别忘记宣传我们的合作单曲啊',
                 time: '2019年9月16日 18:43',
                 commentNum: 0,
-                like: 5,
-                isLike:false,
-                likeListId:[],
                 inputShow: false,
               },
             ],
           },
           {
-            name: 'Taylor Swift',
+            nickName: 'Taylor Swift',
             id: 19891221,
             headImg:
               'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
             comment: '我发行了我的新专辑Lover',
             time: '2019年9月16日 18:43',
             commentNum: 1,
-            like: 5,
-            likeListId:[],
+            // like: 5,
+            // likeListId:[],
             inputShow: false,
             reply: [
               {
@@ -220,24 +219,24 @@
                 comment: '新专辑和speak now 一样棒！',
                 time: '2019年9月16日 18:43',
                 commentNum: 25,
-                like: 5,
-                isLike:false,
-                likeListId:[],
+                // like: 5,
+                // isLike:false,
+                // likeListId:[],
                 inputShow: false,
               },
             ],
           },
           {
-            name: 'Norman Fucking Rockwell',
+            nickName: 'Norman Fucking Rockwell',
             id: 20190830,
             headImg:
               'https://ae01.alicdn.com/kf/Hdd856ae4c81545d2b51fa0c209f7aa28Z.jpg',
             comment: 'Plz buy Norman Fucking Rockwell on everywhere',
             time: '2019年9月16日 18:43',
             commentNum: 0,
-            like: 5,
-            isLike:false,
-            likeListId:[],
+            // like: 5,
+            // isLike:false,
+            // likeListId:[],
             inputShow: false,
             reply: [],
           },
