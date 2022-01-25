@@ -19,8 +19,7 @@
             class="reply-btn"
             size="medium"
             @click="sendComment"
-            type="primary"
-        >
+            type="primary">
           发表评论
         </el-button>
       </div>
@@ -167,6 +166,7 @@
             inputShow: false,
             reply: [
               {
+                id: '1234',//每条评论的id
                 nickName: 'Taylor Swift',
                 authorId: 19891221,
                 avatarPath: 'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
@@ -178,6 +178,7 @@
                 inputShow: false,
               },
               {
+                id: '1235',//每条评论的id
                 nickName: 'Ariana Grande',
                 authorId: 1123,
                 avatarPath: 'https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg',
@@ -199,6 +200,7 @@
             inputShow: false,
             reply: [
               {
+                id: '1236',//每条评论的id
                 nickName: 'Lana Del Rey',
                 authorId: 19870621,
                 avatarPath:
@@ -212,10 +214,10 @@
             ],
           },
           {
+            id: '1237',//每条评论的id
             nickName: 'Norman Fucking Rockwell',
             id: 20190830,
-            avatarPath:
-              'https://ae01.alicdn.com/kf/Hdd856ae4c81545d2b51fa0c209f7aa28Z.jpg',
+            avatarPath: 'https://ae01.alicdn.com/kf/Hdd856ae4c81545d2b51fa0c209f7aa28Z.jpg',
             comment: 'Plz buy Norman Fucking Rockwell on everywhere',
             time: '2019年9月16日 18:43',
             inputShow: false,
