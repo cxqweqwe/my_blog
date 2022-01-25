@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-clickoutside="hideReplyBtn" @click="inputFocus" class="my-reply">
-      <el-avatar class="header-img" :size="40" :src="myHeader"></el-avatar>
+      <el-avatar class="header-img" :size="40" :src="avatarPath"></el-avatar>
       <div class="reply-info">
         <div
             tabindex="0"
@@ -30,7 +30,7 @@
         :key="i"
         class="author-title reply-father"
     >
-      <el-avatar class="header-img" :size="40" :src="item.headImg"></el-avatar>
+      <el-avatar class="header-img" :size="40" :src="item.avatarPath"></el-avatar>
       <div class="author-info">
         <span class="author-name">{{ item.nickName }}</span>
         <span class="author-time">{{ item.time }}</span>
@@ -39,17 +39,10 @@
         <!-- 评论回复按钮以及条数 -->
         <span @click="showReplyInput(i, '0',item.name, item.id)">
           <i class="iconfont el-icon-s-comment"></i>
-          {{ item.commentNum }}
         </span>
-        <!-- <span  @click="addlikeNumber(i, item.from, item.id)">
-        <i class="iconfont el-icon-caret-top"></i>
-        {{ item.like }}
-        </span> -->
-<!--        <span class="xin" @click="countlikeNumber('1',i,item.id)">-->
-<!--          <i class="iconfont el-icon-caret-top " v-if="item.isLike">&#xe607;</i>-->
-<!--          <i class="iconfont el-icon-caret-top" v-else>&#xe68b;</i>-->
-<!--          {{ item.like }}-->
-<!--        </span>-->
+        <span @click="deleteComment(i, '0',item.name, item.id)">
+          <i class="el-icon-delete-solid"></i>
+        </span>
       </div>
       <div class="talk-box">
         <p>
@@ -61,26 +54,25 @@
           <el-avatar
               class="header-img"
               :size="40"
-              :src="reply.fromHeadImg"
+              :src="reply.avatarPath"
           ></el-avatar>
           <div class="author-info">
-            <span class="author-name">{{ reply.from }}</span>
+            <span class="author-name">{{ reply.nickName }}</span>
             <span class="author-time">{{ reply.time }}</span>
           </div>
           <div class="icon-btn">
             <!-- 评论回复按钮以及条数 -->
-            <span @click="showReplyInput(i,j, reply.from, reply.id)">
+            <span @click="showReplyInput(i,j, reply.nickName, reply.id)">
               <i class="iconfont el-icon-s-comment"></i>
-              {{ reply.commentNum }}
+              <!--              {{ reply.commentNum }}-->
             </span>
-<!--            <span  @click="countlikeNumber('2',i,j,reply)">-->
-<!--            <i class="iconfont el-icon-caret-top"></i>-->
-<!--            {{ reply.like }}-->
-<!--            </span>-->
+            <span @click="deleteComment(i, '0',item.name, item.id)">
+              <i class="el-icon-delete-solid"></i>
+            </span>
           </div>
           <div class="talk-box">
             <p>
-              <span>回复 {{ reply.to }}:</span>
+              <span>回复 {{ reply.beenCommentedNickName }}:</span><!-- 被评论人nickName -->
               <span class="reply">{{ reply.comment }}</span>
             </p>
           </div>
@@ -88,7 +80,7 @@
         </div>
       </div>
       <div v-show="_inputShow(i)" class="my-reply my-comment-reply">
-        <el-avatar class="header-img" :size="40" :src="myHeader"></el-avatar>
+        <el-avatar class="header-img" :size="40" :src="avatarPath"></el-avatar>
         <div class="reply-info">
           <div
               tabindex="0"
@@ -147,6 +139,11 @@
         type: Number,
         default: 0, //类型
       },
+      authorInfo: {
+        avatarPath: '',
+        authorId: '',
+
+      }
     },
     data() {
       return {
@@ -155,44 +152,40 @@
         replyComment: '',
         subIndex:'0',
         myName: 'Lana Del Rey',
-        myHeader:
-          'https://ae01.alicdn.com/kf/Hd60a3f7c06fd47ae85624badd32ce54dv.jpg',
+        avatarPath: 'https://avatars.githubusercontent.com/u/64625346?s=40&v=4',
         myId: 19870621,
-        to: '',
-        toId: -1,
+        beenCommentedNickName: '',// 被评论人nickName
+        beenCommentedAuthorId: -1,
         comments: [
           {
             nickName: 'Lana Del Rey',
             id: 19870621,
-            headImg:
-              'https://ae01.alicdn.com/kf/Hd60a3f7c06fd47ae85624badd32ce54dv.jpg',
+            avatarPath: 'https://avatars.githubusercontent.com/u/64625346?s=40&v=4',
             comment: '我发布一张新专辑Norman Fucking Rockwell,大家快来听啊',
             time: '2019年9月16日 18:43',
-            commentNum: 2, // 评论回复数量
+            // commentNum: 2, // 评论回复数量
             inputShow: false,
             reply: [
               {
-                from: 'Taylor Swift',
-                fromId: 19891221,
-                fromHeadImg:
-                  'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
-                to: 'Lana Del Rey',
-                toId: 19870621,
+                nickName: 'Taylor Swift',
+                authorId: 19891221,
+                avatarPath: 'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
+                beenCommentedNickName: 'Lana Del Rey',// 被评论人nickName
+                beenCommentedAuthorId: 19870621,
                 comment: '我很喜欢你的新专辑！！',
                 time: '2019年9月16日 18:43',
-                commentNum: 1,
+                // commentNum: 1,
                 inputShow: false,
               },
               {
-                from: 'Ariana Grande',
-                fromId: 1123,
-                fromHeadImg:
-                  'https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg',
-                to: 'Lana Del Rey',
-                toId: 19870621,
+                nickName: 'Ariana Grande',
+                authorId: 1123,
+                avatarPath: 'https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg',
+                beenCommentedNickName: 'Lana Del Rey',// 被评论人nickName
+                beenCommentedAuthorId: 19870621,
                 comment: '别忘记宣传我们的合作单曲啊',
                 time: '2019年9月16日 18:43',
-                commentNum: 0,
+                // commentNum: 0,
                 inputShow: false,
               },
             ],
@@ -200,28 +193,20 @@
           {
             nickName: 'Taylor Swift',
             id: 19891221,
-            headImg:
-              'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
+            avatarPath: 'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
             comment: '我发行了我的新专辑Lover',
             time: '2019年9月16日 18:43',
-            commentNum: 1,
-            // like: 5,
-            // likeListId:[],
             inputShow: false,
             reply: [
               {
-                from: 'Lana Del Rey',
-                fromId: 19870621,
-                fromHeadImg:
-                  'https://ae01.alicdn.com/kf/Hd60a3f7c06fd47ae85624badd32ce54dv.jpg',
-                to: 'Taylor Swift',
-                toId: 19891221,
+                nickName: 'Lana Del Rey',
+                authorId: 19870621,
+                avatarPath:
+                  'https://avatars.githubusercontent.com/u/64625346?s=40&v=4',
+                beenCommentedNickName: 'Taylor Swift',// 被评论人nickName
+                beenCommentedAuthorId: 19891221,
                 comment: '新专辑和speak now 一样棒！',
                 time: '2019年9月16日 18:43',
-                commentNum: 25,
-                // like: 5,
-                // isLike:false,
-                // likeListId:[],
                 inputShow: false,
               },
             ],
@@ -229,14 +214,10 @@
           {
             nickName: 'Norman Fucking Rockwell',
             id: 20190830,
-            headImg:
+            avatarPath:
               'https://ae01.alicdn.com/kf/Hdd856ae4c81545d2b51fa0c209f7aa28Z.jpg',
             comment: 'Plz buy Norman Fucking Rockwell on everywhere',
             time: '2019年9月16日 18:43',
-            commentNum: 0,
-            // like: 5,
-            // isLike:false,
-            // likeListId:[],
             inputShow: false,
             reply: [],
           },
@@ -263,8 +244,8 @@
         this.comments[this.index].inputShow = false
         this.index = i
         this.comments[i].inputShow = true
-        this.to = name
-        this.toId = id
+        this.beenCommentedNickName = name,//// 被评论人nickName
+        this.beenCommentedAuthorId = id
         this.subIndex = j == '0' ? '0':j
       },
       addlikeNumber(i,id) {
@@ -320,11 +301,11 @@
           let input = document.getElementById('replyInput')
           let timeNow = new Date().getTime()
           let time = this.dateStr(timeNow)
-          a.name = this.myName
+          a.nickName = this.myName
           a.comment = this.replyComment
-          a.headImg = this.myHeader
+          a.avatarPath = this.avatarPath
           a.time = time
-          a.commentNum = 0
+          // a.commentNum = 0
           a.like = 0
           a.id = this.myId
           a.reply = [],
@@ -346,25 +327,15 @@
           let a = {}
           let timeNow = new Date().getTime()
           let time = this.dateStr(timeNow)
-          a.from = this.myName
-          a.to = this.to
-          a.fromHeadImg = this.myHeader
+          a.nickName = this.myName
+          a.beenCommentedNickName = this.beenCommentedNickName  // 被评论人nickName
+          a.avatarPath = this.avatarPath
           a.comment = this.replyComment
           a.time = time
-          a.commentNum = 0
-          a.like = 0
-          a.isLike = false
-          a.likeListId = []
           console.log(" this.comments[i].reply+++++++++++", this.comments[i].reply,this.subIndex)
-          if(this.subIndex === '0'){
-            this.comments[i].commentNum += 1
-          }else{
-            this.comments[i].reply[this.subIndex].commentNum += 1
-          }
           this.comments[i].reply.push(a)
           this.replyComment = ''
-          document.getElementsByClassName('reply-comment-input')[i].innerHTML =
-            ''
+          document.getElementsByClassName('reply-comment-input')[i].innerHTML = ''
         }
       },
       onDivInput: function (e) {
@@ -404,6 +375,10 @@
           )
         }
       },
+      // 删除评论
+      deleteComment(){
+
+      }
     },
   }
 </script>

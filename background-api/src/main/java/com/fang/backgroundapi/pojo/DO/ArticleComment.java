@@ -51,7 +51,7 @@ public class ArticleComment implements Serializable {
     /**
      * 图片路径
      */
-    private String iamgePath;
+    private String imagePath;
 
     /**
      * 评论内容
