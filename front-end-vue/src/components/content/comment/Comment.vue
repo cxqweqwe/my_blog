@@ -227,6 +227,9 @@
       }
     },
     directives: { clickoutside },
+    created() {
+      // console.log(this.$store.state.authorInfo);
+    },
     methods: {
       inputFocus() {
         var replyInput = document.getElementById('replyInput')

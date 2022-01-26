@@ -102,6 +102,9 @@ public class CommonServiceImpl {
         HashMap<String, Object> map = new HashMap<>();
         map.put("token",token);
         map.put("authorId", sysUser.getAuthorId());
+        UserInfo info = userInfoService.findUserInfoByAuthorId(sysUser.getAuthorId());
+        map.put("nickName", info.getNickName());
+        map.put("avatarPath", info.getAvatarPath());
         return ServerResponse.success(map);
     }
 
