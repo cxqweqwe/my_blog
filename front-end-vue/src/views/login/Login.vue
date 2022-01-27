@@ -370,12 +370,18 @@ export default {
       this.loginFrom.password = encodePassword;
 
       login(this.loginFrom).then(res => {
-        console.log(res);
+        // console.log(res);
         if (res.status == 2000) {
           sessionStorage.setItem('Authorization', res.data.token);
           sessionStorage.setItem('authorId', res.data.authorId);
           sessionStorage.setItem(SESSION_NICKNAME_KEY, res.data.nickName);
           sessionStorage.setItem(SESSION_AVATAR_KEY, res.data.avatarPath);
+          let info = {
+            authorId: res.data.authorId,
+            SESSION_NICKNAME_KEY: res.data.nickName,
+            SESSION_AVATAR_KEY: res.data.avatarPath
+          }
+
           setCookie(res.data.token);//设置Cookie
           setCookieAuthorId(res.data.authorId);
           this.loginFrom.passwrod = '';

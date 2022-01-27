@@ -1,6 +1,7 @@
 package com.fang.backgroundapi.service.impl;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.fang.backgroundapi.pojo.DO.ArticleComment;
 import com.fang.backgroundapi.mapper.ArticleCommentMapper;
 import com.fang.backgroundapi.pojo.VO.ArticleCommentVO;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,6 +32,14 @@ public class ArticleCommentServiceImpl implements ArticleCommentService {
 
     public Integer publishComment(ArticleCommentVO articleCommentVO) {
         ArticleComment articleComment = this.VOToDO(articleCommentVO);
+        if (!"-1".equals(articleComment.getReply())){
+            ArticleComment comment = articleCommentMapper.selectById(articleComment.getReply());
+            if ("-1".equals(comment.getFirstComment())){
+                articleComment.setFirstComment(comment.getId());
+            }else {
+                articleComment.setFirstComment(comment.getFirstComment());
+            }
+        }
         return articleCommentMapper.insert(articleComment);
     }
 
@@ -49,6 +59,7 @@ public class ArticleCommentServiceImpl implements ArticleCommentService {
         articleComment.setImagePath(vo.getImagePath());
         articleComment.setFirstComment(vo.getFirstComment());
         articleComment.setReply(vo.getBeenCommentedId());
+        articleComment.setReplyAuthorId(vo.getBeenCommentedAuthorId());
         articleComment.setState(1);
         return articleComment;
     }
@@ -65,10 +76,12 @@ public class ArticleCommentServiceImpl implements ArticleCommentService {
         firstCommentList.forEach(System.out::println);
         for (ArticleCommentVO commentVO : firstCommentList) {
             List<ArticleCommentVO> commentGroup = articleCommentMapper.queryCommentGroup(commentVO.getId());
-            commentVO.setReplyList(commentGroup);
+            List<ArticleCommentVO> sort = commentGroup.stream().sorted(Comparator.comparing(ArticleCommentVO::getTime)).collect(Collectors.toList());
+            commentVO.setReplyList(sort);
             list.add(commentVO);
         }
-        return list;
+        List<ArticleCommentVO> sortList = list.stream().sorted(Comparator.comparing(ArticleCommentVO::getTime).reversed()).collect(Collectors.toList());
+        return sortList;
     }
 
     // /**

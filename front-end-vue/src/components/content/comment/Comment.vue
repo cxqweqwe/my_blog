@@ -36,7 +36,7 @@
       </div>
       <div class="icon-btn">
         <!-- 评论回复按钮以及条数 -->
-        <span @click="showReplyInput(i, '0',item.nickName, item.id)">
+        <span @click="showReplyInput(i, '0',item.nickName, item.id, item.authorId)">
           <i class="iconfont el-icon-s-comment"></i>
         </span>
         <span @click="deleteComment(i, '0',item.nickName, item.id)">
@@ -60,7 +60,7 @@
           </div>
           <div class="icon-btn">
             <!-- 评论回复按钮以及条数 -->
-            <span @click="showReplyInput(i,j, reply.nickName, reply.id)">
+            <span @click="showReplyInput(i,j, reply.nickName, reply.id, reply.authorId)">
               <i class="iconfont el-icon-s-comment"></i>
               <!--              {{ reply.commentNum }}-->
             </span>
@@ -105,6 +105,9 @@
 </template>
 
 <script>
+  import {showComment,publishComment} from 'network/articleComment';
+  import {getInfo} from "common/cookieUtils";
+
   const clickoutside = {
     // 初始化指令
     bind(el, binding, vnode) {
@@ -141,7 +144,7 @@
       },
       authorInfo: {
         avatarPath: '',
-        authorId: '',
+
 
       }
     },
@@ -151,11 +154,14 @@
         index: '0',
         replyComment: '',
         subIndex: '0',
-        myName: 'Lana Del Rey',
-        avatarPath: 'https://avatars.githubusercontent.com/u/64625346?s=40&v=4',
-        myId: 19870621,
-        beenCommentedNickName: '',// 被评论人nickName
+        authorId: '',
+        nickName: '',
+        avatarPath: '',
+        // myName: 'Lana Del Rey',
+        // myId: 19870621,
+        // beenCommentedNickName: '',// 被评论人nickName
         beenCommentedId: -1,
+        beenCommentedAuthorId: '',
         comments: [
           // {
           //   nickName: 'Lana Del Rey',
@@ -224,110 +230,127 @@
           //   inputShow: false,
           //   reply: [],
           // },
-          {
-            id: "e557405e700b4efbf0e591c137e3aaa7",
-            articleId: "42256fe71711d2aeb84b18bf4e00f4fb",
-            authorId: "598108905656729600",
-            nickName: "bernie_fang",
-            avatarPath: "https://avatars.githubusercontent.com/u/64625346?s=40&v=4",
-            imagePath: "",
-            comment: "这是第一条评论",
-            commentContentHtml: "",
-            beenCommentedId: "-1",
-            time: "2022-01-26 20:54:23",
-            firstComment: "-1",
-            beenCommentedAuthorId: null,
-            beenCommentedNickName: null,
-            beenCommentedAvatarPath: null,
-            inputShow: false,
-            replyList: [
-              {
-                id: "78bd1b765710a10150c316e3e5e4c5a4",
-                articleId: "42256fe71711d2aeb84b18bf4e00f4fb",
-                authorId: "639798763756183552",
-                nickName: "user001",
-                avatarPath: "https://avatars.githubusercontent.com/u/22723262?s=48&v=4",
-                imagePath: "",
-                comment: "这是第一条回复评论",
-                commentContentHtml: "",
-                beenCommentedId: "e557405e700b4efbf0e591c137e3aaa7",
-                time: "2022-01-26 20:56:51",
-                firstComment: "e557405e700b4efbf0e591c137e3aaa7",
-                beenCommentedAuthorId: "598108905656729600",
-                beenCommentedNickName: "bernie_fang",
-                beenCommentedAvatarPath: "https://avatars.githubusercontent.com/u/64625346?s=40&v=4",
-                inputShow: false,
-                replyList: null
-              }
-            ]
-          },
-          {
-            "id": "e7e4396b05cec43577e3b40e0e9c3627",
-            articleId: "42256fe71711d2aeb84b18bf4e00f4fb",
-            authorId: "598108905656729600",
-            nickName: "bernie_fang",
-            avatarPath: "https://avatars.githubusercontent.com/u/64625346?s=40&v=4",
-            imagePath: "",
-            comment: "这是第二条评论",
-            commentContentHtml: "",
-            beenCommentedId: "-1",
-            time: "2022-01-26 22:06:31",
-            firstComment: "-1",
-            beenCommentedAuthorId: null,
-            beenCommentedNickName: null,
-            beenCommentedAvatarPath: null,
-            inputShow: false,
-            replyList: [
-              {
-                id: "da9485faa51c87a60b5120be0272b5a1",
-                articleId: "42256fe71711d2aeb84b18bf4e00f4fb",
-                authorId: "639798763756183552",
-                nickName: "user001",
-                avatarPath: "https://avatars.githubusercontent.com/u/22723262?s=48&v=4",
-                imagePath: "",
-                comment: "这是第二条回复评论",
-                commentContentHtml: "",
-                beenCommentedId: "e7e4396b05cec43577e3b40e0e9c3627",
-                time: "2022-01-26 22:08:06",
-                firstComment: "e7e4396b05cec43577e3b40e0e9c3627",
-                beenCommentedAuthorId: "598108905656729600",
-                beenCommentedNickName: "bernie_fang",
-                beenCommentedAvatarPath: "https://avatars.githubusercontent.com/u/64625346?s=40&v=4",
-                inputShow: false,
-                replyList: null
-              },
-              {
-                id: "0c96c5ebd4f676c878f7a47e435a7286",
-                articleId: "42256fe71711d2aeb84b18bf4e00f4fb",
-                authorId: "598108905656729600",
-                nickName: "bernie_fang",
-                avatarPath: "https://avatars.githubusercontent.com/u/64625346?s=40&v=4",
-                imagePath: "",
-                comment: "第三条条回复第二条",
-                commentContentHtml: "",
-                beenCommentedId: "da9485faa51c87a60b5120be0272b5a1",
-                time: "2022-01-26 22:09:17",
-                firstComment: "e7e4396b05cec43577e3b40e0e9c3627",
-                beenCommentedAuthorId: "639798763756183552",
-                beenCommentedNickName: "user001",
-                beenCommentedAvatarPath: "https://profile.csdnimg.cn/7/0/9/2_bernie_7",
-                inputShow: false,
-                replyList: null
-              }
-            ]
-          }
+
+          // {
+          //   id: "e557405e700b4efbf0e591c137e3aaa7",
+          //   articleId: "42256fe71711d2aeb84b18bf4e00f4fb",
+          //   authorId: "598108905656729600",
+          //   nickName: "bernie_fang",
+          //   avatarPath: "https://avatars.githubusercontent.com/u/64625346?s=40&v=4",
+          //   imagePath: "",
+          //   comment: "这是第一条评论",
+          //   commentContentHtml: "",
+          //   beenCommentedId: "-1",
+          //   time: "2022-01-26 20:54:23",
+          //   firstComment: "-1",
+          //   beenCommentedAuthorId: null,
+          //   beenCommentedNickName: null,
+          //   beenCommentedAvatarPath: null,
+          //   inputShow: false,
+          //   replyList: [
+          //     {
+          //       id: "78bd1b765710a10150c316e3e5e4c5a4",
+          //       articleId: "42256fe71711d2aeb84b18bf4e00f4fb",
+          //       authorId: "639798763756183552",
+          //       nickName: "user001",
+          //       avatarPath: "https://avatars.githubusercontent.com/u/22723262?s=48&v=4",
+          //       imagePath: "",
+          //       comment: "这是第一条回复评论",
+          //       commentContentHtml: "",
+          //       beenCommentedId: "e557405e700b4efbf0e591c137e3aaa7",
+          //       time: "2022-01-26 20:56:51",
+          //       firstComment: "e557405e700b4efbf0e591c137e3aaa7",
+          //       beenCommentedAuthorId: "598108905656729600",
+          //       beenCommentedNickName: "bernie_fang",
+          //       beenCommentedAvatarPath: "https://avatars.githubusercontent.com/u/64625346?s=40&v=4",
+          //       inputShow: false,
+          //       replyList: null
+          //     }
+          //   ]
+          // },
+          // {
+          //   "id": "e7e4396b05cec43577e3b40e0e9c3627",
+          //   articleId: "42256fe71711d2aeb84b18bf4e00f4fb",
+          //   authorId: "598108905656729600",
+          //   nickName: "bernie_fang",
+          //   avatarPath: "https://avatars.githubusercontent.com/u/64625346?s=40&v=4",
+          //   imagePath: "",
+          //   comment: "这是第二条评论",
+          //   commentContentHtml: "",
+          //   beenCommentedId: "-1",
+          //   time: "2022-01-26 22:06:31",
+          //   firstComment: "-1",
+          //   beenCommentedAuthorId: null,
+          //   beenCommentedNickName: null,
+          //   beenCommentedAvatarPath: null,
+          //   inputShow: false,
+          //   replyList: [
+          //     {
+          //       id: "da9485faa51c87a60b5120be0272b5a1",
+          //       articleId: "42256fe71711d2aeb84b18bf4e00f4fb",
+          //       authorId: "639798763756183552",
+          //       nickName: "user001",
+          //       avatarPath: "https://avatars.githubusercontent.com/u/22723262?s=48&v=4",
+          //       imagePath: "",
+          //       comment: "这是第二条回复评论",
+          //       commentContentHtml: "",
+          //       beenCommentedId: "e7e4396b05cec43577e3b40e0e9c3627",
+          //       time: "2022-01-26 22:08:06",
+          //       firstComment: "e7e4396b05cec43577e3b40e0e9c3627",
+          //       beenCommentedAuthorId: "598108905656729600",
+          //       beenCommentedNickName: "bernie_fang",
+          //       beenCommentedAvatarPath: "https://avatars.githubusercontent.com/u/64625346?s=40&v=4",
+          //       inputShow: false,
+          //       replyList: null
+          //     },
+          //     {
+          //       id: "0c96c5ebd4f676c878f7a47e435a7286",
+          //       articleId: "42256fe71711d2aeb84b18bf4e00f4fb",
+          //       authorId: "598108905656729600",
+          //       nickName: "bernie_fang",
+          //       avatarPath: "https://avatars.githubusercontent.com/u/64625346?s=40&v=4",
+          //       imagePath: "",
+          //       comment: "第三条条回复第二条",
+          //       commentContentHtml: "",
+          //       beenCommentedId: "da9485faa51c87a60b5120be0272b5a1",
+          //       time: "2022-01-26 22:09:17",
+          //       firstComment: "e7e4396b05cec43577e3b40e0e9c3627",
+          //       beenCommentedAuthorId: "639798763756183552",
+          //       beenCommentedNickName: "user001",
+          //       beenCommentedAvatarPath: "https://profile.csdnimg.cn/7/0/9/2_bernie_7",
+          //       inputShow: false,
+          //       replyList: null
+          //     }
+          //   ]
+          // }
         ],
       }
     },
     directives: { clickoutside },
     created() {
       // console.log(this.$store.state.authorInfo);
+      this.initInfo();
       this.getArticleComment();
     },
     methods: {
+
       // 获取评论
       getArticleComment(){
-        console.log(this.articleId);
+        showComment(this.articleId).then(res => {
+          if (res.status != 2000){
+            this.$notify.error({
+              title: '评论加载失败',
+              message: res.msg,
+            });
+            return;
+          }
+          this.comments = res.data;
+        })
+      },
+      initInfo(){
+        this.authorId = sessionStorage.authorId;
+        this.nickName = sessionStorage.nickName;
+        this.avatarPath = sessionStorage.avatarPath;
       },
 
       inputFocus() {
@@ -344,12 +367,13 @@
         replyInput.style.padding = '10px'
         replyInput.style.border = 'none'
       },
-      showReplyInput(i,j,name,id) {
+      showReplyInput(i,j,name,id,authorId) {
         this.comments[this.index].inputShow = false
         this.index = i
         this.comments[i].inputShow = true
-        this.beenCommentedNickName = name,//// 被评论人nickName
+        this.beenCommentedNickName = name;//// 被评论人nickName
         this.beenCommentedId = id
+        this.beenCommentedAuthorId = authorId;
         this.subIndex = j == '0' ? '0':j
       },
       addlikeNumber(i,id) {
@@ -405,18 +429,28 @@
           let input = document.getElementById('replyInput')
           let timeNow = new Date().getTime()
           let time = this.dateStr(timeNow)
-          a.articleId = articleId;
-          // a.nickName = this.myName
-          a.comment = this.replyComment
-          // a.avatarPath = this.avatarPath
-          a.time = time
-          // a.commentNum = 0
-          // a.like = 0
-          // a.id = this.myId
-          // a.reply = [],
-          //   a.isLike = false,
-          //   a.likeListId = [],
-            this.comments.push(a)
+          a.articleId = this.articleId;
+          a.authorId = this.authorId;
+          a.comment = this.replyComment;
+          a.firstComment = -1;
+          a.beenCommentedId = -1;
+          a.avatarPath = this.avatarPath;
+          a.nickName = this.nickName;
+          publishComment(a).then(res => {
+            if (res.status !== 2000){
+              this.$notify.error({
+                title: '错误',
+                message: res.msg
+              });
+              return;
+            }
+            this.$notify({
+              message: '评论成功',
+              type: 'success'
+            });
+          })
+          a.time = time;
+          this.comments.push(a);
           this.replyComment = ''
           input.innerHTML = ''
         }
@@ -432,13 +466,32 @@
           let a = {}
           let timeNow = new Date().getTime()
           let time = this.dateStr(timeNow)
-          a.nickName = this.myName
+          // a.nickName = this.myName
           a.beenCommentedNickName = this.beenCommentedNickName  // 被评论人nickName
-          a.avatarPath = this.avatarPath
+          // a.avatarPath = this.avatarPath
           a.comment = this.replyComment
+          a.articleId = this.articleId;
+          a.authorId = this.authorId;
+          a.beenCommentedId = this.beenCommentedId;
+          a.beenCommentedAuthorId = this.beenCommentedAuthorId;
+          a.avatarPath = this.avatarPath;
+          a.nickName = this.nickName;
+          publishComment(a).then(res => {
+            if (res.status !== 2000){
+              this.$notify.error({
+                title: '错误',
+                message: res.msg
+              });
+              return;
+            }
+            this.$notify({
+              message: '评论成功',
+              type: 'success'
+            });
+          })
           a.time = time
-          console.log(" this.comments[i].reply+++++++++++", this.comments[i].reply,this.subIndex)
-          this.comments[i].reply.push(a)
+          console.log(" this.comments[i].reply+++++++++++", this.comments[i].replyList,this.subIndex);
+          this.comments[i].replyList.push(a)
           this.replyComment = ''
           document.getElementsByClassName('reply-comment-input')[i].innerHTML = ''
         }
