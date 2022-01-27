@@ -20,4 +20,6 @@ public interface ArticleCommentService {
 
     public List<ArticleCommentVO> showComment(String articleId);
 
+    public Integer deleteComment(String id, String authorId);
+
 }

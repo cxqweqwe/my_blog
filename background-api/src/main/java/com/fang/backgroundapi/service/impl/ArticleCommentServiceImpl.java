@@ -84,6 +84,14 @@ public class ArticleCommentServiceImpl implements ArticleCommentService {
         return sortList;
     }
 
+    @Override
+    public Integer deleteComment(String id, String authorId) {
+        QueryWrapper<ArticleComment> wrapper = new QueryWrapper<>();
+        wrapper.eq("id", id)
+                .eq("author_id", authorId);
+        return articleCommentMapper.delete(wrapper);
+    }
+
     // /**
     //  * Description: do类转到vo类
     //  * @Author: Bernie_fang

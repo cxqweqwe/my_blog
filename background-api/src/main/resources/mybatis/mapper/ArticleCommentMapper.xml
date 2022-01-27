@@ -24,6 +24,7 @@
             LEFT JOIN user_info info2 on info2.author_id = ar.reply_author_id
         WHERE
             ar.article_id = #{articleId}
+            AND ar.deleted = 0
     </select>
 
     <select id="queryCommentGroup" resultType="ArticleCommentVO">
@@ -50,6 +51,7 @@
             ar.author_id = info1.author_id
             AND info1.author_id = ar.author_id
             AND info2.author_id = ar.reply_author_id
+            AND ar.deleted = 0
             AND ar.first_comment = #{firstCommentId}
     </select>
 

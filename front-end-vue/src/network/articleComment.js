@@ -16,3 +16,8 @@ export function publishComment(params) {
   })
 }
 
+export function deleteComment(param) {
+  return request({
+    url: requestUrl + "/delete/" + param
+  })
+}

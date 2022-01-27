@@ -34,7 +34,7 @@ import java.util.List;
 @RequestMapping("/articleComment")
 @Validated   // Get请求方法需要这个注解配合
 @Api(tags = "博客评论相关接口")
-public class ArticleCommentController {
+public class ArticleCommentController extends BaseController {
 
     @Autowired
     private ArticleCommentServiceImpl articleCommentService;
@@ -51,6 +51,14 @@ public class ArticleCommentController {
     public ServerResponse showComment(@PathVariable("articleId")  @NotBlank(message = "参数不为空")String articleId) {
         List<ArticleCommentVO> comments = articleCommentService.showComment(articleId);
         return ServerResponse.success(comments);
+    }
+
+    @GetMapping("/delete/{id}")
+    @ApiOperation(value = "删除评论", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse deleteComment(@PathVariable("id") @NotBlank(message = "参数不为空") String id) throws MyException {
+        String authorId = super.getAuthorId();
+        articleCommentService.deleteComment(id, authorId);
+        return ServerResponse.success();
     }
 
 

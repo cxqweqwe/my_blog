@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div v-clickoutside="hideReplyBtn" @click="inputFocus" class="my-reply">
       <el-avatar class="header-img" :size="40" :src="avatarPath"></el-avatar>
       <div class="reply-info">
@@ -39,7 +39,7 @@
         <span @click="showReplyInput(i, '0',item.nickName, item.id, item.authorId)">
           <i class="iconfont el-icon-s-comment"></i>
         </span>
-        <span @click="deleteComment(i, '0',item.nickName, item.id)">
+        <span v-if="item.authorId === authorId" @click="deleteComment(i, '0',item.nickName, item.id)">
           <i class="el-icon-delete-solid"></i>
         </span>
       </div>
@@ -64,7 +64,7 @@
               <i class="iconfont el-icon-s-comment"></i>
               <!--              {{ reply.commentNum }}-->
             </span>
-            <span @click="deleteComment(i, '0',item.name, item.id)">
+            <span v-if="reply.authorId === authorId" @click="deleteComment(i, '0',reply.nickName, reply.id)">
               <i class="el-icon-delete-solid"></i>
             </span>
           </div>
@@ -105,7 +105,7 @@
 </template>
 
 <script>
-  import {showComment,publishComment} from 'network/articleComment';
+  import {showComment,publishComment,deleteComment} from 'network/articleComment';
   import {getInfo} from "common/cookieUtils";
 
   const clickoutside = {
@@ -150,6 +150,7 @@
     },
     data: function () {
       return {
+        loading: false,
         btnShow: false,
         index: '0',
         replyComment: '',
@@ -163,74 +164,6 @@
         beenCommentedId: -1,
         beenCommentedAuthorId: '',
         comments: [
-          // {
-          //   nickName: 'Lana Del Rey',
-          //   id: 19870621,
-          //   avatarPath: 'https://avatars.githubusercontent.com/u/64625346?s=40&v=4',
-          //   comment: '我发布一张新专辑Norman Fucking Rockwell,大家快来听啊',
-          //   time: '2019年9月16日 18:43',
-          //   // commentNum: 2, // 评论回复数量
-          //   inputShow: false,
-          //   reply: [
-          //     {
-          //       id: '1234',//每条评论的id
-          //       nickName: 'Taylor Swift',
-          //       authorId: 19891221,
-          //       avatarPath: 'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
-          //       beenCommentedNickName: 'Lana Del Rey',// 被评论人nickName
-          //       beenCommentedId: 19870621,
-          //       comment: '我很喜欢你的新专辑！！',
-          //       time: '2019年9月16日 18:43',
-          //       // commentNum: 1,
-          //       inputShow: false,
-          //     },
-          //     {
-          //       id: '1235',//每条评论的id
-          //       nickName: 'Ariana Grande',
-          //       authorId: 1123,
-          //       avatarPath: 'https://ae01.alicdn.com/kf/Hf6c0b4a7428b4edf866a9fbab75568e6U.jpg',
-          //       beenCommentedNickName: 'Lana Del Rey',// 被评论人nickName
-          //       beenCommentedId: 19870621,
-          //       comment: '别忘记宣传我们的合作单曲啊',
-          //       time: '2019年9月16日 18:43',
-          //       // commentNum: 0,
-          //       inputShow: false,
-          //     },
-          //   ],
-          // },
-          // {
-          //   nickName: 'Taylor Swift',
-          //   id: 19891221,
-          //   avatarPath: 'https://ae01.alicdn.com/kf/H94c78935ffa64e7e977544d19ecebf06L.jpg',
-          //   comment: '我发行了我的新专辑Lover',
-          //   time: '2019年9月16日 18:43',
-          //   inputShow: false,
-          //   reply: [
-          //     {
-          //       id: '1236',//每条评论的id
-          //       nickName: 'Lana Del Rey',
-          //       authorId: 19870621,
-          //       avatarPath:
-          //         'https://avatars.githubusercontent.com/u/64625346?s=40&v=4',
-          //       beenCommentedNickName: 'Taylor Swift',// 被评论人nickName
-          //       beenCommentedId: 19891221,
-          //       comment: '新专辑和speak now 一样棒！',
-          //       time: '2019年9月16日 18:43',
-          //       inputShow: false,
-          //     },
-          //   ],
-          // },
-          // {
-          //   id: '1237',//每条评论的id
-          //   nickName: 'Norman Fucking Rockwell',
-          //   id: 20190830,
-          //   avatarPath: 'https://ae01.alicdn.com/kf/Hdd856ae4c81545d2b51fa0c209f7aa28Z.jpg',
-          //   comment: 'Plz buy Norman Fucking Rockwell on everywhere',
-          //   time: '2019年9月16日 18:43',
-          //   inputShow: false,
-          //   reply: [],
-          // },
-
           // {
           //   id: "e557405e700b4efbf0e591c137e3aaa7",
           //   articleId: "42256fe71711d2aeb84b18bf4e00f4fb",
@@ -333,9 +266,9 @@
       this.getArticleComment();
     },
     methods: {
-
       // 获取评论
       getArticleComment(){
+        this.loading = true;
         showComment(this.articleId).then(res => {
           if (res.status != 2000){
             this.$notify.error({
@@ -345,6 +278,8 @@
             return;
           }
           this.comments = res.data;
+        }).finally(() => {
+          this.loading = false;
         })
       },
       initInfo(){
@@ -534,8 +469,14 @@
         }
       },
       // 删除评论
-      deleteComment(){
-
+      deleteComment(i,j,name,id){
+        deleteComment(id).then(res => {
+          this.$notify({
+            message: res.msg,
+            type: 'success'
+          });
+        })
+        this.getArticleComment();
       }
     },
   }
