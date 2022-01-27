@@ -2,4 +2,55 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fang.backgroundapi.mapper.ArticleCommentMapper">
 
+    <select id="queryComment" resultType="ArticleCommentVO">
+        SELECT
+            ar.id,
+            ar.article_id,
+            ar.author_id,
+            info1.nick_name,
+            info1.avatar_path avatarPath,
+            ar.image_path,
+            ar.comment_content comment,
+            ar.comment_content_html,
+            ar.reply beenCommentedId,
+            ar.modified_time time,
+            ar.first_comment,
+            ar.reply_author_id beenCommentedAuthorId,
+            info2.nick_name beenCommentedNickName,
+            info2.avatar_path beenCommentedAvatarPath
+        FROM
+            article_comment ar
+            LEFT JOIN user_info info1 on ar.author_id = info1.author_id AND info1.author_id = ar.author_id
+            LEFT JOIN user_info info2 on info2.author_id = ar.reply_author_id
+        WHERE
+            ar.article_id = #{articleId}
+    </select>
+
+    <select id="queryCommentGroup" resultType="ArticleCommentVO">
+        SELECT
+            ar.id,
+            ar.article_id,
+            ar.author_id,
+            info1.nick_name,
+            info1.avatar_path avatarPath,
+            ar.image_path,
+            ar.comment_content comment,
+            ar.comment_content_html,
+            ar.reply beenCommentedId,
+            ar.modified_time time,
+            ar.first_comment,
+            ar.reply_author_id beenCommentedAuthorId,
+            info2.nick_name beenCommentedNickName,
+            info2.avatar_path beenCommentedAvatarPath
+        FROM
+            article_comment ar,
+            user_info info1,
+            user_info info2
+        WHERE
+            ar.author_id = info1.author_id
+            AND info1.author_id = ar.author_id
+            AND info2.author_id = ar.reply_author_id
+            AND ar.first_comment = #{firstCommentId}
+    </select>
+
 </mapper>

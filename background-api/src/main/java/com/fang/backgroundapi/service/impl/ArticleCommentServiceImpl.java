@@ -1,10 +1,18 @@
 package com.fang.backgroundapi.service.impl;
 
+
 import com.fang.backgroundapi.pojo.DO.ArticleComment;
 import com.fang.backgroundapi.mapper.ArticleCommentMapper;
+import com.fang.backgroundapi.pojo.VO.ArticleCommentVO;
 import com.fang.backgroundapi.service.ArticleCommentService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import javax.validation.constraints.NotBlank;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -15,6 +23,71 @@ import org.springframework.stereotype.Service;
  * @since 2021-08-15
  */
 @Service
-public class ArticleCommentServiceImpl extends ServiceImpl<ArticleCommentMapper, ArticleComment> implements ArticleCommentService {
+public class ArticleCommentServiceImpl implements ArticleCommentService {
+
+    @Autowired
+    private ArticleCommentMapper articleCommentMapper;
+
+    public Integer publishComment(ArticleCommentVO articleCommentVO) {
+        ArticleComment articleComment = this.VOToDO(articleCommentVO);
+        return articleCommentMapper.insert(articleComment);
+    }
+
+    /**
+     * Description: vo类转到do类
+     * @Author: Bernie_fang
+     * @Since: 2022/1/26 10:55
+     * @param vo:
+     * @return: com.fang.backgroundapi.pojo.DO.ArticleComment
+     **/
+    private ArticleComment VOToDO(ArticleCommentVO vo){
+        ArticleComment articleComment = new ArticleComment();
+        articleComment.setArticleId(vo.getArticleId());
+        articleComment.setAuthorId(vo.getAuthorId());
+        articleComment.setCommentContent(vo.getComment());
+        articleComment.setCommentContentHtml(vo.getCommentContentHtml());
+        articleComment.setImagePath(vo.getImagePath());
+        articleComment.setFirstComment(vo.getFirstComment());
+        articleComment.setReply(vo.getBeenCommentedId());
+        articleComment.setState(1);
+        return articleComment;
+    }
+
+    public List<ArticleCommentVO> showComment(String articleId) {
+        ArrayList<ArticleCommentVO> list = new ArrayList<>();
+        List<ArticleCommentVO> articleCommentVOS = articleCommentMapper.queryComment(articleId);
+        Map<String, List<ArticleCommentVO>> collect =
+                articleCommentVOS.stream().collect(Collectors.groupingBy(ArticleCommentVO::getBeenCommentedId));
+
+        List<ArticleCommentVO> firstCommentList = articleCommentVOS.stream().filter((articleComment) ->
+                "-1".equals(articleComment.getBeenCommentedId())
+        ).collect(Collectors.toList());
+        firstCommentList.forEach(System.out::println);
+        for (ArticleCommentVO commentVO : firstCommentList) {
+            List<ArticleCommentVO> commentGroup = articleCommentMapper.queryCommentGroup(commentVO.getId());
+            commentVO.setReplyList(commentGroup);
+            list.add(commentVO);
+        }
+        return list;
+    }
+
+    // /**
+    //  * Description: do类转到vo类
+    //  * @Author: Bernie_fang
+    //  * @Since: 2022/1/26 10:57
+    //  * @param articleComment:
+    //  * @return: com.fang.backgroundapi.pojo.VO.ArticleCommentVO
+    //  **/
+    // private ArticleCommentVO DOToVO(ArticleComment articleComment){
+    //     ArticleCommentVO commentVO = new ArticleCommentVO();
+    //     commentVO.setArticleId();
+    //     commentVO.setAuthorId();
+    //     commentVO.setAvatarPath();
+    //     commentVO.setBeenCommentedAuthorId();
+    //     commentVO.setBeenCommentedNickName();
+    //     commentVO.
+    //     return commentVO;
+    // }
+
 
 }

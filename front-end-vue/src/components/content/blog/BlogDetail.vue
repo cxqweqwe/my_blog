@@ -49,7 +49,7 @@
     </div>
     <div class="space"></div>
     <div class="common-div">
-      <Comment></Comment>
+      <Comment :articleId="articleId"></Comment>
     </div>
     <div class="space"></div>
   </div>

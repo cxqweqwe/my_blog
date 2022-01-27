@@ -2,6 +2,9 @@ package com.fang.backgroundapi.service;
 
 import com.fang.backgroundapi.pojo.DO.ArticleComment;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.fang.backgroundapi.pojo.VO.ArticleCommentVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -11,6 +14,10 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @author Bernie_fang
  * @since 2021-08-15
  */
-public interface ArticleCommentService extends IService<ArticleComment> {
+public interface ArticleCommentService {
+
+    public Integer publishComment(ArticleCommentVO articleCommentVO);
+
+    public List<ArticleCommentVO> showComment(String articleId);
 
 }

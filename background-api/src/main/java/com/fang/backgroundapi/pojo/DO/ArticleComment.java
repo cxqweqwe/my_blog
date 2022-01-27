@@ -10,8 +10,11 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 /**
  * <p>
@@ -22,6 +25,8 @@ import lombok.EqualsAndHashCode;
  * @since 2021-08-15
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class ArticleComment implements Serializable {
 
@@ -67,6 +72,14 @@ public class ArticleComment implements Serializable {
      * 评论回复，填写评论的ID
      */
     private String reply;
+    /**
+     * 第一条评论id
+     */
+    private String firstComment;
+    /**
+     * 被回复的评论人的authorId
+     */
+    private String replyAuthorId;
 
     /**
      * 创建时间
