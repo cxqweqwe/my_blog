@@ -378,10 +378,11 @@ export default {
           sessionStorage.setItem(SESSION_AVATAR_KEY, res.data.avatarPath);
           let info = {
             authorId: res.data.authorId,
-            SESSION_NICKNAME_KEY: res.data.nickName,
-            SESSION_AVATAR_KEY: res.data.avatarPath
+            nickName: res.data.nickName,
+            avatarPath: res.data.avatarPath,
+            token: res.data.token
           }
-
+          this.$store.commit('set', info);
           setCookie(res.data.token);//设置Cookie
           setCookieAuthorId(res.data.authorId);
           this.loginFrom.passwrod = '';

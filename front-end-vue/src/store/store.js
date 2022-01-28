@@ -15,26 +15,28 @@ export default new Vuex.Store({
   },
   mutations: {
     //更改 Vuex 的 store 中的状态的唯一方法是提交 mutation
-    set(authorInfo){
+    set(state,authorInfo){
+      // state默认自带
       console.log(authorInfo);
       if (authorInfo.authorId != null && authorInfo.authorId != undefined && authorInfo.authorId != ''){
-        this.authorInfo.authorId = authorInfo.authorId;
+        state.authorInfo.authorId = authorInfo.authorId;
       }
       if (authorInfo.nickName != null && authorInfo.nickName != undefined && authorInfo.nickName != ''){
-        this.authorInfo.nickName = authorInfo.nickName;
+        state.authorInfo.nickName = authorInfo.nickName;
       }
       if (authorInfo.avatarPath != null && authorInfo.avatarPath != undefined && authorInfo.avatarPath != ''){
-        this.authorInfo.avatarPath = authorInfo.avatarPath;
+        state.authorInfo.avatarPath = authorInfo.avatarPath;
       }
       if (authorInfo.token != null && authorInfo.token != undefined && authorInfo.token != ''){
-        this.authorInfo.token = authorInfo.token;
+        state.authorInfo.token = authorInfo.token;
       }
+      console.log(state.authorInfo);
     },
-    cleanAll(){
-      this.authorInfo.authorId = '';
-      this.authorInfo.nickName = '';
-      this.authorInfo.avatarPath = '';
-      this.authorInfo.token = '';
+    cleanAll(state){
+      state.authorInfo.authorId = '';
+      state.authorInfo.nickName = '';
+      state.authorInfo.avatarPath = '';
+      state.authorInfo.token = '';
     }
   },
   actions: {

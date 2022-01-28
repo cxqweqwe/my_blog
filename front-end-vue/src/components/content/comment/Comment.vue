@@ -283,9 +283,16 @@
         })
       },
       initInfo(){
-        this.authorId = sessionStorage.authorId;
-        this.nickName = sessionStorage.nickName;
-        this.avatarPath = sessionStorage.avatarPath;
+        // this.authorId = sessionStorage.authorId;
+        // this.nickName = sessionStorage.nickName;
+        // this.avatarPath = sessionStorage.avatarPath;
+        this.authorId = this.$store.state.authorInfo.authorId;
+        this.nickName = this.$store.state.authorInfo.nickName;
+        this.avatarPath = this.$store.state.authorInfo.avatarPath;
+        console.log(this.$store.state.authorInfo);
+        console.log(this.$store.state.authorInfo.authorId);
+        console.log(this.$store.state.authorInfo.nickName);
+        console.log(this.$store.state.authorInfo.avatarPath);
       },
 
       inputFocus() {
