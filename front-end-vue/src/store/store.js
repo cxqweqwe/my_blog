@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    checkLogin: false,  // 登录状态，默认我未登录
     // 登录人信息
     authorInfo: {
       authorId: '',
@@ -31,6 +32,16 @@ export default new Vuex.Store({
         state.authorInfo.token = authorInfo.token;
       }
       console.log(state.authorInfo);
+    },
+    checkLogin(state, status){
+      if (status){
+        // 登录了
+        state.checkLogin = status;
+      }else {
+        // 退出登录
+        state.checkLogin = status;
+        this.cleanAll(state);
+      }
     },
     cleanAll(state){
       state.authorInfo.authorId = '';
