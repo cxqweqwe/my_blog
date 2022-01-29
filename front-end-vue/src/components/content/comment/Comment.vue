@@ -289,12 +289,7 @@
         this.authorId = this.$store.state.authorInfo.authorId;
         this.nickName = this.$store.state.authorInfo.nickName;
         this.avatarPath = this.$store.state.authorInfo.avatarPath;
-        console.log(this.$store.state.authorInfo);
-        console.log(this.$store.state.authorInfo.authorId);
-        console.log(this.$store.state.authorInfo.nickName);
-        console.log(this.$store.state.authorInfo.avatarPath);
       },
-
       inputFocus() {
         var replyInput = document.getElementById('replyInput')
         replyInput.style.padding = '8px 8px'
@@ -360,6 +355,14 @@
         return this.comments[i].inputShow
       },
       sendComment() {
+        if (this.authorId == '' || this.nickName == '' || this.avatarPath == '') {
+          this.$notify({
+            title: '警告',
+            message: '请先登录',
+            type: 'warning'
+          });
+          return;
+        }
         if (!this.replyComment) {
           this.$message({
             showClose: true,

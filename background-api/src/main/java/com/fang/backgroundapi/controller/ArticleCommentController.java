@@ -41,7 +41,9 @@ public class ArticleCommentController extends BaseController {
 
     @PostMapping("/publish")
     @ApiOperation(value = "发表评论", response = ServerResponse.class, httpMethod = "POST")
-    public ServerResponse publishComment(@RequestBody @Valid ArticleCommentVO articleCommentVO){
+    public ServerResponse publishComment(@RequestBody @Valid ArticleCommentVO articleCommentVO) throws MyException {
+        String authorId = super.getAuthorId();
+        articleCommentVO.setAuthorId(authorId);
         articleCommentService.publishComment(articleCommentVO);
         return ServerResponse.success();
     }
@@ -65,4 +67,3 @@ public class ArticleCommentController extends BaseController {
 
 
 }
-
