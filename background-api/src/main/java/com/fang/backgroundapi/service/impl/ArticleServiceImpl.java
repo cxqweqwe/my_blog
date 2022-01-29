@@ -236,4 +236,21 @@ public class ArticleServiceImpl implements ArticleService {
         return data;
     }
 
+    public PagingData mostPageViews(Integer currentPage, Integer size) {
+        PagingData pagingData = new PagingData();
+        if (currentPage == -1){
+            // 不分页
+            List<PostShowVO> mostLike = articleMapper.mostPageViews(-1, -1);
+            pagingData.setData(mostLike);
+            pagingData.setTotal(Long.valueOf(-1));
+            return pagingData;
+        }
+        currentPage = (currentPage -1) * size;
+        List<PostShowVO> mostLike = articleMapper.mostPageViews(currentPage, size);
+        Integer total = articleMapper.latestPostsCount();
+        pagingData.setData(mostLike);
+        pagingData.setTotal(Long.valueOf(total));
+        return pagingData;
+    }
+
 }

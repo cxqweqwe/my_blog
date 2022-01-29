@@ -12,8 +12,12 @@
 
             <div class="padding-30 rounded bordered">
               <div class="row gy-5">
-                <PickCecommended :pick-data="pickData"></PickCecommended>
-                <PickCecommendedItem></PickCecommendedItem>
+                <div class="col-sm-6">
+                  <PickCecommended :pick-data="pickData"/>
+                </div>
+                <div class="col-sm-6">
+                  <PickCecommendedItem v-for="(item,index) in pickDataList" :key="index" :item="item"/>
+                </div>
               </div>
             </div>
 
@@ -75,59 +79,66 @@
 </template>
 
 <script>
-import PickCecommended from "./PickCecommended";
-import PickCecommendedItem from "./PickCecommendedItem"
+  import PickCecommended from "./PickCecommended";
+  import PickCecommendedItem from "./PickCecommendedItem"
 
-import PostLarge from "components/common/post/PostLarge";
+  import PostLarge from "components/common/post/PostLarge";
 
-import PopularPosts from "../popularPosts/PopularPosts";
-import ExploreTopics from "../exploreTopics/ExploreTopics";
-import Celebration from "../celebration/Celebration";
-import InspirationBox from "components/common/inspirationBox/InspirationBox";
-import LatestPostBox from "components/content/latestPosts/LatestPostBox";
+  import PopularPosts from "../popularPosts/PopularPosts";
+  import ExploreTopics from "../exploreTopics/ExploreTopics";
+  import Celebration from "../celebration/Celebration";
+  import InspirationBox from "components/common/inspirationBox/InspirationBox";
+  import LatestPostBox from "components/content/latestPosts/LatestPostBox";
 
-import WidgetTags from "components/common/sidebar/WidgetTags";
-import {getPopular,getPopularPaging} from "network/article";
-import Footer from "components/content/footer/Footer";
+  import WidgetTags from "components/common/sidebar/WidgetTags";
+  import {getPopular, getPopularPaging, getMostPageViews} from "network/article";
+  import Footer from "components/content/footer/Footer";
 
-export default {
-  name: "PickMainContent",
-  components: {
-    PickCecommended,
-    PickCecommendedItem,
-    PopularPosts,
-    ExploreTopics,
-    Celebration,
+  export default {
+    name: "PickMainContent",
+    components: {
+      PickCecommended,
+      PickCecommendedItem,
+      PopularPosts,
+      ExploreTopics,
+      Celebration,
 
-    PostLarge,
-    InspirationBox,
-    LatestPostBox,
+      PostLarge,
+      InspirationBox,
+      LatestPostBox,
 
-    WidgetTags,
-    Footer
-  },
-  data() {
-    return {
-      editorPickLagerData: {},
-      pickData: {}
-    }
-  },
-  created() {
-    this.getEditorPick();
-  },
-  methods: {
-    getEditorPick() {
-      getPopularPaging(2,1).then(res => {
-        this.pickData = res.data.data[0];
-        // console.log(this.pickData);
-      })
+      WidgetTags,
+      Footer
+    },
+    data() {
+      return {
+        editorPickLagerData: {},
+        pickData: {},
+        pickDataList: [],
+      }
+    },
+    created() {
+      this.getEditorPick();
+    },
+    methods: {
+      getEditorPick() {
+        getMostPageViews(1, 5).then(res => {
+          console.log(res);
+          this.pickData = res.data.data[0];
+          this.pickDataList = res.data.data;
+          this.pickDataList.shift();
+        })
+        // getPopularPaging(2,1).then(res => {
+        //   this.pickData = res.data.data[0];
+        //   // console.log(this.pickData);
+        // })
+      }
     }
   }
-}
 </script>
 
 <style scoped>
-.bottom-space-30{
-  margin-bottom: 30px;
-}
+  .bottom-space-30 {
+    margin-bottom: 30px;
+  }
 </style>

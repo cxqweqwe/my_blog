@@ -115,4 +115,6 @@ public interface ArticleMapper extends BaseMapper<Article> {
 
     Integer queryPersonalCount(@Param("authorId") String authorId);
 
+    public List<PostShowVO> mostPageViews(@Param("curPage") Integer curPage, @Param("size") Integer size);
+
 }

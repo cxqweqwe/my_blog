@@ -118,6 +118,14 @@ public class ArticleController extends BaseController {
         return ServerResponse.success(recent);
     }
 
+    @GetMapping("/latestPosts/{currentPage}/{size}")
+    @ApiOperation(value = "最新帖子", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse latestPosts(@PathVariable("currentPage") Integer currentPage,
+                                      @PathVariable("size") Integer size) {
+        PagingData data = articleService.latestPosts(currentPage, size);
+        return ServerResponse.success(data);
+    }
+
     /**
      * @Description: 这里是对应博客搜索
      * @Author: Bernie_fang
@@ -135,15 +143,6 @@ public class ArticleController extends BaseController {
         return ServerResponse.success(data);
     }
 
-
-    @GetMapping("/latestPosts/{currentPage}/{size}")
-    @ApiOperation(value = "最新帖子", response = ServerResponse.class, httpMethod = "GET")
-    public ServerResponse latestPosts(@PathVariable("currentPage") Integer currentPage,
-                                     @PathVariable("size") Integer size) {
-        PagingData data = articleService.latestPosts(currentPage, size);
-        return ServerResponse.success(data);
-    }
-
     @GetMapping("/mostCollection/{currentPage}/{size}")
     @ApiOperation(value = "被收藏最多", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse mostCollection(@PathVariable("currentPage") Integer currentPage,
@@ -153,11 +152,19 @@ public class ArticleController extends BaseController {
     }
 
     @GetMapping("/personal/{currentPage}/{size}/{authorId}")
-    @ApiOperation(value = "被收藏最多", response = ServerResponse.class, httpMethod = "GET")
+    @ApiOperation(value = "同一个作者的博客", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse getPersonal(@PathVariable("currentPage") Integer currentPage,
                                       @PathVariable("size") Integer size,
                                       @PathVariable("authorId") String authorId){
         PagingData data = articleService.getPersonal(currentPage, size, authorId);
+        return ServerResponse.success(data);
+    }
+
+    @GetMapping("/mostPageViews/{currentPage}/{size}")
+    @ApiOperation(value = "查看人数最多是", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse getMostLike(@PathVariable("currentPage") Integer currentPage,
+                                      @PathVariable("size") Integer size) {
+        PagingData data = articleService.mostPageViews(currentPage, size);
         return ServerResponse.success(data);
     }
 

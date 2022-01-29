@@ -67,3 +67,9 @@ export function getPersonalArticle(currentPage, size, authorId) {
         url: requestUrl + "/personal/" + currentPage + "/" + size + "/" + authorId,
     })
 }
+
+export function getMostPageViews(currentPage, size) {
+    return request({
+        url: requestUrl + "/mostPageViews/" + currentPage + "/" + size,
+    })
+}

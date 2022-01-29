@@ -136,4 +136,30 @@
         WHERE author_id = #{authorId}
     </select>
 
+    <select id="mostPageViews" resultType="PostShowVO">
+        SELECT
+            art.article_id,
+            art.author_id,
+            art.title,
+            art.brief_introduction,
+            art.cover_path,
+            art.create_time,
+            art.modified_time,
+            info.nick_name,
+            info.avatar_path
+        FROM
+            article art,
+            user_info info,
+            blog_info binfo
+        WHERE
+            art.deleted = 0
+            AND art.author_id = info.author_id
+            AND art.article_id = binfo.article_id
+        ORDER BY
+            binfo.pageviews DESC
+        <if test="curPage != null &amp;&amp; curPage != -1">
+            LIMIT #{curPage},#{size}
+        </if>
+    </select>
+
 </mapper>

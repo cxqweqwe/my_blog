@@ -1,5 +1,5 @@
 <template>
-  <div class="col-sm-6">
+  <div>
     <!-- post -->
     <div class="post">
       <div class="thumb rounded">
@@ -7,18 +7,18 @@
       <ul class="meta list-inline mt-4 mb-0">
         <li class="list-inline-item">
           <a href="#">
-            <img src="~assets/img/posts/trending-lg-1.jpg" class="author" alt="author"/>
+            <img :src="pickData.coverPath" class="author" alt="cover" v-if="pickData.coverPath != null && pickData.coverPath != ''"/>
+            <img src="http://image.fangweb.top/FANG-Logo.png" class="author" alt="cover" v-else/>
           </a>
         </li>
       </ul>
 
       <ul class="meta list-inline mt-4 mb-0">
         <li class="list-inline-item" @click="toPersonal(pickData.authorId)">
-          <a href="#"><img src="images/other/author-sm.png" class="author" alt="author"/>{{ pickData.nickName }}</a>
+          <a ><img :src="pickData.avatarPath" class="author avatar" alt="author"/>{{ pickData.nickName }}</a>
         </li>
         <li class="list-inline-item">{{ pickData.modifiedTime }}</li>
       </ul>
-
       <h5 class="post-title mb-3 mt-3"><a><router-link target="_blank" :to="{path:'/blog/' + pickData.articleId}">{{ pickData.title }}</router-link></a></h5>
       <p class="excerpt mb-0">{{ pickData.briefIntroduction }}</p>
     </div>
@@ -35,7 +35,7 @@ export default {
       authorId: '',
       title: '',
       hrefLink: '',
-      imgLink: '',
+      coverPath: '',
       avatarPath: '',
       nickName: '',
       modifiedTime: '',
@@ -73,5 +73,12 @@ export default {
 </script>
 
 <style scoped>
+  .article-cover{
 
+  }
+.avatar{
+  width: 30px;
+  height: 100%;
+  border-radius: 30px
+}
 </style>

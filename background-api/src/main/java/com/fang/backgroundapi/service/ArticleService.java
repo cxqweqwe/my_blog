@@ -103,4 +103,14 @@ public interface ArticleService {
      **/
     public PagingData getPersonal(Integer currentPage, Integer size, String authorId);
 
+    /**
+     * Description: 查找点赞最多的几个
+     * @Author: Bernie_fang
+     * @Since: 2022/1/29 21:20
+     * @param currentPage: -1表示不分页
+     * @param size:
+     * @return: com.fang.backgroundapi.common.PagingData
+     **/
+    public PagingData mostPageViews(Integer currentPage, Integer size);
+
 }
