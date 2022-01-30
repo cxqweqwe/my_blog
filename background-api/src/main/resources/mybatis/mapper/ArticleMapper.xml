@@ -79,6 +79,7 @@
             art.create_time,
             art.modified_time,
             art.deleted,
+            art.cover_path,
             info.nick_name,
             info.avatar_path
         FROM
@@ -124,7 +125,7 @@
     </select>
 
     <select id="queryPersonal"  resultType="MostPopularInfoVO">
-        SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.create_time, us.nick_name, us.avatar_path
+        SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.create_time, ar.cover_path, us.nick_name, us.avatar_path
         FROM article ar, blog_info info, user_info us
         WHERE ar.article_id = info.article_id AND us.author_id = ar.author_id AND ar.author_id = #{authorId}
         LIMIT #{curPage},#{size}
