@@ -5,8 +5,8 @@
       <nav class="navbar navbar-expand-lg">
         <div class="container-xl">
           <!-- site logo -->
-          <a class="navbar-brand" href="index.html">
-            <img src="~assets/img/logo/FANG-Logo.svg" alt="logo" class="logo-image"/>
+          <a class="navbar-brand" href="">
+            <router-link target="_blank" :to="{path:'/index'}"><img src="~assets/img/logo/FANG-Logo.svg" alt="logo" class="logo-image"/></router-link>
           </a>
           <div class="collapse navbar-collapse">
             <!-- menus -->
@@ -35,7 +35,13 @@
           <div class="header-right">
             <!-- social icons -->
             <ul class="social-icons list-unstyled list-inline mb-0">
-              <li class="list-inline-item"><a href="#"><i class="fab fa-github"></i></a></li>
+<!--              <li class="list-inline-item"><a href="#"><i class="fab fa-github"></i></a></li>-->
+              <li class="list-inline-item" v-if="!this.$store.state.checkLogin">
+                <a href=""><router-link :to="{path:'/login'}">登录/注册</router-link></a>
+              </li>
+              <li class="list-inline-item" v-else>
+                <a href=""><router-link :to="{path:'/user/' + authorId}"><Avatar :src="avatarPath" class="avatar"/></router-link></a>
+              </li>
             </ul>
 
             <!-- header buttons -->
@@ -87,10 +93,12 @@ export default {
       isShowSearch: false,
       isTextShow: false,
       authorId: '',
+      avatarPath: '',
     }
   },
   created() {
     this.authorId = getCookieAuthorId();
+    this.avatarPath = this.$store.state.authorInfo.avatarPath;
   },
   methods: {
     toSearch() {
@@ -132,5 +140,11 @@ export default {
 <style scoped>
 .logo-image {
   width: 200px;
+}
+
+.avatar:hover {
+  width: 50px;
+  height: 50px;
+  transition: all 500ms;
 }
 </style>

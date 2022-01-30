@@ -123,7 +123,7 @@
     methods: {
       getEditorPick() {
         getMostPageViews(1, 5).then(res => {
-          console.log(res);
+          // console.log(res);
           this.pickData = res.data.data[0];
           this.pickDataList = res.data.data;
           this.pickDataList.shift();

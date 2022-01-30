@@ -383,6 +383,7 @@ export default {
             token: res.data.token
           }
           this.$store.commit('set', info);
+          this.$store.commit('checkLogin', true);
           setCookie(res.data.token);//设置Cookie
           setCookieAuthorId(res.data.authorId);
           this.loginFrom.passwrod = '';
