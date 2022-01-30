@@ -8,15 +8,16 @@
 										</span>
         <a href="blog-single.html">
           <div class="inner">
-            <img src="~assets/img/posts/latest-sm-1.jpg" alt="post-title"/>
+            <img :src="item.coverPath" class="author" alt="cover" v-if="item.coverPath != null && item.coverPath != ''"/>
+            <img src="http://image.fangweb.top/FANG-Logo.png" class="author" alt="cover" v-else/>
           </div>
         </a>
       </div>
       <div class="details">
         <ul class="meta list-inline mb-3">
-          <li class="list-inline-item"><a href="#"><img src="~assets/img/other/author-sm.png" class="author"
-                                                        alt="author"/>{{ item.nickName }}</a></li>
-          <!--          <li class="list-inline-item"><a href="#">Trending</a></li>-->
+          <li class="list-inline-item">
+            <a href="#"><img :src="item.avatarPath" class="author avatar" alt="author"/>{{ item.nickName }}</a>
+          </li>
           <li class="list-inline-item">{{ item.createTime }}</li>
         </ul>
         <h5 class="post-title div-text-box1"><a><router-link target="_blank" :to="{path:'/blog/' + item.articleId}">{{ item.title }}</router-link></a></h5>
@@ -47,7 +48,7 @@ export default {
   name: "LatestPostsItem",
   props: {
     item: {
-      imageURL: String,
+      coverPath: String,
       avatarPath: String,
       authorName: String,
       createTime: String,
@@ -108,4 +109,8 @@ export default {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
+  .avatar{
+    width: 30px;
+    border-radius: 30px;
+  }
 </style>

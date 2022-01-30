@@ -45,4 +45,8 @@ public class MostPopularInfoVO {
     @JsonFormat(pattern = "dd MMMM,yyyy",timezone = "US")
     private Date modifiedTime;
 
+    @ApiModelProperty("修改时间")
+    @JsonFormat(pattern = "dd MMMM,yyyy",timezone = "US")
+    private Date createTime;
+
 }

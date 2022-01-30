@@ -10,9 +10,14 @@
             <div v-if="isMy">
               <Tabs @on-click="clickHandle">
                 <TabPane label="我的博客" icon="ios-book" name="myBlog">
-                  <div class="row ">
-                    <PickCecommended v-for="(item,index) in personalArticleList" :key="index"
-                                     :pickData="item"></PickCecommended>
+<!--                  <div class="row ">-->
+<!--                    <PickCecommended v-for="(item,index) in personalArticleList" :key="index"-->
+<!--                                     :pickData="item"></PickCecommended>-->
+<!--                  </div>-->
+                  <div class="padding-30 rounded bordered">
+                    <div class="row">
+                      <LatestPostsItem v-for="(itemData,index) in personalArticleList" :key="index" :item="itemData" ></LatestPostsItem>
+                    </div>
                   </div>
                   <div class="space"></div>
                   <div class="box-line"></div>
@@ -193,6 +198,7 @@
   import {getAuthorInfo, updateUserInfo, updatePhone, updateEmail} from "network/userInfo";
   import {getBase64} from "common/imageUtils";
   import {getPhoneCode, getEmailCode} from "network/login";
+  import LatestPostsItem from "components/common/latestPosts/LatestPostsItem";
 
   export default {
     name: "Personal",
@@ -202,6 +208,7 @@
       Celebration,
       Blogger,
       PickCecommended,
+      LatestPostsItem,
     },
     data() {
       return {
@@ -243,7 +250,7 @@
         newPhone: '',
         newEmail: '',
         code: '',
-
+        name: '',
 
         ruleValidate: {
           //   name: [
@@ -288,6 +295,7 @@
     methods: {
       sendPersonalBlog() {
         getPersonalArticle(this.curPage, this.size, this.authorId).then(res => {
+          console.log(res);
           this.personalArticleList = res.data.data;
           this.total = res.data.total;
         })
