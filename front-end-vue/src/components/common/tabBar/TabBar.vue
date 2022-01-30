@@ -49,7 +49,7 @@
               <button class="search icon-button" @click="toSearch">
                 <i class="icon-magnifier"></i>
               </button>
-              <button class="burger-menu icon-button">
+              <button class="burger-menu icon-button" @click="logout">
 <!--                <span class="log-out-icon"></span>-->
                 <Icon type="md-log-out" />
               </button>
@@ -132,6 +132,26 @@ export default {
         },
       });
       window.open(href, "_blank");
+    },
+    logout(){
+      console.log("logout");
+      if (!this.$store.state.checkLogin){
+        this.$notify({
+          message: '请先登录',
+          type: 'warning'
+        });
+        return ;
+      }
+
+      sessionStorage.clear();
+      let keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+      if(keys) {
+        for(let i = keys.length; i--;)
+          document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString();
+          console.log("logout");
+      }
+      this.$store.commit('checkLogin', false);
+
     }
   }
 }

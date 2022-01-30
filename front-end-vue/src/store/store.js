@@ -18,7 +18,7 @@ export default new Vuex.Store({
     //更改 Vuex 的 store 中的状态的唯一方法是提交 mutation
     set(state,authorInfo){
       // state默认自带
-      console.log(authorInfo);
+      // console.log(authorInfo);
       if (authorInfo.authorId != null && authorInfo.authorId != undefined && authorInfo.authorId != ''){
         state.authorInfo.authorId = authorInfo.authorId;
       }
@@ -31,7 +31,8 @@ export default new Vuex.Store({
       if (authorInfo.token != null && authorInfo.token != undefined && authorInfo.token != ''){
         state.authorInfo.token = authorInfo.token;
       }
-      console.log(state.authorInfo);
+      sessionStorage.setItem("store",JSON.stringify(state));
+      // console.log(state.authorInfo);
     },
     checkLogin(state, status){
       if (status){
@@ -42,6 +43,7 @@ export default new Vuex.Store({
         state.checkLogin = status;
         this.cleanAll(state);
       }
+      sessionStorage.setItem("store",JSON.stringify(state));
     },
     cleanAll(state){
       state.authorInfo.authorId = '';

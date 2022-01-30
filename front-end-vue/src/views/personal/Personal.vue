@@ -292,7 +292,7 @@
     methods: {
       sendPersonalBlog() {
         getPersonalArticle(this.curPage, this.size, this.authorId).then(res => {
-          console.log(res);
+          // console.log(res);
           this.personalArticleList = res.data.data;
           this.total = res.data.total;
         })
