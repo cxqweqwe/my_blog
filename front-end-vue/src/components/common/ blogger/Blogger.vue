@@ -1,9 +1,9 @@
 <template>
-  <div class="widget rounded">
+  <div class="widget rounded" v-loading="loading">
     <div class="a">
       <div class="info">
         <div class="block center">
-          <el-avatar :size="80" :src="avatarUrl">U</el-avatar>
+          <el-avatar :size="80" :src="avatarPath">U</el-avatar>
           <div>这里是名字</div>
         </div>
         <div class="personal-info">
@@ -25,7 +25,7 @@
           </el-row>
 
           <div class="space-10"></div>
-          <el-collapse accordion  @change="handleChange">
+          <el-collapse accordion @change="handleChange">
             <el-collapse-item>
               <template slot="title">
                 {{foldName}}
@@ -66,19 +66,37 @@
     props: {},
     data() {
       return {
-        avatarUrl: '',
+        loading: false,
+        authorId: '',
+        avatarPath: '',
+        nickName: '',
+        beenViews: '',
+        create: '',
+        subscribed: '',//被订阅
+        settled: '',
+        personalProfile: '',//个人简介
+        school: '',
+        companyName: '',
+
         foldName: '展示更多'
       }
     },
     created() {
+      this.loading = true;
+      this.authorId = this.$route.params.authorId;
+      // console.log(this.authorId);
+      this.getUserInfo();
     },
     methods: {
-      handleChange(activeNames ){
-        if (activeNames == 15){
+      handleChange(activeNames) {
+        if (activeNames == 15) {
           this.foldName = '收起';
           return;
         }
         this.foldName = '展示更多';
+      },
+      getUserInfo() {
+
       }
     }
   }
@@ -92,7 +110,7 @@
     /*background-color: #86b7fe;*/
   }
 
-  .info{
+  .info {
     display: block;
   }
 
@@ -100,10 +118,11 @@
     text-align: center;
   }
 
-  .space{
+  .space {
     height: 50px;
   }
-  .space-10{
+
+  .space-10 {
     height: 10px;
   }
 

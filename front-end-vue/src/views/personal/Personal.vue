@@ -8,7 +8,8 @@
           <div class="col-lg-8">
 
             <div v-if="isMy">
-              <Tabs @on-click="clickHandle">
+
+              <Tabs @on-click="clickHandle" v-loading="loading">
                 <TabPane label="我的博客" icon="ios-book" name="myBlog">
 <!--                  <div class="row ">-->
 <!--                    <PickCecommended v-for="(item,index) in personalArticleList" :key="index"-->
@@ -248,6 +249,7 @@
         newEmail: '',
         code: '',
         name: '',
+        loading: false,
 
         ruleValidate: {
           //   name: [
@@ -281,6 +283,7 @@
       }
     },
     created() {
+      this.loading = true;
       const authorId = getCookieAuthorId();                     //session存放的id,登录id
       const paramsId = this.$route.params.authorId;             //传送的id，一般是别人的id
       if (paramsId === authorId) {
@@ -295,6 +298,8 @@
           // console.log(res);
           this.personalArticleList = res.data.data;
           this.total = res.data.total;
+        }).finally(()=>{
+          this.loading = false;
         })
       },
       loadMore() {

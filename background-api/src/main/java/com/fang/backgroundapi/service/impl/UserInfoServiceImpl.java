@@ -169,4 +169,17 @@ public class UserInfoServiceImpl implements UserInfoService {
         userInfoMapper.update(null, wrapper);
         return ServerResponse.success();
     }
+
+    /**
+     * Description: 获取blogger信息
+     * @Author: Bernie_fang
+     * @Since: 2022/1/30 23:08
+     * @param authorId:
+     * @return: com.fang.backgroundapi.common.ServerResponse
+     **/
+    public ServerResponse getBlogger(String authorId) {
+
+        return null;
+    }
+
 }

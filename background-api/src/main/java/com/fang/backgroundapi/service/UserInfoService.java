@@ -1,5 +1,6 @@
 package com.fang.backgroundapi.service;
 
+import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.pojo.DO.UserInfo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.fang.backgroundapi.typehandler.Encrypt;
@@ -30,5 +31,7 @@ public interface UserInfoService {
     public UserInfo findUserInfoByEmail(Encrypt email);
 
     public UserInfo findUserInfoByPhone(String phone);
+
+    public ServerResponse getBlogger(String authorId);
 
 }
