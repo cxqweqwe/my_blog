@@ -9,7 +9,8 @@ const BlogEdit = () => import('views/blog/BlogEdit');
 const Blog = () => import('views/blog/Blog');
 const Login = () => import('views/login/Login');
 const SearchResult = () => import('views/searchResult/SearchResult');
-const Personal = () => import('views/personal/Personal')
+const Personal = () => import('views/personal/Personal');
+const Article = () => import('views/blog/Article');
 
 const routes = [
   {
@@ -39,6 +40,10 @@ const routes = [
   {
     path: '/blog/:articleId',
     component: Blog
+  },
+  {
+    path: '/article',
+    component: Article
   },
   {
     path: '/login',

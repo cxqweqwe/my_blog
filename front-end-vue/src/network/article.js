@@ -73,3 +73,9 @@ export function getMostPageViews(currentPage, size) {
         url: requestUrl + "/mostPageViews/" + currentPage + "/" + size,
     })
 }
+
+export function getList(currentPage, size) {
+    return request({
+        url: requestUrl + "/list/" + currentPage + "/" + size,
+    })
+}

@@ -160,6 +160,14 @@ public class ArticleController extends BaseController {
         return ServerResponse.success(data);
     }
 
+    @GetMapping("/list/{curPage}/{size}")
+    @ApiOperation(value = "同一个作者的博客", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse list(@PathVariable("curPage") Integer currentPage,
+                                      @PathVariable("size") Integer size){
+        PagingData data = articleService.getList(currentPage, size);
+        return ServerResponse.success(data);
+    }
+
     @GetMapping("/mostPageViews/{currentPage}/{size}")
     @ApiOperation(value = "查看人数最多是", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse getMostLike(@PathVariable("currentPage") Integer currentPage,

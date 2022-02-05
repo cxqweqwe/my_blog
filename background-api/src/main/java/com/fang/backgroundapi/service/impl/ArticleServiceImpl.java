@@ -253,4 +253,12 @@ public class ArticleServiceImpl implements ArticleService {
         return pagingData;
     }
 
+    public PagingData getList(Integer currentPage, Integer size) {
+        currentPage = (currentPage - 1) * size;
+        List<MostPopularInfoVO> popular = articleMapper.queryList(currentPage, size);
+        Integer total = articleMapper.latestPostsCount();
+        PagingData data = new PagingData(Long.valueOf(total), popular);
+        return data;
+    }
+
 }

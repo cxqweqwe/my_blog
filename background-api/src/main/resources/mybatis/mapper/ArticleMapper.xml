@@ -163,4 +163,12 @@
         </if>
     </select>
 
+    <select id="queryList" resultType="MostPopularInfoVO">
+        SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.create_time, ar.cover_path, us.nick_name, us.avatar_path
+        FROM article ar, blog_info info, user_info us
+        WHERE ar.article_id = info.article_id AND us.author_id = ar.author_id AND ar.deleted = 0
+        ORDER BY ar.create_time
+        LIMIT #{curPage},#{size}
+    </select>
+
 </mapper>
