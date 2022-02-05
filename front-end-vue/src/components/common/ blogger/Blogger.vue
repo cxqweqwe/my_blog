@@ -4,7 +4,7 @@
       <div class="info">
         <div class="block center">
           <el-avatar :size="80" :src="avatarPath">U</el-avatar>
-          <div>这里是名字</div>
+          <div>{{ blogger.nickName }}</div>
         </div>
         <div class="personal-info">
           <el-row>
