@@ -9,6 +9,7 @@ import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.pojo.DO.UserInfo;
 import com.fang.backgroundapi.mapper.UserInfoMapper;
 import com.fang.backgroundapi.pojo.DTO.UserInfoDTO;
+import com.fang.backgroundapi.pojo.VO.BloggerVO;
 import com.fang.backgroundapi.service.UserInfoService;
 import com.fang.backgroundapi.typehandler.Encrypt;
 import com.fang.backgroundapi.utils.RedisUtils;
@@ -178,8 +179,8 @@ public class UserInfoServiceImpl implements UserInfoService {
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
     public ServerResponse getBlogger(String authorId) {
-
-        return null;
+        BloggerVO bloggerVO = userInfoMapper.gerBlogger(authorId);
+        return ServerResponse.success(bloggerVO);
     }
 
 }

@@ -139,17 +139,9 @@ public class UserInfoController extends BaseController {
          return userInfoService.getBlogger(authorId);
     }
 
-/*
-    SELECT uinfo.author_id, uinfo.nick_name, SUM(binfo1.pageviews), SUM(ar1.article_id),
-		ROUND(DATEDIFF(CURDATE(), create_time)/365.2422)
-
-FROM article ar1, article ar2, blog_info binfo1, blog_info binfo2, user_info uinfo
 
 
-SELECT ROUND(DATEDIFF(CURDATE(), create_time)/30)  FROM `user_info`
-WHERE author_id = '598108905656729600'
 
-*/
 
 }
 

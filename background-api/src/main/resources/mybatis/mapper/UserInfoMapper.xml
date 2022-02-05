@@ -2,4 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fang.backgroundapi.mapper.UserInfoMapper">
 
+    <select id="gerBlogger" resultType="BloggerVO">
+        SELECT
+            uinfo.author_id,
+            uinfo.nick_name,
+            SUM( DISTINCT binfo.pageviews ) beenViews,
+            COUNT( DISTINCT ar1.article_id ) original,
+            ROUND( DATEDIFF( CURDATE( ), uinfo.create_time ) / 30 ) settled,
+            uinfo.personal_profile,
+            uinfo.school,
+            uinfo.company_name
+        FROM
+            article ar1,
+            article ar2,
+            blog_info binfo,
+            user_info uinfo
+        WHERE
+            ar1.attributes = 0 AND	uinfo.author_id = ar1.author_id
+            AND binfo.article_id = ar2.article_id
+            AND ar2.author_id = uinfo.author_id
+            AND uinfo.author_id = #{authorId}
+    </select>
+
 </mapper>

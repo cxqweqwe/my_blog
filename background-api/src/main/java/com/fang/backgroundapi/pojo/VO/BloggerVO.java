@@ -15,12 +15,11 @@ import lombok.NoArgsConstructor;
 public class BloggerVO {
 
     private String authorId;
-    private String avatarPath;
     private String nickName;
     private String beenViews;
-    private String create;
+    private String original;   //原创
     private String subscribed; //被订阅
-    private String settled;
+    private String settled;    //入驻时间
     private String personalProfile;//个人简介
     private String school;
     private String companyName;

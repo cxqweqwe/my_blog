@@ -9,10 +9,10 @@
         <div class="personal-info">
           <el-row>
             <el-col :span="12">
-              <div class="center"><span>3,690</span>被访问</div>
+              <div class="center"><span>{{ blogger.beenViews }}</span>被访问</div>
             </el-col>
             <el-col :span="12">
-              <div class="center">原创<span>18</span></div>
+              <div class="center">原创<span>{{ blogger.original }}</span></div>
             </el-col>
           </el-row>
           <el-row>
@@ -20,7 +20,7 @@
               <div class="center"><span>4</span>被订阅</div>
             </el-col>
             <el-col :span="12">
-              <div class="center">入驻<span>3</span>年</div>
+              <div class="center">入驻<span>{{ blogger.settled }}</span>月</div>
             </el-col>
           </el-row>
 
@@ -31,8 +31,11 @@
                 {{foldName}}
               </template>
               <el-row>
-                <el-col :span="24">
-                  <div class="center">个人简介：我是一阵风：我是一阵风：我是一阵风：我是一阵风：我是一阵风：我是一阵风：我是一阵风：我是一阵风：</div>
+                <el-col :span="5">
+                  <div class="center">个人简介:</div>
+                </el-col>
+                <el-col :span="19">
+                  <div class="center">{{ blogger.personalProfile }}</div>
                 </el-col>
               </el-row>
               <el-row>
@@ -40,7 +43,7 @@
                   <div class="center">毕业院校:</div>
                 </el-col>
                 <el-col :span="19">
-                  <div class="center">电子科技大学中山学院</div>
+                  <div class="center">{{ blogger.school }}</div>
                 </el-col>
               </el-row>
               <el-row>
@@ -48,7 +51,7 @@
                   <div class="center">目前就职:</div>
                 </el-col>
                 <el-col :span="19">
-                  <div class="center">电子科技大学中山学院,电子科技大学中山学院</div>
+                  <div class="center">{{ blogger.companyName }}</div>
                 </el-col>
               </el-row>
             </el-collapse-item>
@@ -61,42 +64,43 @@
 </template>
 
 <script>
+  import {getBlogger} from "network/userInfo";
+
   export default {
     name: "Blogger",
     props: {},
     data() {
       return {
         loading: false,
-        authorId: '',
         avatarPath: '',
-        nickName: '',
-        beenViews: '',
-        create: '',
-        subscribed: '',//被订阅
-        settled: '',
-        personalProfile: '',//个人简介
-        school: '',
-        companyName: '',
-
+        blogger: {},
+        subscribed: '',//TODO: 被订阅
+        showMore: false,
         foldName: '展示更多'
       }
     },
     created() {
       this.loading = true;
       this.authorId = this.$route.params.authorId;
+      this.avatarPath = this.$store.state.authorInfo.avatarPath;
       // console.log(this.authorId);
       this.getUserInfo();
     },
     methods: {
       handleChange(activeNames) {
-        if (activeNames == 15) {
+        this.showMore = !this.showMore;
+        if (this.showMore) {
           this.foldName = '收起';
           return;
         }
         this.foldName = '展示更多';
       },
       getUserInfo() {
-
+        getBlogger().then(res => {
+          this.blogger = res.data;
+        }).finally(()=>{
+          this.loading = false;
+        })
       }
     }
   }
