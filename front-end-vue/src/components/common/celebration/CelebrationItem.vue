@@ -4,7 +4,8 @@
 <!--            <a href="category.html" class="category-badge position-absolute">How to</a>-->
 <!--            <a href="blog-single.html">-->
       <div class="inner pointer" @click="toBlog">
-        <img src="~assets/img/widgets/widget-carousel-2.jpg" alt="post-title"/>
+        <img :src="celebration.coverPath" v-if="celebration.coverPath != null && celebration.coverPath != ''" alt="post-title"/>
+        <img src="http://image.fangweb.top/FANG-Logo.png" v-else alt="post-title"/>
       </div>
       <!--      </a>-->
     </div>
@@ -24,6 +25,7 @@ export default {
     celebration: {
       imgUrl: '',
       title: '',
+      coverPath: '',
       nickName: '',
       createTime: '',
       articleId: '',

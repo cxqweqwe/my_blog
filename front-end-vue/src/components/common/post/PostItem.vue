@@ -4,7 +4,8 @@
     <div class="thumb rounded">
       <a :href="itemData.hrefLink">
         <div class="inner">
-          <img :src="itemData.coverPath" alt="post-title"/>
+          <img :src="itemData.coverPath" v-if="itemData.coverPath != null && itemData.coverPath != ''" alt="post-title"/>
+          <img src="http://image.fangweb.top/FANG-Logo.png" v-else alt="post-title"/>
         </div>
       </a>
     </div>
@@ -19,7 +20,8 @@
     <div class="thumb rounded">
       <a :href="itemData.hrefLink">
         <div class="inner">
-          <img :src="itemData.coverPath" alt="post-title"/>
+          <img :src="itemData.coverPath" v-if="itemData.coverPath != null && itemData.coverPath != ''" alt="post-title"/>
+          <img src="http://image.fangweb.top/FANG-Logo.png" v-else alt="post-title"/>
         </div>
       </a>
     </div>

@@ -65,7 +65,7 @@
     methods: {
       tabNavsClick(select) {
         this.isActive = select;
-        console.log(this.isActive)
+        // console.log(this.isActive);
       },
       sendPopular(){
         getPopular(5).then(res => {

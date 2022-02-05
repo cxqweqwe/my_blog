@@ -57,6 +57,7 @@ export default {
       // console.log(this.curPage);
       if (this.curPage <= 0) {
         this.curPage = 1;
+        this.loading = false;
         return;
       }
       if ((this.curPage + 1) * this.size > this.total) {
@@ -67,9 +68,7 @@ export default {
         this.dataList = res.data.data;
         this.total = res.data.total;
       }).finally(() => {
-        setTimeout(() => {
-          this.loading = false;
-        }, 200);
+        this.loading = false;
       })
 
     }
