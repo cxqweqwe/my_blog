@@ -36,7 +36,7 @@
             <!-- social icons -->
             <ul class="social-icons list-unstyled list-inline mb-0">
 <!--              <li class="list-inline-item"><a href="#"><i class="fab fa-github"></i></a></li>-->
-              <li class="list-inline-item" v-if="!this.$store.state.checkLogin">
+              <li class="list-inline-item" v-if="!(this.avatarPath != null && this.avatarPath != '')">
                 <a href=""><router-link :to="{path:'/login'}">登录/注册</router-link></a>
               </li>
               <li class="list-inline-item" v-else>
@@ -78,7 +78,7 @@
 </template>
 
 <script>
-import {getCookie,getCookieAuthorId} from "common/cookieUtils";
+import {getCookie, getCookieAuthorId, getCookieAvatarPath} from "common/cookieUtils";
 
 export default {
   name: "TabBar",
@@ -98,7 +98,7 @@ export default {
   },
   created() {
     this.authorId = getCookieAuthorId();
-    this.avatarPath = this.$store.state.authorInfo.avatarPath;
+    this.avatarPath = getCookieAvatarPath();
   },
   methods: {
     toSearch() {
