@@ -132,10 +132,9 @@ public class UserInfoController extends BaseController {
         return userInfoService.queryUserInfo(currentPage,size);
     }
 
-     @GetMapping("/blogger")
+     @GetMapping("/blogger/{authorId}")
     @ApiOperation(value = "查询全部用户信息", response = ServerResponse.class, httpMethod = "GET")
-    public ServerResponse getBlogger() throws MyException {
-         String authorId = super.getAuthorId();
+    public ServerResponse getBlogger(@PathVariable("authorId") String authorId) {
          return userInfoService.getBlogger(authorId);
     }
 

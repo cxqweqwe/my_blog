@@ -5,6 +5,7 @@
     <select id="gerBlogger" resultType="BloggerVO">
         SELECT
             uinfo.author_id,
+            uinfo.avatar_path,
             uinfo.nick_name,
             SUM( DISTINCT binfo.pageviews ) beenViews,
             COUNT( DISTINCT ar1.article_id ) original,

@@ -8,16 +8,12 @@
           <div class="col-lg-8">
 
             <div v-if="isMy">
-
               <Tabs @on-click="clickHandle" v-loading="loading">
                 <TabPane label="我的博客" icon="ios-book" name="myBlog">
-<!--                  <div class="row ">-->
-<!--                    <PickCecommended v-for="(item,index) in personalArticleList" :key="index"-->
-<!--                                     :pickData="item"></PickCecommended>-->
-<!--                  </div>-->
                   <div class="padding-30 rounded bordered">
                     <div class="row">
-                      <LatestPostsItem v-for="(itemData,index) in personalArticleList" :key="index" :item="itemData" ></LatestPostsItem>
+                      <LatestPostsItem v-for="(itemData,index) in personalArticleList" :key="index"
+                                       :item="itemData"></LatestPostsItem>
                     </div>
                   </div>
                   <div class="space"></div>
@@ -108,8 +104,8 @@
 
                     <FormItem label="邮箱" prop="email" title="点击修改">
                       <div @click="emailModal=true" class="finger">
-                      <Input v-model="formValidate.email" placeholder="Enter your e-mail" :border="false"
-                             :readonly="true" style="width: 210px"></Input>
+                        <Input v-model="formValidate.email" placeholder="Enter your e-mail" :border="false"
+                               :readonly="true" style="width: 210px"></Input>
                       </div>
                     </FormItem>
 
@@ -133,13 +129,17 @@
                       :footer-hide=true>
                     <Row>
                       <Col span="4" class="line32">更换手机号码</Col>
-                      <Col span="15"><Input v-model="newPhone" placeholder="Enter phone" clearable /></Col>
-                      <Col span="5"><Button type="dashed" @click="getCode('phone')">获取验证码</Button></Col>
+                      <Col span="15"><Input v-model="newPhone" placeholder="Enter phone" clearable/></Col>
+                      <Col span="5">
+                        <Button type="dashed" @click="getCode('phone')">获取验证码</Button>
+                      </Col>
                     </Row>
                     <Row>
                       <Col span="4" class="line32">手机验证码</Col>
-                      <Col span="15"><Input v-model="code" placeholder="Enter code" clearable /></Col>
-                      <Col span="5"><Button type="dashed" @click="update('email')"> 更 新 信 息 </Button></Col>
+                      <Col span="15"><Input v-model="code" placeholder="Enter code" clearable/></Col>
+                      <Col span="5">
+                        <Button type="dashed" @click="update('email')"> 更 新 信 息</Button>
+                      </Col>
                     </Row>
                   </Modal>
                   <Modal
@@ -148,13 +148,17 @@
                       :footer-hide=true>
                     <Row>
                       <Col span="5" class="line32">更换邮箱地址</Col>
-                      <Col span="14"><Input v-model="newEmail" placeholder="Enter email" clearable /></Col>
-                      <Col span="5"><Button type="dashed" @click="getCode('email')">获取验证码</Button></Col>
+                      <Col span="14"><Input v-model="newEmail" placeholder="Enter email" clearable/></Col>
+                      <Col span="5">
+                        <Button type="dashed" @click="getCode('email')">获取验证码</Button>
+                      </Col>
                     </Row>
                     <Row>
                       <Col span="5" class="line32">邮箱验证码</Col>
-                      <Col span="14"><Input v-model="code" placeholder="Enter code" clearable /></Col>
-                      <Col span="5"><Button type="dashed" @click="update('email')"> 更 新 信 息 </Button></Col>
+                      <Col span="14"><Input v-model="code" placeholder="Enter code" clearable/></Col>
+                      <Col span="5">
+                        <Button type="dashed" @click="update('email')"> 更 新 信 息</Button>
+                      </Col>
                     </Row>
                   </Modal>
 
@@ -165,8 +169,22 @@
                 </TabPane>
               </Tabs>
             </div>
-            <div v-else class="a">
-              asdb
+            <div v-else class="">
+              <div v-loading="loading">
+                <div class="padding-30 rounded bordered">
+                  <div class="row">
+                    <LatestPostsItem v-for="(itemData,index) in personalArticleList" :key="index"
+                                     :item="itemData"></LatestPostsItem>
+                  </div>
+                  <div class="span-text">这个人太懒了,什么都没留下。。。</div>
+                </div>
+              </div>
+              <div class="space"></div>
+              <div class="box-line"></div>
+              <div class="space"></div>
+              <div class="text-center">
+                <Page :total="total" :page-size="6" @on-change="change" show-elevator/>
+              </div>
             </div>
 
           </div>
@@ -181,6 +199,7 @@
       </div>
     </section>
 
+    <div class="space"></div>
   </div>
 </template>
 
@@ -280,6 +299,7 @@
           //     {type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur'}
           //   ]
         }
+
       }
     },
     created() {
@@ -298,7 +318,7 @@
           // console.log(res);
           this.personalArticleList = res.data.data;
           this.total = res.data.total;
-        }).finally(()=>{
+        }).finally(() => {
           this.loading = false;
         })
       },
@@ -377,28 +397,28 @@
       },
 
       // 获取验证码, 手机/邮箱
-      getCode(path){
-        if ('phone'==path){
+      getCode(path) {
+        if ('phone' == path) {
           getPhoneCode(this.newPhone).then(res => {
             this.commonMethod(res);
           })
-        }else if ('email'==path){
+        } else if ('email' == path) {
           console.log(this.newEmail);
           getEmailCode(this.newEmail).then(res => {
             this.commonMethod(res);
           })
         }
       },
-      update(path){
-        if ('phone'==path){
-          updatePhone(this.newPhone,this.code).then(res => {
+      update(path) {
+        if ('phone' == path) {
+          updatePhone(this.newPhone, this.code).then(res => {
             this.commonMethod(res);
             // this.formValidate.phoneNumber = ''; //更换
             this.newPhone = '';
             this.phoneModal = false;
           })
-        }else if ('email'==path){
-          updateEmail(this.newEmail,this.code).then(res => {
+        } else if ('email' == path) {
+          updateEmail(this.newEmail, this.code).then(res => {
             console.log(res);
             this.commonMethod(res);
             // this.formValidate.email = ''; //更换
@@ -410,7 +430,7 @@
       },
 
 
-      commonMethod(res){
+      commonMethod(res) {
         if (res.status == 2000) {
           this.$notify({
             title: '成功',
@@ -428,7 +448,14 @@
             message: res.msg + res.data
           });
         }
+      },
+      change(current) {
+        getPersonalArticle(current, 6, this.authorId).then(res => {
+          this.personalArticleList = res.data.data;
+          this.total = res.data.total;
+        })
       }
+
     }
   }
 </script>
@@ -456,10 +483,16 @@
     cursor: pointer;
   }
 
-  .line32{
+  .line32 {
     padding-right: 10px;
     text-align: right;
     line-height: 32px;
   }
 
+  .span-text{
+    color: #fe5070;
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+  }
 </style>

@@ -3,7 +3,7 @@
     <div class="a">
       <div class="info">
         <div class="block center">
-          <el-avatar :size="80" :src="avatarPath">U</el-avatar>
+          <el-avatar :size="80" :src="blogger.avatarPath">U</el-avatar>
           <div>{{ blogger.nickName }}</div>
         </div>
         <div class="personal-info">
@@ -96,7 +96,7 @@
         this.foldName = '展示更多';
       },
       getUserInfo() {
-        getBlogger().then(res => {
+        getBlogger(this.authorId).then(res => {
           this.blogger = res.data;
         }).finally(()=>{
           this.loading = false;

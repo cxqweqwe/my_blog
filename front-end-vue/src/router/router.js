@@ -43,7 +43,11 @@ const routes = [
   },
   {
     path: '/article',
-    component: Article
+    component: Article,
+    meta: {
+      hidden: true,
+      title:"博客列表"
+    }
   },
   {
     path: '/login',
@@ -63,7 +67,11 @@ const routes = [
   },
   {
     path: '/user/:authorId',
-    component: Personal
+    component: Personal,
+    meta: {
+      hidden: true,
+      title:"我的"
+    }
   },
 
 ];

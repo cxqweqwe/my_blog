@@ -38,8 +38,8 @@ export function updateEmail(email,code) {
     })
 }
 
-export function getBlogger(){
+export function getBlogger(param){
     return request({
-        url: requestUrl + "/blogger"
+        url: requestUrl + "/blogger/" + param,
     })
 }

@@ -16,6 +16,7 @@ public class BloggerVO {
 
     private String authorId;
     private String nickName;
+    private String avatarPath;
     private String beenViews;
     private String original;   //原创
     private String subscribed; //被订阅
