@@ -47,7 +47,7 @@ public interface ArticleMapper extends BaseMapper<Article> {
      * @Since: 2021/10/13 20:27
      * @return: java.util.List<com.fang.backgroundapi.pojo.VO.SearchBlogVO>
      **/
-    public List<SearchBlogVO> searchBlog(@Param("keywordList") List<String> keywordList,
+    public List<MostPopularInfoVO> searchBlog(@Param("keywordList") List<String> keywordList,
                                          @Param("currentPage") Integer currentPage,
                                          @Param("size") Integer size);
 

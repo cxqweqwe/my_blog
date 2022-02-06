@@ -176,7 +176,9 @@
                     <LatestPostsItem v-for="(itemData,index) in personalArticleList" :key="index"
                                      :item="itemData"></LatestPostsItem>
                   </div>
-                  <div class="span-text">这个人太懒了,什么都没留下。。。</div>
+                  <div class="span-text" v-if="personalArticleList != null && personalArticleList.length == 0">
+                    这个人太懒了,什么都没留下。。。
+                  </div>
                 </div>
               </div>
               <div class="space"></div>

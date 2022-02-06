@@ -4,7 +4,22 @@
       您搜索的关键词：
       <Tag color="#ff5d74" v-for="(item,index) in tags" :key="index">{{ item }}</Tag>
     </div>
-    <SearchItem v-for="(searchData,index) in searchDataList" :key="index" :search-data="searchData"></SearchItem>
+
+    <div class="space"></div>
+<!--    <SearchItem v-for="(searchData,index) in searchDataList" :key="index" :search-data="searchData"></SearchItem>-->
+    <div v-loading="loading">
+      <div class="padding-30 rounded bordered">
+        <div class="row">
+          <LatestPostsItem v-for="(itemData,index) in searchDataList" :key="index"
+                           :item="itemData"></LatestPostsItem>
+        </div>
+        <div class="span-text"  v-if="searchDataList != null && searchDataList.length == 0">
+          什么都没有。。。
+        </div>
+      </div>
+    </div>
+    <div class="space"></div>
+    <div class="box-line"></div>
     <div class="space"></div>
 
   </div>
@@ -12,15 +27,18 @@
 
 <script>
 import SearchItem from "components/common/search/SearchItem";
+import LatestPostsItem from "components/common/latestPosts/LatestPostsItem";
 
 export default {
   name: "ResultContent",
   components: {
-    SearchItem
+    SearchItem,
+    LatestPostsItem,
   },
   props: {
-    tags: [],
-    searchDataList:[]
+    loading: Boolean,
+    tags: Array,
+    searchDataList: Array
   },
   data() {
     return {

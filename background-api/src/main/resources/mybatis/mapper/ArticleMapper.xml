@@ -32,9 +32,9 @@
         LIMIT 0,#{quantity}
     </select>
 
-    <select id="searchBlog" resultType="SearchBlogVO">
-        SELECT DISTINCT ar.article_id, ar.title, ar.brief_introduction, uin.author_id, uin.avatar_path, uin.nick_name, bin.pageviews, bin.likes,
-        bin.collection
+    <select id="searchBlog" resultType="MostPopularInfoVO">
+        SELECT DISTINCT ar.article_id, ar.title, ar.brief_introduction, ar.create_time, ar.cover_path,
+        uin.author_id, uin.avatar_path, uin.nick_name, bin.pageviews, bin.likes, bin.collection
         FROM article ar,blog_info bin, user_info uin
         WHERE ar.author_id = uin.author_id AND bin.article_id = ar.article_id
         AND (

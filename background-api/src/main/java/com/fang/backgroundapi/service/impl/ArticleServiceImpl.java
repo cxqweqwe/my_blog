@@ -148,10 +148,7 @@ public class ArticleServiceImpl implements ArticleService {
         currentPage = (currentPage - 1) * size;
         String[] keywords = keyword.trim().split("\\s+");
         List<String> list = Arrays.asList(keywords);
-        List<SearchBlogVO> searchBlogVOS = articleMapper.searchBlog(list, currentPage, size);
-        for (SearchBlogVO blogVO : searchBlogVOS) {
-            System.out.println(blogVO);
-        }
+        List<MostPopularInfoVO> searchBlogVOS = articleMapper.searchBlog(list, currentPage, size);
         Integer total = articleMapper.searchBlogCount(list);
         PagingData data = new PagingData(Long.valueOf(total), searchBlogVOS);
         return data;
