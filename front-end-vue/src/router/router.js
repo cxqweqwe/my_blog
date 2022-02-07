@@ -39,7 +39,11 @@ const routes = [
   },
   {
     path: '/blog/:articleId',
-    component: Blog
+    component: Blog,
+    meta: {
+      hidden: true,
+      title:"详情"
+    }
   },
   {
     path: '/article',

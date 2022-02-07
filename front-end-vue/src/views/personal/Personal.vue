@@ -191,7 +191,7 @@
 
           </div>
           <div class="col-lg-4">
-            <Blogger></Blogger>
+            <Blogger :authorId="authorId"></Blogger>
             <PostTabs></PostTabs>
             <div class="space"></div>
             <Celebration></Celebration>

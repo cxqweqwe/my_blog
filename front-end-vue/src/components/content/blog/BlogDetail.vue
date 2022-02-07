@@ -111,6 +111,7 @@
           this.article = res.data;
           this.labels = this.article.label.split(',');
           this.getAuthorInfo();
+          document.title = this.article.title;
         }).catch(res => {
           this.$notify.error({
             title: '错误',

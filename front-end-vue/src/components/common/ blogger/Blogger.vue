@@ -65,15 +65,23 @@
 
 <script>
   import {getBlogger} from "network/userInfo";
+  import {getCookieAuthorId} from "common/cookieUtils";
 
   export default {
     name: "Blogger",
-    props: {},
+    props: {
+      authorId: String,
+    },
     data() {
       return {
         loading: false,
         avatarPath: '',
-        blogger: {},
+        blogger: {
+          nickName: '未登录',
+          beenViews: '0',
+          original: '0',
+          settled: '0',
+        },
         subscribed: '',//TODO: 被订阅
         showMore: false,
         foldName: '展示更多'
@@ -81,9 +89,11 @@
     },
     created() {
       this.loading = true;
-      this.authorId = this.$route.params.authorId;
-      this.avatarPath = this.$store.state.authorInfo.avatarPath;
-      // console.log(this.authorId);
+      // this.authorId = this.$route.params.authorId;
+      // this.avatarPath = this.$store.state.authorInfo.avatarPath;
+      if (this.authorId == undefined || this.authorId == null || this.authorId == ''){
+        this.authorId = getCookieAuthorId();
+      }
       this.getUserInfo();
     },
     methods: {
@@ -96,6 +106,9 @@
         this.foldName = '展示更多';
       },
       getUserInfo() {
+        if (this.authorId == undefined || this.authorId == ''){
+          return;
+        }
         getBlogger(this.authorId).then(res => {
           this.blogger = res.data;
         }).finally(()=>{
