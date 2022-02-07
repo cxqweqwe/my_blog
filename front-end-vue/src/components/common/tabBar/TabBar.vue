@@ -136,7 +136,7 @@ export default {
     },
     logout(){
       console.log("logout");
-      if (!this.$store.state.checkLogin){
+      if (this.authorId == undefined || this.authorId == ''){
         this.$notify({
           message: '请先登录',
           type: 'warning'
@@ -149,7 +149,6 @@ export default {
       if(keys) {
         for(let i = keys.length; i--;)
           document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString();
-          console.log("logout");
       }
       this.$store.commit('checkLogin', false);
     },

@@ -4,7 +4,7 @@
       <div class="info">
         <Row>
           <Col span="24">
-            <h1>{{ article.title }}</h1>
+            <h1 class="text-title" :title="article.title">{{ article.title }}</h1>
           </Col>
         </Row>
         <div class="space"></div>
@@ -112,6 +112,7 @@
           this.labels = this.article.label.split(',');
           this.getAuthorInfo();
           document.title = this.article.title;
+          this.$emit('returnData', this.article.authorId);
         }).catch(res => {
           this.$notify.error({
             title: '错误',
@@ -280,6 +281,15 @@
   .line-2 .label .label {
     color: #939395;
     line-height: 38px;
+  }
+
+  .text-title{
+    width: 100%;
+    max-width: 684px;
+    overflow: hidden;
+    white-space: normal; /* 正常换行显示 */
+    text-overflow: ellipsis;
+    cursor: pointer;
   }
 
   .markdown-body {
