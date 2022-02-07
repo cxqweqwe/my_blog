@@ -73,6 +73,10 @@ public class ArticleVO implements Serializable {
      * 封面路径
      */
     private String coverPath;
+    /**
+     * 作者头像
+     */
+    private String avatarPath;
 
     /**
      * 修改时间

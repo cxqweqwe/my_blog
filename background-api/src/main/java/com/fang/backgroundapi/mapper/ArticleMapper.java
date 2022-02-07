@@ -2,6 +2,7 @@ package com.fang.backgroundapi.mapper;
 
 import com.fang.backgroundapi.pojo.DO.Article;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.fang.backgroundapi.pojo.VO.ArticleVO;
 import com.fang.backgroundapi.pojo.VO.MostPopularInfoVO;
 import com.fang.backgroundapi.pojo.VO.PostShowVO;
 import com.fang.backgroundapi.pojo.VO.SearchBlogVO;
@@ -20,6 +21,8 @@ import java.util.List;
  */
 @Repository
 public interface ArticleMapper extends BaseMapper<Article> {
+
+    public ArticleVO findDetail(@Param("articleId") String articleId);
 
     /**
      * @Description: 查找点赞最多(最受欢迎)的博客

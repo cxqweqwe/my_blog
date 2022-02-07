@@ -10,7 +10,7 @@
         <div class="space"></div>
         <Row>
           <Col span="16">
-            <Avatar style="color: #ffffff;background-color: #ea7f7f">U</Avatar>&nbsp;
+            <Avatar :src="article.avatarPath" style="color: #ffffff;background-color: #ea7f7f">U</Avatar>&nbsp;
             <div class="nick-name">
               {{ nickName }}
             </div>
@@ -77,6 +77,7 @@
           articleId: "",
           attributes: 1,
           authorId: "",
+          avatarPath: '',
           briefIntroduction: "",
           content: "",
           createTime: "",
@@ -124,11 +125,11 @@
       //喜欢博客点赞
       likeClick() {
         //发送网络请求
-        console.log(this.likeOrNot);
         if (!this.likeOrNot) {
           // 未点赞
           likeBlog(this.articleId).then(res => {
-              if (res.stat == 6000) {
+              console.log(res);
+              if (res.status == 6000) {
                 this.$notify.info({
                   title: '提示',
                   message: res.msg
@@ -143,6 +144,8 @@
               });
             }
           ).catch(res => {
+            console.log('1');
+            console.log(res);
             this.$notify.error({
               title: '错误',
               message: '网络开小差了'
@@ -150,7 +153,7 @@
           })
         } else {
           unLikeBlog(this.articleId).then(res => {
-            if (res.stat == 6000) {
+            if (res.status == 6000) {
               this.$notify.info({
                 title: '提示',
                 message: res.msg
@@ -164,6 +167,8 @@
               type: 'success'
             });
           }).catch(res => {
+            console.log('2');
+            console.log(res);
             this.$notify.error({
               title: '错误',
               message: '网络开小差了'

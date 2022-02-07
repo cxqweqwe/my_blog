@@ -2,6 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fang.backgroundapi.mapper.ArticleMapper">
 
+    <select id="findDetail" resultType="com.fang.backgroundapi.pojo.VO.ArticleVO">
+        SELECT
+            ar.article_id,
+            ar.author_id,
+            ar.title,
+            ar.brief_introduction,
+            ar.content,
+            ar.html,
+            ar.label,
+            ar.attributes,
+            ar.release_or_not,
+            ar.cover_path,
+            ar.modified_time,
+            info.avatar_path
+        FROM
+            article ar, user_info info
+        WHERE
+            ar.deleted = 0
+            AND ar.author_id = info.author_id
+            AND article_id = #{articleId}
+    </select>
+
     <select id="queryMostPopular" parameterType="Integer" resultType="MostPopularInfoVO">
         SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.modified_time,
                 uinfo.nick_name, ar.cover_path

@@ -8,9 +8,9 @@ import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.pojo.DO.Article;
 import com.fang.backgroundapi.mapper.ArticleMapper;
 import com.fang.backgroundapi.pojo.DTO.ArticleDTO;
+import com.fang.backgroundapi.pojo.VO.ArticleVO;
 import com.fang.backgroundapi.pojo.VO.MostPopularInfoVO;
 import com.fang.backgroundapi.pojo.VO.PostShowVO;
-import com.fang.backgroundapi.pojo.VO.SearchBlogVO;
 import com.fang.backgroundapi.service.ArticleService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -58,6 +58,11 @@ public class ArticleServiceImpl implements ArticleService {
         wrapper.eq("article_id", articleId);
         Article article = articleMapper.selectOne(wrapper);
         return article;
+    }
+
+    public ArticleVO findArticleDetail(String articleId) {
+        ArticleVO detail = articleMapper.findDetail(articleId);
+        return detail;
     }
 
     @Override

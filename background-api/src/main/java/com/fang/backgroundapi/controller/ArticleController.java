@@ -65,10 +65,8 @@ public class ArticleController extends BaseController {
     @GetMapping("/detail/{articleId}")
     @ApiOperation(value = "获取博客详情", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse articleDetail(@PathVariable("articleId") @NotBlank(message = "博文ID不能为空")String articleId) {
-        Article article = articleService.findArticleArticleId(articleId);
-        ArticleVO articleVO = new ArticleVO();
-        BeanUtils.copyProperties(article, articleVO);
-        return ServerResponse.success(articleVO);
+        ArticleVO article = articleService.findArticleDetail(articleId);
+        return ServerResponse.success(article);
     }
 
     @GetMapping("/delete/{articleId}")
