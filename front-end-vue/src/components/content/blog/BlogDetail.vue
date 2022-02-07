@@ -62,6 +62,8 @@
   import {getBlogInfo, likeBlog, unLikeBlog} from "network/blogInfo";
 
   import Comment from "components/content/comment/Comment";
+  import {checkLike} from "network/likesRecord";
+  import {getCookieAuthorId} from "common/cookieUtils";
 
 
   export default {
@@ -103,6 +105,7 @@
       // 获取文章
       this.getDetail(this.articleId);
       this.getBlogInfo(this.articleId);
+      this.sendAndCheck(this.articleId);
     },
     computed: {},
     methods: {
@@ -143,14 +146,7 @@
                 type: 'success'
               });
             }
-          ).catch(res => {
-            console.log('1');
-            console.log(res);
-            this.$notify.error({
-              title: '错误',
-              message: '网络开小差了'
-            });
-          })
+          )
         } else {
           unLikeBlog(this.articleId).then(res => {
             if (res.status == 6000) {
@@ -165,13 +161,6 @@
             this.$notify({
               message: '已取消喜欢',
               type: 'success'
-            });
-          }).catch(res => {
-            console.log('2');
-            console.log(res);
-            this.$notify.error({
-              title: '错误',
-              message: '网络开小差了'
             });
           })
         }
@@ -196,10 +185,18 @@
           this.pageviews = res.data.pageviews;
         })
       },
-
+      sendAndCheck(articleId) {
+        const authorId = getCookieAuthorId();
+        if (authorId == undefined || authorId == '' || authorId == null){
+          return ;
+        }
+        checkLike(articleId,authorId).then(res => {
+          this.likeOrNot = res.data;
+        })
+      },
 
       // 方法结束
-    }
+    },
 
   }
 </script>

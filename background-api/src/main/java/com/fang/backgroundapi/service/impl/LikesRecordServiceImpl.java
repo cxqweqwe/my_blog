@@ -68,4 +68,12 @@ public class LikesRecordServiceImpl implements LikesRecordService {
         return likesRecord;
     }
 
+    public Boolean checkLike(String authorId, String articleId) {
+        LikesRecord likeRecord = this.findLikeRecord(authorId, articleId);
+        if (likeRecord != null){
+            return true;
+        }
+        return false;
+    }
+
 }
