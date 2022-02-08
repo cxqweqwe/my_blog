@@ -1,11 +1,9 @@
 package com.fang.backgroundapi.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.fang.backgroundapi.pojo.DO.BlogInfo;
 import com.fang.backgroundapi.pojo.DO.LikesRecord;
 import com.fang.backgroundapi.mapper.LikesRecordMapper;
 import com.fang.backgroundapi.service.LikesRecordService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
