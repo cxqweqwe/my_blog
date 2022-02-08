@@ -4,7 +4,10 @@
       <div class="info">
         <div class="block center">
           <el-avatar :size="80" :src="blogger.avatarPath">U</el-avatar>
-          <div>{{ blogger.nickName }}</div>
+          <div>
+            {{ blogger.nickName }} &nbsp;
+            <span class="attention" title="关注以便得到ta最新的动态"><i class="el-icon-plus"></i>关注他</span>
+          </div>
         </div>
         <div class="personal-info">
           <el-row>
@@ -147,5 +150,18 @@
     font-size: 22px;
     font-weight: bold;
     color: black;
+  }
+
+  .attention{
+    padding: 2px 4px;
+    border: 1px solid #fe6a78;
+    border-radius: 8px;
+    background: #f68399;
+  }
+
+  .attention:hover {
+    color: white;
+    background: #fd5c73;
+    cursor: pointer;
   }
 </style>
