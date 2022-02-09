@@ -3,6 +3,7 @@ import {base_url} from "../common/common_variable";
 import { MessageBox, Message, Notification } from 'element-ui';
 // import store from '@/store';
 import router from '../router/router';
+import {getCookie} from "common/cookieUtils";
 
 export function request(config) {
   // 1.创建axios的实例
@@ -16,7 +17,7 @@ export function request(config) {
   // 2.1.请求拦截的作用
   instance.interceptors.request.use(config => {
     // 如果有token,携带token
-    let token = sessionStorage.Authorization
+    let token = getCookie();
     if(token){
       config.headers.common['Authorization'] = token;
     }

@@ -3,7 +3,11 @@
     <div class="a">
       <div class="info">
         <div class="block center">
-          <el-avatar :size="80" :src="blogger.avatarPath">U</el-avatar>
+          <a href="">
+            <router-link :to="{path:'/user/' + authorId}" target="_blank">
+            <el-avatar :size="80" :src="blogger.avatarPath">U</el-avatar>
+            </router-link>
+          </a>
           <div>
             {{ blogger.nickName }} &nbsp;
             <span class="attention" @click="subscribe(true)" v-if="!isSubscribed" title="订阅以便得到ta最新的动态"><i class="el-icon-plus"></i>订阅</span>

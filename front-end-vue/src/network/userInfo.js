@@ -38,6 +38,16 @@ export function updateEmail(email,code) {
     })
 }
 
+export function updateAvatar(avatarPath) {
+    return request({
+        url: requestUrl + '/update/avatar',
+        method: 'post',
+        params: {
+            avatar: avatarPath
+        }
+    })
+}
+
 export function getBlogger(param){
     return request({
         url: requestUrl + "/blogger/" + param,

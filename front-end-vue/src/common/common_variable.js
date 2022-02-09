@@ -12,5 +12,5 @@ export const SESSION_AVATAR_KEY= "avatarPath";
 export const SESSION_NICKNAME_KEY= "nickName";
 export const SESSION_TOKEN_KEY= "Authorization";
 
-export const base64_request_url = base_url + "imageBase64/download/image-base64/";
+export const IMAGE_UPLOAD_URL = base_url + "/oss/upload";
 export const image_code_url = base_url + "/common/code/captcha";

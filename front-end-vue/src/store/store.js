@@ -41,15 +41,12 @@ export default new Vuex.Store({
       }else {
         // 退出登录
         state.checkLogin = status;
-        this.cleanAll(state);
+        state.authorInfo.authorId = '';
+        state.authorInfo.nickName = '';
+        state.authorInfo.avatarPath = '';
+        state.authorInfo.token = '';
       }
       sessionStorage.setItem("store",JSON.stringify(state));
-    },
-    cleanAll(state){
-      state.authorInfo.authorId = '';
-      state.authorInfo.nickName = '';
-      state.authorInfo.avatarPath = '';
-      state.authorInfo.token = '';
     }
   },
   actions: {

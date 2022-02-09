@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TabBar></TabBar>
+    <TabBar v-if="reload"></TabBar>
 
     <section class="main-content">
       <div class="container-xl">
@@ -10,17 +10,22 @@
             <div v-if="isMy">
               <Tabs @on-click="clickHandle" v-loading="loading">
                 <TabPane label="我的博客" icon="ios-book" name="myBlog">
-                  <div class="padding-30 rounded bordered">
-                    <div class="row">
-                      <LatestPostsItem v-for="(itemData,index) in personalArticleList" :key="index"
-                                       :item="itemData"></LatestPostsItem>
-                    </div>
+                  <div class="span-text" v-if="personalArticleList != null && personalArticleList.length == 0">
+                    这个人太懒了,什么都没留下。。。
                   </div>
-                  <div class="space"></div>
-                  <div class="box-line"></div>
-                  <div class="space"></div>
-                  <div class="text-center">
-                    <button class="btn btn-simple" @click="loadMore()">Load More</button>
+                  <div v-else>
+                    <div class="padding-30 rounded bordered">
+                      <div class="row">
+                        <LatestPostsItem v-for="(itemData,index) in personalArticleList" :key="index"
+                                         :item="itemData"></LatestPostsItem>
+                      </div>
+                    </div>
+                    <div class="space"></div>
+                    <div class="box-line"></div>
+                    <div class="space"></div>
+                    <div class="text-center">
+                      <button class="btn btn-simple" @click="loadMore()">Load More</button>
+                    </div>
                   </div>
                 </TabPane>
                 <TabPane label="个人信息" icon="ios-person" name="personalInfo">
@@ -119,7 +124,19 @@
                       title="更换头像"
                       @on-ok="avatarOk"
                       @on-cancel="avatarCancel">
-                    <!--// TODO: 上传文件的组件-->
+                    <el-upload
+                        ref="upload"
+                        class="upload-demo"
+                        :limit="1"
+                        :action="uploadUrl"
+                        :headers="addHeader"
+                        :before-upload="beforeUpload"
+                        :on-success="uploadSuccess"
+                        :on-error="uploadError"
+                        list-type="picture">
+                      <el-button size="small" type="primary">点击上传</el-button>
+                      <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB，限制一张</div>
+                    </el-upload>
                   </Modal>
 
                   <Modal
@@ -191,7 +208,7 @@
 
           </div>
           <div class="col-lg-4">
-            <Blogger :authorId="authorId"></Blogger>
+            <Blogger :authorId="authorId"  v-if="reload"></Blogger>
             <PostTabs></PostTabs>
             <div class="space"></div>
             <Celebration></Celebration>
@@ -213,11 +230,13 @@
   import PickCecommended from "components/content/main/PickCecommended";
 
   import {getPersonalArticle} from "network/article";
-  import {getCookie, getCookieAuthorId} from "common/cookieUtils";
-  import {getAuthorInfo, updateUserInfo, updatePhone, updateEmail} from "network/userInfo";
-  import {getBase64} from "common/imageUtils";
+  import {getCookie, getCookieAuthorId, setCookieAvatarPath} from "common/cookieUtils";
+  import {getAuthorInfo, updateUserInfo, updatePhone, updateEmail, updateAvatar} from "network/userInfo";
   import {getPhoneCode, getEmailCode} from "network/login";
   import LatestPostsItem from "components/common/latestPosts/LatestPostsItem";
+  import ImageUpload from "components/common/loading/ImageUpload";
+  import {IMAGE_UPLOAD_URL} from "common/common_variable";
+  import {SESSION_AVATAR_KEY} from "../../common/common_variable";
 
   export default {
     name: "Personal",
@@ -228,6 +247,7 @@
       Blogger,
       PickCecommended,
       LatestPostsItem,
+      ImageUpload,
     },
     data() {
       return {
@@ -272,6 +292,9 @@
         name: '',
         loading: false,
 
+        reload: true,
+        uploadUrl: '',
+
         ruleValidate: {
           //   name: [
           //     {required: true, message: 'The name cannot be empty', trigger: 'blur'}
@@ -313,6 +336,7 @@
       }
       this.authorId = paramsId;
       this.sendPersonalBlog();
+      this.uploadUrl = IMAGE_UPLOAD_URL;
     },
     methods: {
       sendPersonalBlog() {
@@ -363,7 +387,6 @@
           }
         }
       },
-
       // 个人信息页面方法
       handleSubmit(name) {
         this.$refs[name].validate((valid) => {
@@ -384,20 +407,15 @@
       handleReset(name) {
         this.$refs[name].resetFields();
       },
-
       // 点击头像
       itemClick(message) {
 
       },
-
       // 对话框请求
       avatarOk() {
-        this.$Message.info('Clicked ok');
       },
       avatarCancel() {
-
       },
-
       // 获取验证码, 手机/邮箱
       getCode(path) {
         if ('phone' == path) {
@@ -430,8 +448,6 @@
         }
         this.code = '';
       },
-
-
       commonMethod(res) {
         if (res.status == 2000) {
           this.$notify({
@@ -456,8 +472,72 @@
           this.personalArticleList = res.data.data;
           this.total = res.data.total;
         })
+      },
+      closeUpload() {
+        this.avatarModal = false;
+      },
+      // 上传文件之前的钩子 图片大小检验
+      beforeUpload(file) {
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+          this.$notify({
+            title: '警告',
+            message: '图片大小不允许超过2M',
+            type: 'warning'
+          });
+        }
+        return isLt2M;
+      },
+      uploadSuccess(response, file, fileList) {
+        if (response.status == '2000') {
+          const newAvatarPath = response.data;
+          updateAvatar(newAvatarPath).then(res => {
+            this.$notify({
+              message: res.msg,
+              type: 'success'
+            });
+          })
+          sessionStorage.setItem(SESSION_AVATAR_KEY, newAvatarPath);
+          let info = {
+            avatarPath: newAvatarPath
+          }
+          this.$store.commit('set', info);
+          setCookieAvatarPath(newAvatarPath);
+          this.formValidate.avatarPath = newAvatarPath;
+          this.reloadAvatar();
+          this.closeUpload();
+        } else {
+          this.$notify.info({
+            title: '封面图片上传失败',
+            message: response.msg
+          });
+          fileList.splice(1, 1);//fileList的失败文件
+        }
+      },
+      uploadError(err, file, fileList) {
+        this.$notify.error({
+          message: '出错了，请联系系统管理员'
+        });
+      },
+      closeUpload(select) {
+        // this.$parent.centerDialogVisible = false;// 直接改会报错
+        if (select === 2) {
+          this.returnData.isRelease = true;//必须设置为true，才会上传
+        }
+        this.$emit('item-click', this.returnData);
+      },
+      async reloadAvatar(){
+        this.reload = false;
+        await this.$nextTick();
+        this.reload = true;
       }
-
+    },
+    computed: {
+      addHeader() {
+        return {
+          'Authorization': getCookie()
+        }
+      }
     }
   }
 </script>
@@ -491,7 +571,7 @@
     line-height: 32px;
   }
 
-  .span-text{
+  .span-text {
     color: #fe5070;
     width: 100%;
     text-align: center;

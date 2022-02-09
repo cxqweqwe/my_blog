@@ -74,7 +74,7 @@ const routes = [
     component: Personal,
     meta: {
       hidden: true,
-      title:"我的"
+      title:"我的-用户页"
     }
   },
 
