@@ -6,7 +6,8 @@
           <el-avatar :size="80" :src="blogger.avatarPath">U</el-avatar>
           <div>
             {{ blogger.nickName }} &nbsp;
-            <span class="attention" title="关注以便得到ta最新的动态"><i class="el-icon-plus"></i>关注他</span>
+            <span class="attention" @click="subscribe(true)" v-if="!isSubscribed" title="订阅以便得到ta最新的动态"><i class="el-icon-plus"></i>订阅</span>
+            <span class="attention subscribed" @click="subscribe(false)" v-else title="已订阅，将得到ta的最新动态"><i class="el-icon-check"></i>已订阅</span>
           </div>
         </div>
         <div class="personal-info">
@@ -69,6 +70,7 @@
 <script>
   import {getBlogger} from "network/userInfo";
   import {getCookieAuthorId} from "common/cookieUtils";
+  import {checkSubscription, subscription, unSubscription} from "network/subscription";
 
   export default {
     name: "Blogger",
@@ -85,7 +87,7 @@
           original: '0',
           settled: '0',
         },
-        subscribed: '',//TODO: 被订阅
+        isSubscribed: false,// 是否被订阅
         showMore: false,
         foldName: '展示更多'
       }
@@ -98,6 +100,7 @@
         this.authorId = getCookieAuthorId();
       }
       this.getUserInfo();
+      this.sendToCheck();
     },
     methods: {
       handleChange(activeNames) {
@@ -116,6 +119,46 @@
           this.blogger = res.data;
         }).finally(()=>{
           this.loading = false;
+        })
+      },
+      subscribe(flag){
+        if (flag){
+          subscription(this.authorId).then(res =>{
+            if (res.status == 400){
+              this.$notify({
+                message: res.msg,
+                type: 'warning'
+              });
+            }else {
+              this.$notify({
+                message: res.msg,
+                type: 'success'
+              });
+              this.isSubscribed = true;
+            }
+          })
+        }else {
+          unSubscription(this.authorId).then(res => {
+            if (res.status == 400){
+              this.$notify({
+                message: res.msg,
+                type: 'warning'
+              });
+            }else {
+              this.$notify({
+                message: res.msg,
+                type: 'success'
+              });
+              this.isSubscribed = false;
+            }
+          })
+        }
+      },
+      sendToCheck(){
+        if (this.authorId == undefined || this.authorId == '')
+          return ;
+        checkSubscription(this.authorId).then(res => {
+          this.isSubscribed = res.data;
         })
       }
     }
@@ -163,5 +206,9 @@
     color: white;
     background: #fd5c73;
     cursor: pointer;
+  }
+
+  .subscribed{
+    color: white;
   }
 </style>
