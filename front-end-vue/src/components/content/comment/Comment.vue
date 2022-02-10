@@ -106,7 +106,7 @@
 
 <script>
   import {showComment,publishComment,deleteComment} from 'network/articleComment';
-  import {getInfo} from "common/cookieUtils";
+  import {getCookieAuthorId,getCookieAvatarPath,getCookieNickName} from "common/cookieUtils";
 
   const clickoutside = {
     // 初始化指令
@@ -283,12 +283,9 @@
         })
       },
       initInfo(){
-        // this.authorId = sessionStorage.authorId;
-        // this.nickName = sessionStorage.nickName;
-        // this.avatarPath = sessionStorage.avatarPath;
-        this.authorId = this.$store.state.authorInfo.authorId;
-        this.nickName = this.$store.state.authorInfo.nickName;
-        this.avatarPath = this.$store.state.authorInfo.avatarPath;
+        this.authorId = getCookieAuthorId();
+        this.nickName = getCookieNickName();
+        this.avatarPath = getCookieAvatarPath();
       },
       inputFocus() {
         var replyInput = document.getElementById('replyInput')

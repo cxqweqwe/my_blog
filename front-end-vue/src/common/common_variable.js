@@ -6,6 +6,7 @@ export const COOKIE_AUTHORID_KEY= "AuthorID";
 export const COOKIE_EXPIRES = "21600000"; //6个小时
 export const COOKIE_INFO_KEY = "authorInfo";
 export const COOKIE_AVATAR_PATH = "avatar";
+export const COOKIE_NICKNAME_PATH = "nickName";
 
 export const SESSION_AUTHORID_KEY= "authorId";
 export const SESSION_AVATAR_KEY= "avatarPath";

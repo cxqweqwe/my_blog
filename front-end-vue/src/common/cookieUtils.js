@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 
-import {COOKIE_KEY,COOKIE_EXPIRES,COOKIE_AUTHORID_KEY,COOKIE_AVATAR_PATH} from "./common_variable";
+import {COOKIE_KEY,COOKIE_EXPIRES,COOKIE_AUTHORID_KEY,COOKIE_AVATAR_PATH,COOKIE_NICKNAME_PATH} from "./common_variable";
 
 // cookie
 export function getCookie() {
@@ -42,4 +42,18 @@ export function setCookieAvatarPath(path) {
 
 export function removeCookieAvatarPath() {
     return Cookies.remove(COOKIE_AVATAR_PATH)
+}
+
+// nickName
+export function getCookieNickName() {
+    return Cookies.get(COOKIE_NICKNAME_PATH)
+}
+
+export function setCookieNickName(path) {
+    let inFifteenMinutes = new Date(new Date().getTime() + COOKIE_EXPIRES);
+    return Cookies.set(COOKIE_NICKNAME_PATH, path, {expires: inFifteenMinutes})
+}
+
+export function removeCookieNickName() {
+    return Cookies.remove(COOKIE_NICKNAME_PATH)
 }

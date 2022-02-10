@@ -51,7 +51,7 @@ const routes = [
     component: Article,
     meta: {
       hidden: true,
-      title:"博客列表"
+      title:"博客"
     }
   },
   {
@@ -83,7 +83,7 @@ const routes = [
     component: Forum,
     meta: {
       hidden: true,
-      title:"论坛-fang"
+      title:"论坛"
     }
   },
 

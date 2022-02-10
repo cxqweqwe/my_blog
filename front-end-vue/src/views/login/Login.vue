@@ -186,7 +186,7 @@ import {
 } from "../../common/common_variable";
 import {checkEmail, randomCode} from "common/commonUtils";
 import sha1 from "common/sha1";
-import {getCookie, setCookie, setCookieAuthorId, setCookieAvatarPath} from "common/cookieUtils";
+import {setCookie, setCookieAuthorId, setCookieAvatarPath, setCookieNickName} from "common/cookieUtils";
 import { ParticlesBg } from "particles-bg-vue";
 
 export default {
@@ -386,6 +386,7 @@ export default {
           this.$store.commit('checkLogin', true);
           setCookie(res.data.token);//设置Cookie
           setCookieAuthorId(res.data.authorId);
+          setCookieNickName(res.data.nickName);
           setCookieAvatarPath(res.data.avatarPath);
           this.loginFrom.passwrod = '';
           this.$router.push("/index");
