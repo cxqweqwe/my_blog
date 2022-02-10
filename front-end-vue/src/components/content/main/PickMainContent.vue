@@ -66,15 +66,13 @@
                 </a>
               </div>
 
-              <!--            <WidgetTagsWidgetTags></WidgetTagsWidgetTags>-->
-
             </div>
           </div>
 
         </div>
       </div>
     </section>
-    <Footer></Footer>
+    <div class="space"></div>
   </div>
 </template>
 
@@ -92,7 +90,6 @@
 
   import WidgetTags from "components/common/sidebar/WidgetTags";
   import {getPopular, getPopularPaging, getMostPageViews} from "network/article";
-  import Footer from "components/content/footer/Footer";
 
   export default {
     name: "PickMainContent",
@@ -107,8 +104,7 @@
       InspirationBox,
       LatestPostBox,
 
-      WidgetTags,
-      Footer
+      WidgetTags
     },
     data() {
       return {
@@ -140,5 +136,8 @@
 <style scoped>
   .bottom-space-30 {
     margin-bottom: 30px;
+  }
+  .space{
+    height: 30px;
   }
 </style>

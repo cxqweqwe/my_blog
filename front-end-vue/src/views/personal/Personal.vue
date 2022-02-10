@@ -219,6 +219,7 @@
     </section>
 
     <div class="space"></div>
+    <Footer></Footer>
   </div>
 </template>
 
@@ -237,6 +238,7 @@
   import ImageUpload from "components/common/loading/ImageUpload";
   import {IMAGE_UPLOAD_URL} from "common/common_variable";
   import {SESSION_AVATAR_KEY} from "../../common/common_variable";
+  import Footer from "components/content/footer/Footer";
 
   export default {
     name: "Personal",
@@ -248,6 +250,7 @@
       PickCecommended,
       LatestPostsItem,
       ImageUpload,
+      Footer,
     },
     data() {
       return {

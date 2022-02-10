@@ -33,6 +33,7 @@
       </div>
     </section>
     <div class="space"></div>
+    <Footer></Footer>
   </div>
 </template>
 
@@ -44,6 +45,7 @@
 
   import LatestPostsItem from "components/common/latestPosts/LatestPostsItem";
   import {getList} from "network/article";
+  import Footer from "components/content/footer/Footer";
 
   export default {
     name: "Article",
@@ -53,6 +55,7 @@
       Celebration,
       Blogger,
       LatestPostsItem,
+      Footer,
     },
     data() {
       return {
