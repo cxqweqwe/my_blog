@@ -9,6 +9,7 @@
             uinfo.nick_name,
             SUM( DISTINCT binfo.pageviews ) beenViews,
             COUNT( DISTINCT ar1.article_id ) original,
+            COUNT(DISTINCT subs.been_subscribed) subscribed,
             ROUND( DATEDIFF( CURDATE( ), uinfo.create_time ) / 30 ) settled,
             uinfo.personal_profile,
             uinfo.school,
@@ -16,10 +17,12 @@
         FROM
             article ar1,
             article ar2,
+            subscription subs,
             blog_info binfo,
             user_info uinfo
         WHERE
-            ar1.attributes = 0 AND	uinfo.author_id = ar1.author_id
+            ar1.attributes = 0 AND uinfo.author_id = ar1.author_id
+            AND subs.deleted = 0 AND subs.subscribe = uinfo.author_id
             AND binfo.article_id = ar2.article_id
             AND ar2.author_id = uinfo.author_id
             AND uinfo.author_id = #{authorId}

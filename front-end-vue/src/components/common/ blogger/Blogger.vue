@@ -25,7 +25,7 @@
           </el-row>
           <el-row>
             <el-col :span="12">
-              <div class="center"><span>4</span>被订阅</div>
+              <div class="center"><span>{{ blogger.subscribed }}</span>被订阅</div>
             </el-col>
             <el-col :span="12">
               <div class="center">入驻<span>{{ blogger.settled }}</span>月</div>
@@ -89,6 +89,7 @@
           nickName: '未登录',
           beenViews: '0',
           original: '0',
+          subscribed: '0',
           settled: '0',
         },
         isSubscribed: false,// 是否被订阅
