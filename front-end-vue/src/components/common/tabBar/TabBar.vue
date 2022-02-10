@@ -26,7 +26,7 @@
                 </ul>
               </li>
               <li class="nav-item" :class="{active:isAction==3}">
-                <a class="nav-link" href="contact.html">Forum</a>
+                <router-link target="_blank" :to="{path:'/forum'}"><a class="nav-link">Forum</a></router-link>
               </li>
             </ul>
           </div>

@@ -11,6 +11,7 @@ const Login = () => import('views/login/Login');
 const SearchResult = () => import('views/searchResult/SearchResult');
 const Personal = () => import('views/personal/Personal');
 const Article = () => import('views/blog/Article');
+const Forum = () => import('views/forum/Forum');
 
 const routes = [
   {
@@ -75,6 +76,14 @@ const routes = [
     meta: {
       hidden: true,
       title:"我的-用户页"
+    }
+  },
+  {
+    path: '/forum',
+    component: Forum,
+    meta: {
+      hidden: true,
+      title:"论坛-fang"
     }
   },
 

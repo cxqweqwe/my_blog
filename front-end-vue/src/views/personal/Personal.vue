@@ -1,7 +1,6 @@
 <template>
   <div>
     <TabBar v-if="reload"></TabBar>
-
     <section class="main-content">
       <div class="container-xl">
         <div class="row gy-4">
@@ -142,15 +141,15 @@
                   <Modal
                       v-model="phoneModal"
                       title="绑定/更换手机号"
-                      style="height:300px"
                       :footer-hide=true>
                     <Row>
-                      <Col span="4" class="line32">更换手机号码</Col>
+                      <Col span="4" class="line32">更换手机号</Col>
                       <Col span="15"><Input v-model="newPhone" placeholder="Enter phone" clearable/></Col>
                       <Col span="5">
                         <Button type="dashed" @click="getCode('phone')">获取验证码</Button>
                       </Col>
                     </Row>
+
                     <Row>
                       <Col span="4" class="line32">手机验证码</Col>
                       <Col span="15"><Input v-model="code" placeholder="Enter code" clearable/></Col>
@@ -422,11 +421,24 @@
       // 获取验证码, 手机/邮箱
       getCode(path) {
         if ('phone' == path) {
+          if (this.newPhone == ''){
+            this.$notify({
+              message: '请输入新号码',
+              type: "warning"
+            })
+            return;
+          }
           getPhoneCode(this.newPhone).then(res => {
             this.commonMethod(res);
           })
         } else if ('email' == path) {
-          console.log(this.newEmail);
+          if (this.newEmail == ''){
+            this.$notify({
+              message: '请输入新邮箱',
+              type: "warning"
+            })
+            return;
+          }
           getEmailCode(this.newEmail).then(res => {
             this.commonMethod(res);
           })
@@ -434,6 +446,13 @@
       },
       update(path) {
         if ('phone' == path) {
+          if (this.newPhone == '' || this.code == ''){
+            this.$notify({
+              message: '新号码和验证码可一个都不能少',
+              type: "warning"
+            })
+            return;
+          }
           updatePhone(this.newPhone, this.code).then(res => {
             this.commonMethod(res);
             // this.formValidate.phoneNumber = ''; //更换
@@ -441,6 +460,13 @@
             this.phoneModal = false;
           })
         } else if ('email' == path) {
+          if (this.newEmail == '' || this.code == ''){
+            this.$notify({
+              message: '新邮箱和验证码可一个都不能少',
+              type: "warning"
+            })
+            return;
+          }
           updateEmail(this.newEmail, this.code).then(res => {
             console.log(res);
             this.commonMethod(res);
