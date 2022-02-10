@@ -117,6 +117,7 @@
       },
       getUserInfo() {
         if (this.authorId == undefined || this.authorId == ''){
+          this.loading = false;
           return;
         }
         getBlogger(this.authorId).then(res => {

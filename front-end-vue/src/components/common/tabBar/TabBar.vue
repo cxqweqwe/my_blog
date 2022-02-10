@@ -18,7 +18,7 @@
                 </ul>
               </li>
               <li class="nav-item dropdown" :class="{active:isAction==2}">
-                <a class="nav-link dropdown-toggle" @click="goNewPage2('/article')">Blog</a>
+                <router-link target="_blank" :to="{path:'/article'}"><a class="nav-link dropdown-toggle">Blog</a></router-link>
                 <ul class="dropdown-menu">
                   <li>
                     <router-link target="_blank" :to="{path:'/blogEdit/not_checkout'}"><a class="dropdown-item">撰写博客</a></router-link>
