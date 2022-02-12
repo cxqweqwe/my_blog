@@ -50,7 +50,7 @@ public class PostInfo implements Serializable {
     /**
      * 帖子有关图片
      */
-    private String iamgePath;
+    private String imagePath;
 
     /**
      * 创建时间
