@@ -21,19 +21,14 @@
                   </Col>
                 </Row>
                 <Drawer title="编辑新贴" placement="left" :closable="false" v-model="showDrawer" :width="50">
-                  <Row>
-                    <Col span="24">
-                      <span class="hint">建议发布前先搜索，或许就能找到答案</span>
-                    </Col>
-                  </Row>
                   <div class="space"></div>
                   <Form :model="newPost" label-position="top">
                     <FormItem label="标题">
-                      <Input v-model="newPost.postName"></Input>
+                      <Input v-model="newPost.postName" placeholder="建议发布前先搜索，或许就能找到答案"></Input>
                     </FormItem>
-                    <FormItem label="正文">
+                    <FormItem label="详情">
                       <Input v-model="newPost.postDescription" type="textarea" :autosize="{minRows: 3,maxRows: 10}"
-                             placeholder="Enter something..."></Input>
+                             placeholder="请输入详情描述信息."></Input>
                     </FormItem>
                   </Form>
 
@@ -41,14 +36,14 @@
                   <ul id="upload-image">
                     <li class="demo-upload-list" v-for="(item,index) in defaultList">
                       <div>
-                        <img :src="item.url" class="" style="width: 100px">
-                        <Icon type="ios-eye-outline" @click.native="handleView(item.index)"></Icon>
-                        <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+<!--                        <img :src="item.url" class="" style="width: 100px">-->
+<!--                        <Icon type="ios-eye-outline" @click.native="handleView(item.index)"></Icon>-->
+<!--                        <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>-->
 
                         <template>
                           <img :src="item.url" style="width: 100px">
                           <div class="demo-upload-list-cover">
-                            <Icon type="ios-eye-outline" @click.native="handleView(item.index)"></Icon>
+<!--                            <Icon type="ios-eye-outline" @click.native="handleView(item.index)"></Icon>-->
                             <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
                           </div>
                         </template>
@@ -118,6 +113,7 @@
   import Blogger from "components/common/ blogger/Blogger";
   import {IMAGE_UPLOAD_URL} from "common/common_variable";
   import {getCookie} from "common/cookieUtils";
+  import {releasePostInfo} from "network/postInfo";
 
   export default {
     name: "Forum",
@@ -140,18 +136,18 @@
           imagePath: ''
         },
         defaultList: [
-          {
-            'name': 'a42bdcc1178e62b4694c830f028db5c0',
-            'url': 'http://image.fangweb.top/Fi3tTQ29raaHdyajBN9Es8HkvzC_'
-          },
-          {
-            'name': 'bc7521e033abdd1e92222d733590f104',
-            'url': 'https://avatars.githubusercontent.com/u/22723262?s=48&v=4'
-          },
-          {
-            'name': 'a42bdcc1178e62b4694c830f028db5c0',
-            'url': 'http://image.fangweb.top/Fi3tTQ29raaHdyajBN9Es8HkvzC_'
-          }
+          // {
+          //   'name': 'a42bdcc1178e62b4694c830f028db5c0',
+          //   'url': 'http://image.fangweb.top/Fi3tTQ29raaHdyajBN9Es8HkvzC_'
+          // },
+          // {
+          //   'name': 'bc7521e033abdd1e92222d733590f104',
+          //   'url': 'https://avatars.githubusercontent.com/u/22723262?s=48&v=4'
+          // },
+          // {
+          //   'name': 'a42bdcc1178e62b4694c830f028db5c0',
+          //   'url': 'http://image.fangweb.top/Fi3tTQ29raaHdyajBN9Es8HkvzC_'
+          // }
         ],
         imgName: '',
         uploadList: [],
@@ -177,7 +173,7 @@
             name: '图片' + (this.defaultList.length + 1),
             url: res.data
           })
-          console.log(this.defaultList);
+          // console.log(this.defaultList);
           return;
         }
         this.$notify({
@@ -214,7 +210,35 @@
           });
           return;
         }
-        
+        if (this.defaultList.length > 0){
+          let urls = '';
+          for (let item of this.defaultList) {
+            // console.log(item);
+            urls = urls.concat(item.url,'-*-');
+          }
+          this.newPost.imagePath = urls;
+        }
+
+        releasePostInfo(this.newPost).then(res => {
+          if (res.status == 2000){
+            this.$Notice.success({
+              title: res.msg
+            });
+            // 关闭抽屉，清掉数据
+            this.showDrawer = false;
+            for(let key in this.newPost ){
+              this.newPost [key]  = ''
+            }
+            const fileList = this.$refs.upload.fileList;
+            this.$refs.upload.fileList.splice(0, fileList.length);
+            this.defaultList.splice(0, this.defaultList.length);
+
+            return;
+          }
+          this.$Notice.error({
+            title: res.msg
+          });
+        })
 
       }
 
