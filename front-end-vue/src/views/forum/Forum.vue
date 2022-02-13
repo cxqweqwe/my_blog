@@ -74,7 +74,7 @@
               </div>
               <div class="space10"></div>
               <div class="forum-main" v-loading="loading">
-                <ForumItem v-for="(item,index) in itemDataList" :forumItem="item" :key="index"/>
+                <ForumItem v-for="(item,index) in itemDataList" :forumItem="item" :key="index" :idCount="index + ''"/>
               </div>
               <div class="space10"></div>
               <div class="space10"></div>
@@ -246,7 +246,7 @@
       },
       sendQuery(curPage,size,keyWords) {
         query(curPage, size, keyWords).then(res => {
-          console.log(res);
+          // console.log(res);
           this.itemDataList = res.data.data;
           this.total = res.data.total;
         })

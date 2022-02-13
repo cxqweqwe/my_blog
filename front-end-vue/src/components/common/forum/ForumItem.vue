@@ -26,18 +26,13 @@
         <div class="span-text text-description">{{forumItem.postDescription}}</div>
       </Col>
     </Row>
-    <div >
+    <div :id="'images' + idCount">
       <ul>
-        <li class="li-inline cursor" v-for="(imgPath,index) of imageList" @click="view(index)" id="images">
+        <li class="li-inline cursor" v-for="(imgPath,index) of imageList">
           <img :src="imgPath" :alt="'描述辅助图片' + index" style="width: 100px; height: 100px">
         </li>
       </ul>
     </div>
-<!--    <div id="index">-->
-<!--      <ul>-->
-<!--        <li v-for="(item,index) of imageList2"><img :src="item" alt="图片描述" width="100px" ></li>-->
-<!--      </ul>-->
-<!--    </div>-->
     <div class="space10"></div>
     <div class="space10"></div>
     <div class="line"></div>
@@ -51,6 +46,7 @@
   export default {
     name: "ForumItem",
     props: {
+      idCount: String,
       forumItem: {
         postId: String,
         authorId: String,
@@ -74,12 +70,12 @@
           // 'http://www.sinaimg.cn/dy/slidenews/21_img/2015_17/2236_4146071_705561.jpg',
           // 'http://www.sinaimg.cn/dy/slidenews/21_img/2015_17/2236_4146072_346494.jpg'
         ],
-        viewer: Object,
+        viewer: undefined,
       }
     },
     created() {
       // 处理图片分裂问题
-      if (this.forumItem.imagePath != null && this.forumItem.imagePath != '' && this.forumItem.imagePath != undefined){
+      if (this.forumItem.imagePath != null && this.forumItem.imagePath != '' && this.forumItem.imagePath != undefined) {
         this.imageList = this.forumItem.imagePath.split("-*-");
         for (let item of this.imageList) {
           // console.log(item);
@@ -90,45 +86,17 @@
       }
     },
     methods: {
-      releasePost() {
-        this.$message({
-          showClose: true,
-          message: '建议发布之前先搜索一下关键词，或许就能找到答案了',
-          type: 'success'
-        });
-      },
-      view(index){
-        // this.viewer.view(index);
-        const ViewerDom = document.getElementById("images");
-        const viewer = new Viewer(ViewerDom, {
-          url: "data-original",
-          rotatable: false,
-          show: function () {
-            viewer.update();
-          },
-          hide: function () {
-            //在图片消失的时候销毁viewer
-            viewer.destroy();
-          },
-        });
-        console.log(viewer);
-        console.log('点击');
-      }
+
     },
     mounted() {
-      const ViewerDom = document.getElementById('images');
+      // const id = 'images' + this.idCount;
+      // console.log(id);
+      const ViewerDom = document.getElementById('images' + this.idCount);
       // console.log(ViewerDom);
       this.viewer = new Viewer(ViewerDom, {
         // 相关配置项,详情见下面
         rotatable: false,
       });
-
-      // const ViewerDom1 = document.getElementById('index');
-      // const viewer1 = new Viewer(ViewerDom1, {
-      //   // 相关配置项,详情见下面
-      //   rotatable: false,
-      // });
-
     }
   }
 </script>
@@ -177,7 +145,7 @@
     -webkit-box-orient: vertical;
   }
 
-  .li-inline{
+  .li-inline {
     display: inline;
     list-style-type: none;
     padding: 5px 5px;
