@@ -6,14 +6,15 @@
         <div class="row gy-4">
           <div class="col-lg-8">
             <div class="col-md-12 col-sm-6">
+              <!-- 搜索栏和新帖发布按钮 -->
               <div class="search">
                 <Row>
                   <Col flex="auto">
-                    <el-input placeholder="请输入内容"
+                    <el-input placeholder="请输入内容，空格分隔关键词"
                               v-model="searchInput"
                               :clearable="true"
                               class="input-with-select">
-                      <el-button slot="append" icon="el-icon-search"></el-button>
+                      <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
                     </el-input>
                   </Col>
                   <Col flex="100px">
@@ -33,17 +34,12 @@
                   </Form>
 
                   <!-- 图片显示区域 -->
-                  <ul id="upload-image">
+                  <ul>
                     <li class="demo-upload-list" v-for="(item,index) in defaultList">
                       <div>
-<!--                        <img :src="item.url" class="" style="width: 100px">-->
-<!--                        <Icon type="ios-eye-outline" @click.native="handleView(item.index)"></Icon>-->
-<!--                        <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>-->
-
                         <template>
                           <img :src="item.url" style="width: 100px">
                           <div class="demo-upload-list-cover">
-<!--                            <Icon type="ios-eye-outline" @click.native="handleView(item.index)"></Icon>-->
                             <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
                           </div>
                         </template>
@@ -76,10 +72,15 @@
 
                 </Drawer>
               </div>
-              <div class="a">
-
+              <div class="space10"></div>
+              <div class="forum-main" v-loading="loading">
+                <ForumItem v-for="(item,index) in itemDataList" :forumItem="item" :key="index"/>
               </div>
-              <ForumItem/>
+              <div class="space10"></div>
+              <div class="space10"></div>
+              <div class="text-center">
+                <Page :total="total" :page-size="6" @on-change="change" show-elevator/>
+              </div>
             </div>
 
 
@@ -101,9 +102,6 @@
 </template>
 
 <script>
-  import Viewer from 'viewerjs';
-  import 'viewerjs/dist/viewer.css';
-
   import TabBar from "components/common/tabBar/TabBar";
   import Footer from "components/content/footer/Footer";
   import ForumItem from "components/common/forum/ForumItem";
@@ -113,7 +111,7 @@
   import Blogger from "components/common/ blogger/Blogger";
   import {IMAGE_UPLOAD_URL} from "common/common_variable";
   import {getCookie} from "common/cookieUtils";
-  import {releasePostInfo} from "network/postInfo";
+  import {releasePostInfo, query} from "network/postInfo";
 
   export default {
     name: "Forum",
@@ -154,13 +152,19 @@
 
         action: '',
         viewer: Object,
+
+        loading: false,
+        total: 1,
+        itemDataList: [],
+
       }
     },
     created() {
+      this.sendQuery(1,6,'');
     },
     methods: {
       handleView(index) {
-        this.viewer.view(index);
+        // this.viewer.view(index);
       },
       handleRemove(file) {
         const fileList = this.$refs.upload.fileList;
@@ -239,7 +243,30 @@
             title: res.msg
           });
         })
+      },
+      sendQuery(curPage,size,keyWords) {
+        query(curPage, size, keyWords).then(res => {
+          console.log(res);
+          this.itemDataList = res.data.data;
+          this.total = res.data.total;
+        })
+      },
+      change(current){
+        if (this.searchInput == '' || this.searchInput == undefined){
+          this.searchInput = '';
+        }
+        this.sendQuery(current,6,this.searchInput);
+      },
 
+      search(){
+        if (this.searchInput == undefined || this.searchInput == ''){
+          this.$notify({
+            message: "请输入关键词",
+            type: "warning"
+          })
+          return;
+        }
+        this.sendQuery(1,6,this.searchInput);
       }
 
     },
@@ -247,11 +274,12 @@
       this.uploadList = this.$refs.upload.fileList;
       this.action = IMAGE_UPLOAD_URL;
 
-      const ViewerDom = document.getElementById('upload-image');
-      this.viewer = new Viewer(ViewerDom, {
-        // 相关配置项,详情见下面
-        rotatable: false,
-      });
+      // const ViewerDom = document.getElementById('upload-image');
+      // this.viewer = new Viewer(ViewerDom, {
+      //   // 相关配置项,详情见下面
+      //   rotatable: false,
+      // });
+      // Viewer.noConflict();
     },
     computed: {
       addHeader(){
@@ -268,26 +296,14 @@
     height: 30px;
   }
 
+  .space10 {
+    height: 10px;
+  }
+
   .search-button {
     color: white;
     background: #fe5f75;
     border: 1px solid #fe5f75;
-  }
-
-  .hint {
-    color: #7377e0;
-    font-size: 18px;
-  }
-
-  .hint:hover {
-    color: #7af021;
-  }
-
-
-  .a {
-    height: 100px;
-    width: 100%;
-    background: #0b5ed7;
   }
 
   .demo-upload-list {
@@ -329,5 +345,12 @@
     font-size: 20px;
     cursor: pointer;
     margin: 0 2px;
+  }
+
+  .forum-main{
+    /*padding: 5px;*/
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
   }
 </style>

@@ -9,3 +9,15 @@ export function releasePostInfo(param) {
     data: param
   })
 }
+
+export function query(curPage, size, keywords) {
+  return request({
+    url: requestUrl + "/query",
+    method: 'get',
+    params: {
+      curPage,
+      size,
+      keywords
+    }
+  })
+}
