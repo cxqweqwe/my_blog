@@ -5,7 +5,7 @@
         <div class="block center">
           <a href="">
             <router-link :to="{path:'/user/' + authorId}" target="_blank">
-            <el-avatar :size="80" :src="blogger.avatarPath">U</el-avatar>
+            <el-avatar :size="80" :src="blogger.avatarPath">请登录</el-avatar>
             </router-link>
           </a>
           <div>
@@ -161,8 +161,10 @@
         }
       },
       sendToCheck(){
-        if (this.authorId == undefined || this.authorId == '')
+        const authorId = getCookieAuthorId();
+        if (authorId == undefined || authorId == ''){
           return ;
+        }
         checkSubscription(this.authorId).then(res => {
           this.isSubscribed = res.data;
         })

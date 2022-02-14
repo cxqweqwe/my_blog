@@ -1,11 +1,11 @@
 <template>
-  <div class="item-main">
+  <div class="item-main cursor">
     <Row>
       <Col span="6">
-        <div class="span-text cursor">{{ forumItem.nickName }}</div>
+        <div class="span-text cursor" @click="goNewPage1('/user/')">{{ forumItem.nickName }}</div>
       </Col>
       <Col span="6">
-        <div class="span-text">{{forumItem.createTime}}</div>
+        <div class="span-text" @click="lookDetail">{{forumItem.createTime}}</div>
       </Col>
       <Col span="6">
       </Col>
@@ -16,19 +16,21 @@
         <div class="span-text">{{forumItem.commonCount}}</div>
       </Col>
     </Row>
-    <Row>
-      <Col span="24">
-        <div class="span-text title a-line">{{forumItem.postName}}</div>
-      </Col>
-    </Row>
-    <Row>
-      <Col span="24">
-        <div class="span-text text-description">{{forumItem.postDescription}}</div>
-      </Col>
-    </Row>
+    <div @click="lookDetail">
+      <Row>
+        <Col span="24">
+          <div class="span-text title a-line">{{forumItem.postName}}</div>
+        </Col>
+      </Row>
+      <Row>
+        <Col span="24">
+          <div class="span-text text-description">{{forumItem.postDescription}}</div>
+        </Col>
+      </Row>
+    </div>
     <div :id="'images' + idCount">
       <ul>
-        <li class="li-inline cursor" v-for="(imgPath,index) of imageList">
+        <li class="li-inline zoom-in" v-for="(imgPath,index) of imageList">
           <img :src="imgPath" :alt="'描述辅助图片' + index" style="width: 100px; height: 100px">
         </li>
       </ul>
@@ -62,14 +64,6 @@
     data() {
       return {
         imageList: [],
-        imageList2: [
-          'http://image.fangweb.top/FjSynGvJiBrvDVpQKGVtnKMBP6o-',
-          'https://img-blog.csdnimg.cn/a61273f5aa754224b6f4bb8956b78a37.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBA5YeJ55m95byAwro=,size_20,color_FFFFFF,t_70,g_se,x_16',
-          // 'https://img-blog.csdnimg.cn/20210327145250464.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0Jlcm5pZV83,size_16,color_FFFFFF,t_70',
-          // 'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3472263623,506218584&fm=26&gp=0.jpg',
-          // 'http://www.sinaimg.cn/dy/slidenews/21_img/2015_17/2236_4146071_705561.jpg',
-          // 'http://www.sinaimg.cn/dy/slidenews/21_img/2015_17/2236_4146072_346494.jpg'
-        ],
         viewer: undefined,
       }
     },
@@ -86,13 +80,23 @@
       }
     },
     methods: {
-
+      lookDetail() {
+        const {href} = this.$router.resolve({
+          path: '/forumDetail/' + this.forumItem.postId,
+          query: {},
+        });
+        window.open(href, "_blank");
+      },
+      goNewPage1(path) {
+        const {href} = this.$router.resolve({
+          path: path + this.forumItem.authorId,
+          query: {},
+        });
+        window.open(href, "_blank");
+      },
     },
     mounted() {
-      // const id = 'images' + this.idCount;
-      // console.log(id);
       const ViewerDom = document.getElementById('images' + this.idCount);
-      // console.log(ViewerDom);
       this.viewer = new Viewer(ViewerDom, {
         // 相关配置项,详情见下面
         rotatable: false,
@@ -116,6 +120,10 @@
 
   .cursor {
     cursor: pointer;
+  }
+
+  .zoom-in{
+    cursor: zoom-in;
   }
 
   .title {

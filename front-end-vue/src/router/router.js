@@ -12,6 +12,7 @@ const SearchResult = () => import('views/searchResult/SearchResult');
 const Personal = () => import('views/personal/Personal');
 const Article = () => import('views/blog/Article');
 const Forum = () => import('views/forum/Forum');
+const ForumDetail = () => import('views/forum/ForumDetail');
 
 const routes = [
   {
@@ -84,6 +85,14 @@ const routes = [
     meta: {
       hidden: true,
       title:"论坛"
+    }
+  },
+  {
+    path: '/forumDetail/:postId',
+    component: ForumDetail,
+    meta: {
+      hidden: true,
+      title:"论坛-查看详情"
     }
   },
 
