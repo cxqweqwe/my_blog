@@ -20,6 +20,7 @@ public class PostInfoVO implements Serializable {
 
      private String postId;
      private String authorId;
+     private String avatarPath;
      private String nickName;
      private String postName;
      private String postDescription;

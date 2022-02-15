@@ -35,4 +35,6 @@ public interface PostInfoMapper extends BaseMapper<PostInfo> {
                        @Param("postId") String postId,
                        @Param("authorId") String authorId);
 
+    public PostInfoVO findPostInfo(@Param("postId") String postId);
+
 }

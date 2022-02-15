@@ -68,4 +68,24 @@
         LIMIT #{curPage},#{size}
     </select>
 
+    <select id="findPostInfo" resultType="PostInfoVO">
+        SELECT
+            pinfo.post_id,
+            pinfo.author_id,
+            uinfo.avatar_path,
+            uinfo.nick_name,
+            pinfo.post_name,
+            pinfo.post_description,
+            pinfo.image_path,
+            pinfo.create_time
+        FROM
+            post_info pinfo,
+            user_info uinfo
+        WHERE
+            pinfo.deleted = 0
+            AND pinfo.state = 1
+            AND pinfo.author_id = uinfo.author_id
+            AND pinfo.post_id = #{postId}
+    </select>
+
 </mapper>

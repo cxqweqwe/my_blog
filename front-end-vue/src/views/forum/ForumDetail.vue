@@ -11,29 +11,25 @@
                   <Col span="12">
                     <div class="div-text">
                       <a>
-                        <router-link target="_blank" :to="{path:'/blog/'}"><img
-                            src="https://avatars.githubusercontent.com/u/22723262?s=48&v=4"
-                            class="author avatar" alt="用户头像"/> 张大炮
-                        </router-link>
+                        <router-link target="_blank" :to="{path:'/blog/'}"><img :src="postInfo.avatarPath" class="author avatar" alt="用户头像"/> {{postInfo.nickName}} </router-link>
                       </a>
                     </div>
                   </Col>
                   <Col span="12">
-                    <div class="div-text">发布时间</div>
+                    <div class="div-text"> {{postInfo.createTime}}</div>
                   </Col>
                 </Row>
                 <Row>
                   <Col span="24">
                     <div class="div-text wrap">
-                      <h4>
-                        sdfaklhgjnbfkdahbiufsdhnbiudsganijdsaNViudfaniusdfaklhgjnbfkdahbiufsdhnbiudsganijdsaNViudfaniusdfaklhgjnbfkdahbiufsdhnbiudsganijdsaNViudfaniu</h4>
+                      <h4>{{postInfo.postName}}</h4>
                     </div>
                   </Col>
                 </Row>
                 <Row>
                   <Col span="24">
                     <div class="div-text wrap size20">
-                      ufsdhnbiudsganijdsaNViudfaniusdfaklhgjnbfkdahbiufsdhnbiuufsdhnbiudsganijdsaNViudfaniusdfaklhgjnbfkdahbiufsdhnbiuufsdhnbiudsganijdsaNViudfaniusdfaklhgjnbfkdahbiufsdhnbiu
+                      {{postInfo.postDescription}}
                     </div>
                   </Col>
                 </Row>
@@ -64,6 +60,10 @@
                   </div>
                 </div>
               </div>
+              <div class="space10"></div>
+              <div class="details-main">
+                <div class="no-comment" v-if="!isSide">暂无评论，快来发表你的意见互相交流.</div>
+              </div>
             </div>
             <div class="space"></div>
             <Footer></Footer>
@@ -91,6 +91,7 @@
   import Celebration from "components/content/celebration/Celebration";
   import Blogger from "components/common/ blogger/Blogger";
   import Footer from "components/content/footer/Footer";
+  import {getPostInfo} from "network/postInfo";
 
   export default {
     name: "ForumDetail",
@@ -110,6 +111,7 @@
         ],
         commentInput: '',
         isSide: false,
+        postInfo: Object,
 
       }
     },
@@ -118,8 +120,18 @@
       this.sendToGetPostInfo();
     },
     methods: {
-      sendToGetPostInfo() {
-        
+      sendToGetPostInfo: function () {
+        getPostInfo(this.postId).then(res => {
+          this.postInfo = res.data;
+          if (this.postInfo.imagePath != undefined || this.postInfo.imagePath != '') {
+            this.imageList = this.postInfo.imagePath.split('-*-');
+            for (let item of this.imageList) {
+              if (item == '' || item == undefined) {      // 删除空行
+                this.imageList.splice(this.imageList.indexOf(item), 1);
+              }
+            }
+          }
+        })
       },
       sendComment() {
 
@@ -139,6 +151,10 @@
 <style scoped>
   .space {
     height: 30px;
+  }
+
+  .space10 {
+    height: 10px;
   }
 
   .details-main {
@@ -217,5 +233,11 @@
 
   .pad-top {
     padding-top: 10px;
+  }
+
+  .no-comment{
+    min-height: 60px;
+    text-align: center;
+    line-height: 60px;
   }
 </style>

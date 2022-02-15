@@ -6,6 +6,7 @@ import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.exception.MyException;
 import com.fang.backgroundapi.pojo.DO.PostInfo;
 import com.fang.backgroundapi.pojo.DTO.PostInfoDTO;
+import com.fang.backgroundapi.pojo.VO.PostInfoVO;
 import com.fang.backgroundapi.service.impl.PostInfoServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -56,6 +57,13 @@ public class PostInfoController extends BaseController {
                                         @RequestParam(name = "keywords", required = false) String keywords) {
         PagingData data = postInfoService.queryPostInfo(curPage, size, keywords);
         return ServerResponse.success(data);
+    }
+
+    @GetMapping("/get")
+    @ApiOperation(value = "帖子查询", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse findPostInfo(@RequestParam("postId") String postId) {
+        PostInfoVO postInfo = postInfoService.findPostInfo(postId);
+        return ServerResponse.success(postInfo);
     }
 
 }

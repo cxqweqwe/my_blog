@@ -21,3 +21,13 @@ export function query(curPage, size, keywords) {
     }
   })
 }
+
+export function getPostInfo(postId) {
+  return request({
+    url: requestUrl + "/get",
+    method: 'get',
+    params: {
+      postId
+    }
+  })
+}

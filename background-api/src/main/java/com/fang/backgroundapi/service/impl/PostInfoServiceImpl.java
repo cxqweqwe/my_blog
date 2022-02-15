@@ -42,4 +42,8 @@ public class PostInfoServiceImpl extends ServiceImpl<PostInfoMapper, PostInfo> i
         }
     }
 
+    public PostInfoVO findPostInfo(String postId) {
+        return postInfoMapper.findPostInfo(postId);
+    }
+
 }
