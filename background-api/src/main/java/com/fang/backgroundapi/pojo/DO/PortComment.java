@@ -36,7 +36,7 @@ public class PortComment implements Serializable {
     /**
      * 博客ID,标注在哪条评论下面
      */
-    private String articleId;
+    private String postId;
 
     /**
      * 评论者ID

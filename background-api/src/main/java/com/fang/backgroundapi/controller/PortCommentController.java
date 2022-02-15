@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/portComment")
-public class PortCommentController {
+public class PortCommentController extends BaseController {
 
 }
 

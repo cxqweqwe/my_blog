@@ -47,13 +47,12 @@
                     <Row>
                       <Col flex="45px">
                         <div class="div-text height50 pad-top">
-                          <img src="https://avatars.githubusercontent.com/u/22723262?s=48&v=4" class="author avatar"
-                               alt="用户头像"/>
+                          <img :src="commentAvatar" class="author avatar" alt="未登录"/>
                         </div>
                       </Col>
                       <Col flex="auto">
                         <div class="div-text height50">
-                          <Input v-model="commentInput" size="large" placeholder="请明智发表评论..."/>
+                          <Input v-model="commentInput" size="large" placeholder="请明智发表评论..." @on-enter="sendComment"/>
                         </div>
                       </Col>
                     </Row>
@@ -63,6 +62,15 @@
               <div class="space10"></div>
               <div class="details-main">
                 <div class="no-comment" v-if="!isSide">暂无评论，快来发表你的意见互相交流.</div>
+                <div>
+                  <ForumCommentItem />
+                  <ForumCommentItem />
+                  <div class="space10"></div>
+                  <div class="text-center">
+                    <Page :total="total" :page-size="8" @on-change="change" show-elevator/>
+                  </div>
+                  <div class="space10"></div>
+                </div>
               </div>
             </div>
             <div class="space"></div>
@@ -92,11 +100,14 @@
   import Blogger from "components/common/ blogger/Blogger";
   import Footer from "components/content/footer/Footer";
   import {getPostInfo} from "network/postInfo";
+  import {getCookie, getCookieAuthorId, getCookieAvatarPath} from "common/cookieUtils";
+  import ForumCommentItem from "components/common/forum/ForumCommentItem";
 
   export default {
     name: "ForumDetail",
     components: {
       TabBar,
+      ForumCommentItem,
       PostTabs,
       Celebration,
       Blogger,
@@ -105,22 +116,24 @@
     data() {
       return {
         postId: '',
-        imageList: [
-          "http://www.sinaimg.cn/dy/slidenews/21_img/2015_17/2236_4146071_705561.jpg",
-          "http://www.sinaimg.cn/dy/slidenews/21_img/2015_17/2236_4146072_346494.jpg",
-        ],
+        imageList: [],
         commentInput: '',
         isSide: false,
         postInfo: Object,
+
+        commentAvatar: '',
+        total: '100',
 
       }
     },
     created() {
       this.postId = this.$route.params.postId;
+      this.commentAvatar = getCookieAvatarPath();
       this.sendToGetPostInfo();
+      this.sendToGetPostComment();
     },
     methods: {
-      sendToGetPostInfo: function () {
+      sendToGetPostInfo() {
         getPostInfo(this.postId).then(res => {
           this.postInfo = res.data;
           if (this.postInfo.imagePath != undefined || this.postInfo.imagePath != '') {
@@ -133,8 +146,22 @@
           }
         })
       },
-      sendComment() {
+      sendToGetPostComment(){
+        console.log('获取评论');
 
+      },
+      sendComment() {
+        const token = getCookie();
+        if (token == undefined || token == ''){
+          this.$Notice.warning({
+            title: '请先登录'
+          })
+          return;
+        }
+
+      },
+      change(curPage){
+        console.log(curPage);
       }
 
     },
