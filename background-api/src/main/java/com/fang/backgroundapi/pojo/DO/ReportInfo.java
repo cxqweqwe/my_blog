@@ -36,7 +36,12 @@ public class ReportInfo implements Serializable {
     /**
      * 举报对象【博客，帖子，评论】
      */
-    private String repost;
+    private String report;
+
+    /**
+     * 举报类型【0:博客 1:论贴 2:博客评论 3:论贴评论】
+     */
+    private String reportType;
 
     /**
      * 举报人
