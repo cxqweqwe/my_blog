@@ -2,4 +2,29 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fang.backgroundapi.mapper.PortCommentMapper">
 
+    <select id="queryPortComment" resultType="PortCommentVO">
+        SELECT
+            comm.id,
+            comm.author_id,
+            info.avatar_path,
+            info.nick_name,
+            comm.create_time,
+            comm.comment_content,
+            comm.image_path
+        FROM
+            port_comment comm,
+            user_info info
+        WHERE
+            comm.state = 1
+            AND comm.deleted = 0
+            AND comm.author_id = info.author_id
+            AND comm.port_id = #{portId}
+        ORDER BY comm.create_time ASC
+        LIMIT #{curPage},#{size}
+    </select>
+
+    <select id="CommentCount" resultType="java.lang.Long">
+        SELECT count(1) from port_comment comm  WHERE comm.state = 1 AND comm.deleted = 0
+    </select>
+
 </mapper>

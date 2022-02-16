@@ -60,14 +60,14 @@
                 </div>
               </div>
               <div class="space10"></div>
-              <div class="details-main">
+              <div class="details-main" v-loading="commentLoading">
                 <div class="no-comment" v-if="!isSide">暂无评论，快来发表你的意见互相交流.</div>
-                <div>
-                  <ForumCommentItem />
-                  <ForumCommentItem />
+                <div v-else>
+                  <ForumCommentItem v-for="(item, index) of commentList" @deleteComment="handleDelete"
+                                    :itemData="item" :floor="floor + index + ''" />
                   <div class="space10"></div>
                   <div class="text-center">
-                    <Page :total="total" :page-size="8" @on-change="change" show-elevator/>
+                    <Page :total="total" :page-size="10" @on-change="change" show-elevator/>
                   </div>
                   <div class="space10"></div>
                 </div>
@@ -102,6 +102,7 @@
   import {getPostInfo} from "network/postInfo";
   import {getCookie, getCookieAuthorId, getCookieAvatarPath} from "common/cookieUtils";
   import ForumCommentItem from "components/common/forum/ForumCommentItem";
+  import {releasePrtComment, getPrtComment} from "network/portComment";
 
   export default {
     name: "ForumDetail",
@@ -118,11 +119,14 @@
         postId: '',
         imageList: [],
         commentInput: '',
-        isSide: false,
+        isSide: true,
         postInfo: Object,
 
         commentAvatar: '',
-        total: '100',
+        total: 100,
+        commentLoading: false,
+        commentList: [],
+        floor: 1,
 
       }
     },
@@ -130,7 +134,7 @@
       this.postId = this.$route.params.postId;
       this.commentAvatar = getCookieAvatarPath();
       this.sendToGetPostInfo();
-      this.sendToGetPostComment();
+      this.sendToGetPostComment(this.postId,1,10);
     },
     methods: {
       sendToGetPostInfo() {
@@ -146,11 +150,14 @@
           }
         })
       },
-      sendToGetPostComment(){
-        console.log('获取评论');
-
+      sendToGetPostComment(portId,curPage,size){
+        getPrtComment(portId,curPage,size).then(res => {
+          this.commentList = res.data.data;
+          this.total = res.data.total;
+        })
       },
       sendComment() {
+        // 发表评论
         const token = getCookie();
         if (token == undefined || token == ''){
           this.$Notice.warning({
@@ -158,10 +165,34 @@
           })
           return;
         }
+        let portComment = {
+            "commentContent": "",
+            "portId": "",
+          }
+        portComment.commentContent = this.commentInput;
+        portComment.portId = this.postId;
+        releasePrtComment(portComment).then(res => {
+          if (res.status == 2000){
+            this.$notify({
+              message: res.msg,
+              type: 'success'
+            });
+            this.commentInput = '';
+          }else {
+            this.$notify({
+              message: res.msg,
+              type: 'warning'
+            });
+          }
+        })
 
       },
       change(curPage){
-        console.log(curPage);
+        this.sendToGetPostComment(this.postId,curPage,10);
+        this.floor = (curPage - 1) * 10;
+      },
+      handleDelete(itemData){
+        this.commentList.splice(this.commentList.indexOf(itemData), 1);
       }
 
     },
@@ -186,8 +217,8 @@
 
   .details-main {
     padding: 5px;
-    /*min-height: 550px;*/
-    /*height: 1000px;*/
+    min-height: 100px;
+    height: 100%;
     border: 1px solid #ebebeb;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
