@@ -4,14 +4,17 @@
     <section class="main-content">
       <div class="container-xl">
         <div class="row gy-4">
-          <div class="col-lg-8">
+          <div class="col-lg-8" ref="left">
             <div class="col-md-12 col-sm-6">
-              <div class="details-main">
+              <div class="details-main" v-loading="postInfoLoading">
                 <Row>
                   <Col span="12">
                     <div class="div-text">
                       <a>
-                        <router-link target="_blank" :to="{path:'/blog/'}"><img :src="postInfo.avatarPath" class="author avatar" alt="用户头像"/> {{postInfo.nickName}} </router-link>
+                        <router-link target="_blank" :to="{path:'/blog/'}"><img :src="postInfo.avatarPath"
+                                                                                class="author avatar" alt="用户头像"/>
+                          {{postInfo.nickName}}
+                        </router-link>
                       </a>
                     </div>
                   </Col>
@@ -61,10 +64,10 @@
               </div>
               <div class="space10"></div>
               <div class="details-main" v-loading="commentLoading">
-                <div class="no-comment" v-if="!isSide">暂无评论，快来发表你的意见互相交流.</div>
+                <div class="no-comment" v-if="total == 0">暂无评论，快来发表你的意见互相交流.</div>
                 <div v-else>
-                  <ForumCommentItem v-for="(item, index) of commentList" @deleteComment="handleDelete"
-                                    :itemData="item" :floor="floor + index + ''" />
+                  <ForumCommentItem v-for="(item, index) of commentList" @deleteComment="handleDelete" :key="index"
+                                    :itemData="item" :floor="floor + index + ''"/>
                   <div class="space10"></div>
                   <div class="text-center">
                     <Page :total="total" :page-size="10" @on-change="change" show-elevator/>
@@ -121,10 +124,11 @@
         commentInput: '',
         isSide: true,
         postInfo: Object,
+        postInfoLoading: true,
 
         commentAvatar: '',
         total: 100,
-        commentLoading: false,
+        commentLoading: true,
         commentList: [],
         floor: 1,
 
@@ -134,7 +138,7 @@
       this.postId = this.$route.params.postId;
       this.commentAvatar = getCookieAvatarPath();
       this.sendToGetPostInfo();
-      this.sendToGetPostComment(this.postId,1,10);
+      this.sendToGetPostComment(this.postId, 1, 10);
     },
     methods: {
       sendToGetPostInfo() {
@@ -148,37 +152,41 @@
               }
             }
           }
+        }).finally(() => {
+          this.postInfoLoading = false;
         })
       },
-      sendToGetPostComment(portId,curPage,size){
-        getPrtComment(portId,curPage,size).then(res => {
+      sendToGetPostComment(portId, curPage, size) {
+        getPrtComment(portId, curPage, size).then(res => {
           this.commentList = res.data.data;
           this.total = res.data.total;
+        }).finally(() => {
+          this.commentLoading = false;
         })
       },
       sendComment() {
         // 发表评论
         const token = getCookie();
-        if (token == undefined || token == ''){
+        if (token == undefined || token == '') {
           this.$Notice.warning({
             title: '请先登录'
           })
           return;
         }
         let portComment = {
-            "commentContent": "",
-            "portId": "",
-          }
+          "commentContent": "",
+          "portId": "",
+        }
         portComment.commentContent = this.commentInput;
         portComment.portId = this.postId;
         releasePrtComment(portComment).then(res => {
-          if (res.status == 2000){
+          if (res.status == 2000) {
             this.$notify({
               message: res.msg,
               type: 'success'
             });
             this.commentInput = '';
-          }else {
+          } else {
             this.$notify({
               message: res.msg,
               type: 'warning'
@@ -187,11 +195,11 @@
         })
 
       },
-      change(curPage){
-        this.sendToGetPostComment(this.postId,curPage,10);
+      change(curPage) {
+        this.sendToGetPostComment(this.postId, curPage, 10);
         this.floor = (curPage - 1) * 10;
       },
-      handleDelete(itemData){
+      handleDelete(itemData) {
         this.commentList.splice(this.commentList.indexOf(itemData), 1);
       }
 
@@ -293,7 +301,7 @@
     padding-top: 10px;
   }
 
-  .no-comment{
+  .no-comment {
     min-height: 60px;
     text-align: center;
     line-height: 60px;

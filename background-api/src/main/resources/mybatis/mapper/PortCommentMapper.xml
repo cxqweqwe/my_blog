@@ -24,7 +24,7 @@
     </select>
 
     <select id="CommentCount" resultType="java.lang.Long">
-        SELECT count(1) from port_comment comm  WHERE comm.state = 1 AND comm.deleted = 0
+        SELECT count(1) from port_comment comm  WHERE comm.state = 1 AND comm.deleted = 0 AND comm.port_id = #{portId}
     </select>
 
 </mapper>
