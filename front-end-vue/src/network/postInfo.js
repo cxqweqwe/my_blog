@@ -31,3 +31,15 @@ export function getPostInfo(postId) {
     }
   })
 }
+
+export function getPersonal(curPage, size, authorId) {
+  return request({
+    url: requestUrl + "/personal",
+    method: 'get',
+    params: {
+      curPage,
+      size,
+      authorId
+    }
+  })
+}

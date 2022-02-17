@@ -40,7 +40,7 @@
             AND pinfo.post_id = #{post_id}
         </if>
         <if test="authorId != null">
-            AND pinfo.authorId = #{authorId}
+            AND pinfo.author_id = #{authorId}
         </if>
     </select>
 
@@ -63,7 +63,7 @@
             AND pinfo.post_id = #{post_id}
         </if>
         <if test="authorId != null">
-            AND pinfo.authorId = #{authorId}
+            AND pinfo.author_id = #{authorId}
         </if>
         LIMIT #{curPage},#{size}
     </select>

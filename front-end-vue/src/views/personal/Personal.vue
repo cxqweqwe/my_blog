@@ -27,6 +27,25 @@
                     </div>
                   </div>
                 </TabPane>
+                <TabPane label="论贴" icon="logo-hackernews" name="post">
+                  <div v-if="itemDataList != null && itemDataList.length != 0" v-loading="postLoading">
+                    <div class="forum-main" v-loading="loading">
+                      <ForumItem v-for="(item,index) in itemDataList" :forumItem="item" :key="index"
+                                 :idCount="index + ''"/>
+                    </div>
+                    <div class="space10"></div>
+                    <div class="space10"></div>
+                    <div class="text-center">
+                      <Page :total="postTotal" :page-size="6" @on-change="postChange" show-elevator/>
+                    </div>
+                  </div>
+                  <div class="span-text" v-else>
+                    您还未发布任何论贴。。。
+                  </div>
+                </TabPane>
+                <TabPane label="留言信息" icon="md-chatboxes" name="voicemail">
+
+                </TabPane>
                 <TabPane label="个人信息" icon="ios-person" name="personalInfo">
 
                   <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="130">
@@ -207,7 +226,7 @@
 
           </div>
           <div class="col-lg-4">
-            <Blogger :authorId="authorId"  v-if="reload"></Blogger>
+            <Blogger :authorId="authorId" v-if="reload"></Blogger>
             <PostTabs></PostTabs>
             <div class="space"></div>
             <Celebration></Celebration>
@@ -238,6 +257,8 @@
   import {IMAGE_UPLOAD_URL} from "common/common_variable";
   import {SESSION_AVATAR_KEY} from "../../common/common_variable";
   import Footer from "components/content/footer/Footer";
+  import ForumItem from "components/common/forum/ForumItem";
+  import {getPersonal} from "network/postInfo";
 
   export default {
     name: "Personal",
@@ -250,6 +271,7 @@
       LatestPostsItem,
       ImageUpload,
       Footer,
+      ForumItem,
     },
     data() {
       return {
@@ -297,35 +319,12 @@
         reload: true,
         uploadUrl: '',
 
-        ruleValidate: {
-          //   name: [
-          //     {required: true, message: 'The name cannot be empty', trigger: 'blur'}
-          //   ],
-          //   mail: [
-          //     {required: true, message: 'Mailbox cannot be empty', trigger: 'blur'},
-          //     {type: 'email', message: 'Incorrect email format', trigger: 'blur'}
-          //   ],
-          //   city: [
-          //     {required: true, message: 'Please select the city', trigger: 'change'}
-          //   ],
-          //   gender: [
-          //     {required: true, message: 'Please select gender', trigger: 'change'}
-          //   ],
-          //   interest: [
-          //     {required: true, type: 'array', min: 1, message: 'Choose at least one hobby', trigger: 'change'},
-          //     {type: 'array', max: 2, message: 'Choose two hobbies at best', trigger: 'change'}
-          //   ],
-          //   date: [
-          //     {required: true, type: 'date', message: 'Please select the date', trigger: 'change'}
-          //   ],
-          //   time: [
-          //     {required: true, type: 'string', message: 'Please select time', trigger: 'change'}
-          //   ],
-          //   desc: [
-          //     {required: true, message: 'Please enter a personal introduction', trigger: 'blur'},
-          //     {type: 'string', min: 20, message: 'Introduce no less than 20 words', trigger: 'blur'}
-          //   ]
-        }
+        ruleValidate: {},
+        // 论贴 和 留言信息的数据
+        itemDataList: [],   // 论贴数组
+        postTotal: 100,
+        isPostLoad: false,
+        postLoading: true,
 
       }
     },
@@ -379,7 +378,20 @@
             // 加载好了，第二次点击不再发送请求
             this.personalInfoLoad = true;
           }
-        } else if (name = 'setting') {
+        } else if (name == 'post') {
+          if (!this.isPostLoad) {
+            //还没加载
+            getPersonal(1,6,this.authorId).then(res => {
+              this.itemDataList = res.data.data;
+              this.postTotal = res.data.total;
+            }).finally(() => {
+              this.postLoading = false;
+            })
+
+            // 加载好了，第二次点击不再发送请求
+            this.isPostLoad = true;
+          }
+        }else if (name == 'setting') {
           if (!this.settingLoad) {
             //还没加载
 
@@ -421,7 +433,7 @@
       // 获取验证码, 手机/邮箱
       getCode(path) {
         if ('phone' == path) {
-          if (this.newPhone == ''){
+          if (this.newPhone == '') {
             this.$notify({
               message: '请输入新号码',
               type: "warning"
@@ -432,7 +444,7 @@
             this.commonMethod(res);
           })
         } else if ('email' == path) {
-          if (this.newEmail == ''){
+          if (this.newEmail == '') {
             this.$notify({
               message: '请输入新邮箱',
               type: "warning"
@@ -446,7 +458,7 @@
       },
       update(path) {
         if ('phone' == path) {
-          if (this.newPhone == '' || this.code == ''){
+          if (this.newPhone == '' || this.code == '') {
             this.$notify({
               message: '新号码和验证码可一个都不能少',
               type: "warning"
@@ -460,7 +472,7 @@
             this.phoneModal = false;
           })
         } else if ('email' == path) {
-          if (this.newEmail == '' || this.code == ''){
+          if (this.newEmail == '' || this.code == '') {
             this.$notify({
               message: '新邮箱和验证码可一个都不能少',
               type: "warning"
@@ -555,10 +567,19 @@
         }
         this.$emit('item-click', this.returnData);
       },
-      async reloadAvatar(){
+      async reloadAvatar() {
         this.reload = false;
         await this.$nextTick();
         this.reload = true;
+      },
+      postChange(curPage){
+        this.postLoading = true;
+        getPersonal(curPage,6,this.authorId).then(res => {
+          this.itemDataList = res.data.data;
+          this.postTotal = res.data.total;
+        }).finally(() => {
+          this.postLoading = false;
+        })
       }
     },
     computed: {
@@ -572,22 +593,12 @@
 </script>
 
 <style scoped>
-  .a {
-    height: 600px;
-    width: 100%;
-    background-color: #0a53be;
-  }
-
   .space {
     height: 30px;
   }
 
   .box-line {
     border-bottom: 1px solid #f3f3f3;
-  }
-
-  .tabber-bottom {
-    color: #1c0202;
   }
 
   .finger {
@@ -605,5 +616,16 @@
     width: 100%;
     text-align: center;
     margin: 0 auto;
+  }
+
+  .forum-main {
+    /*padding: 5px;*/
+    border: 1px solid #ebebeb;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+  }
+
+  .space10{
+    height: 10px;
   }
 </style>

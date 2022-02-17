@@ -46,4 +46,11 @@ public class PostInfoServiceImpl extends ServiceImpl<PostInfoMapper, PostInfo> i
         return postInfoMapper.findPostInfo(postId);
     }
 
+    public PagingData findPersonalPostInfo(String authorId, Integer curPage, Integer size) {
+        curPage = (curPage -1) * size;
+        List<PostInfoVO> postInfoVOList = postInfoMapper.selectPostInfo(curPage, size, null, authorId);
+        Long total = postInfoMapper.countPostInfo(0, 1, null, null, authorId);
+        return new PagingData(total, postInfoVOList);
+    }
+
 }

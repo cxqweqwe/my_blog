@@ -66,5 +66,14 @@ public class PostInfoController extends BaseController {
         return ServerResponse.success(postInfo);
     }
 
+    @GetMapping("/personal")
+    @ApiOperation(value = "帖子查询", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse findPersonalPostInfo(@RequestParam("authorId") String authorId,
+                                               @RequestParam("curPage") Integer curPage,
+                                               @RequestParam("size") Integer size) {
+        PagingData data = postInfoService.findPersonalPostInfo(authorId, curPage, size);
+        return ServerResponse.success(data);
+    }
+
 }
 
