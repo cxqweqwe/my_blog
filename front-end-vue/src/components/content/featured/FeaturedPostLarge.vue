@@ -15,7 +15,8 @@
       <div class="mouse-hand">
         <div class="thumb rounded">
           <div class="inner data-bg-image">
-            <img src="~assets/img/posts/featured-lg.jpg" alt="">
+            <img :src="articleInfo.coverPath" v-if="articleInfo.coverPath != null && articleInfo.coverPath != ''" alt="">
+            <img src="http://image.fangweb.top/FqDhEPH_0iqxtsdjJh4r4Rxkd5Y6" v-else alt="">
           </div>
         </div>
       </div>
