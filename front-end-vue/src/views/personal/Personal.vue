@@ -43,8 +43,8 @@
                     您还未发布任何论贴。。。
                   </div>
                 </TabPane>
-                <TabPane label="留言信息" icon="md-chatboxes" name="voicemail">
-
+                <TabPane label="信息留言" icon="md-chatboxes" name="voicemail">
+                  <MessageBox />
                 </TabPane>
                 <TabPane label="个人信息" icon="ios-person" name="personalInfo">
 
@@ -259,6 +259,7 @@
   import Footer from "components/content/footer/Footer";
   import ForumItem from "components/common/forum/ForumItem";
   import {getPersonal} from "network/postInfo";
+  import MessageBox from "components/content/message/MessageBox";
 
   export default {
     name: "Personal",
@@ -272,6 +273,7 @@
       ImageUpload,
       Footer,
       ForumItem,
+      MessageBox
     },
     data() {
       return {
