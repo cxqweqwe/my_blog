@@ -16,7 +16,7 @@
         <div class="thumb rounded">
           <div class="inner data-bg-image">
             <img :src="articleInfo.coverPath" v-if="articleInfo.coverPath != null && articleInfo.coverPath != ''" alt="">
-            <img src="http://image.fangweb.top/FqDhEPH_0iqxtsdjJh4r4Rxkd5Y6" v-else alt="">
+            <img src="http://image.fangweb.top/FANG-Logo.png" v-else alt="">
           </div>
         </div>
       </div>

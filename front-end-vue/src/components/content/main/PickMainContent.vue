@@ -21,16 +21,16 @@
               </div>
             </div>
 
-            <div class="spacer" data-height="50"></div>
+            <div class="space"></div>
 
             <!-- horizontal ads -->
             <!-- 广告位 -->
-            <div class="ads-horizontal text-md-center bottom-space-30">
-              <span class="ads-title">- Sponsored Ad -</span>
-              <a href="#">
-                <img src="~assets/img/ads/ad-750.png" alt="Advertisement"/>
-              </a>
-            </div>
+<!--            <div class="ads-horizontal text-md-center bottom-space-30">-->
+<!--              <span class="ads-title">- Sponsored Ad -</span>-->
+<!--              <a href="#">-->
+<!--                <img src="~assets/img/ads/ad-750.png" alt="Advertisement"/>-->
+<!--              </a>-->
+<!--            </div>-->
 
             <div class="spacer" data-height="50"></div>
             <div class="spacer" data-height="50"></div>
@@ -62,7 +62,7 @@
               <div class="widget no-container rounded text-md-center">
                 <span class="ads-title">- Sponsored Ad -</span>
                 <a href="#" class="widget-ads">
-                  <img src="~assets/img/ads/ad-360.png" alt="Advertisement"/>
+                  <img src="~assets/img/map-bg.png" alt="Advertisement"/>
                 </a>
               </div>
 
