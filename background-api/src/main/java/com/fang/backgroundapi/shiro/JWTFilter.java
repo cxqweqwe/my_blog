@@ -40,7 +40,6 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
             // 2小时内过期
             this.RefreshToken(request,response,token);
         }
-        this.RefreshToken(request,response,token);
         return true;
     }
 
@@ -62,6 +61,7 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         String authorId = JWTUtil.getAuthorId(token);
         String newToken = JWTUtil.signToToken(username, authorId);//重新生成签名token,6个小时
         HttpServletResponse httpResponse = (HttpServletResponse) response;
+        httpResponse.setHeader("Access-Control-Expose-Headers", "Refresh-Token,Authorization,Url-Type"); //让前端可用访问
         httpResponse.setHeader("Authorization",newToken);//设置新的token
         httpResponse.setHeader("Refresh-Token", "true"); //告知前端需要刷新token
     }

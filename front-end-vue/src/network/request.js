@@ -3,7 +3,9 @@ import {base_url} from "../common/common_variable";
 import { MessageBox, Message, Notification } from 'element-ui';
 // import store from '@/store';
 import router from '../router/router';
-import {getCookie} from "common/cookieUtils";
+import {getCookie,setCookie,setCookieAuthorId,
+  getCookieAuthorId, getCookieAvatarPath, setCookieAvatarPath,
+  getCookieNickName, setCookieNickName} from "common/cookieUtils";
 
 export function request(config) {
   // 1.创建axios的实例
@@ -29,6 +31,12 @@ export function request(config) {
 
   // 2.2.响应拦截
   instance.interceptors.response.use(res => {
+    if(res.headers['refresh-token'] == 'true') {// token续约！
+      setCookie(res.headers['Authorization']);
+      setCookieAuthorId(getCookieAuthorId);
+      setCookieAvatarPath(getCookieAvatarPath);
+      setCookieNickName(getCookieNickName);
+    }
     if (res.data.status == 4003){
       Notification({
         title: '警告',
