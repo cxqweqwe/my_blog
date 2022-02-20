@@ -11,6 +11,7 @@ import com.fang.backgroundapi.pojo.DO.SysUsers;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,10 +25,9 @@ import java.util.Map;
 public class JWTUtil {
 
     /**
-     * 设置过期时间
+     * 2个小时过期时间
      */
-    // private static final long EXPIRE_TIME =  24 * 60 * 60 * 1000;
-    private static final long EXPIRE_TIME = 6 * 60 * 60 * 1000;//6个小时
+    private static final long EXPIRE_TIME_2 = 2 * 60 * 60 * 1000;//2个小时
 
     /**
      * token的密钥
@@ -54,7 +54,7 @@ public class JWTUtil {
     }
 
     /**
-     * 获取token中的信息无需密钥也能获得，这里获取登录者的学号
+     * 获取token中的信息无需密钥也能获得，这里获取登录者的id
      */
     public static String getUsername(String token) {
         try {
@@ -95,7 +95,6 @@ public class JWTUtil {
         try {
             //过期时间
             Date date = new Date(System.currentTimeMillis() + CommonInfo.EXPIRATION_TIME_MILLISECOND);
-            System.out.println(date);
             //密钥及算法
             Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
             //设置头部信息
@@ -114,5 +113,53 @@ public class JWTUtil {
         }
     }
 
+    /**
+     * Description: 验证原有token是否在两个小时以内过期,是返回true,否返回false
+     * @Author: Bernie_fang
+     * @Since: 2022/2/20 13:54
+     * @param verifyToken:
+     * @return: java.lang.Boolean
+     **/
+    public static Boolean verifyExpiresInTwoHours(String verifyToken) throws UnsupportedEncodingException {
+        Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
+        JWTVerifier verifier = JWT.require(algorithm).build();
+        DecodedJWT jwt = verifier.verify(verifyToken);
+        Date expiresAt = jwt.getExpiresAt();        //过期时间
+        Long twoHours =  new Date().getTime() + EXPIRE_TIME_2;
+        if (expiresAt.getTime() > twoHours){
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @param username:
+     * @param authorId:
+     * @Description: 生成签名
+     * @Author: Bernie_fang
+     * @Since: 2021/8/18 23:08
+     * @return: java.lang.String
+     **/
+    public static String signToToken(String username,String authorId) {
+        try {
+            //过期时间
+            Date date = new Date(System.currentTimeMillis() + CommonInfo.EXPIRATION_TIME_MILLISECOND);
+            //密钥及算法
+            Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
+            //设置头部信息
+            Map<String, Object> header = new HashMap<>(2);
+            header.put("typ", "JWT");
+            header.put("alg", "HS256");
+            //附带userId信息，生成签名
+            return JWT.create()
+                    .withHeader(header)
+                    .withClaim("username", username)
+                    .withClaim("authorId", authorId)
+                    .withExpiresAt(date)  //设置过期时间
+                    .sign(algorithm);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
 }

@@ -28,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.HashMap;
 
 /**
@@ -97,7 +98,7 @@ public class CommonServiceImpl {
             //发生异常，说明登录失败
             return ServerResponse.createLoginFail("登录出错，请检查用户名、密码");
         }
-        redisUtils.set(CommonInfo.SYS_USER + sysUser.getAuthorId(), sysUser, CommonInfo.EXPIRATION_TIME_SECOND);
+        redisUtils.set(CommonInfo.SYS_USER + sysUser.getAuthorId(), sysUser, new Date().getTime() + CommonInfo.EXPIRATION_TIME_SECOND);
         response.setHeader("Authorization", token); //放到信息头部
         HashMap<String, Object> map = new HashMap<>();
         map.put("token",token);

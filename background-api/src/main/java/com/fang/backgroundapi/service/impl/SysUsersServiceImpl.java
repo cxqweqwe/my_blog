@@ -32,15 +32,16 @@ public class SysUsersServiceImpl implements SysUsersService {
     @Autowired
     private SysUsersMapper sysUsersMapper;
 
-    @Autowired
-    private UserInfoServiceImpl userInfoService;
-
-
     @Override
     public SysUsers findUserByUsername(String username) {
         QueryWrapper<SysUsers> wrapper = new QueryWrapper<>();
         wrapper.eq("username", username);
         SysUsers sysUsers = sysUsersMapper.selectOne(wrapper);
+        return sysUsers;
+    }
+
+    public SysUsers findUserById(String authorId) {
+        SysUsers sysUsers = sysUsersMapper.selectById(authorId);
         return sysUsers;
     }
 
