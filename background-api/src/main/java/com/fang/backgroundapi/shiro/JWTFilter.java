@@ -64,7 +64,6 @@ public class JWTFilter extends BasicHttpAuthenticationFilter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         httpResponse.setHeader("Authorization",newToken);//设置新的token
         httpResponse.setHeader("Refresh-Token", "true"); //告知前端需要刷新token
-        log.info("更新");
     }
 
 }
