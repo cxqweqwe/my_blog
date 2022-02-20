@@ -12,7 +12,7 @@
     <div class="details clearfix">
       <h6 class="post-title my-0">
         <a href="#">
-          <div class="title" :title="item.title">{{ item.title }}</div>
+          <router-link target="_blank" :to="{path:'/blog/' + item.articleId}"><div class="title" :title="item.title">{{ item.title }}</div></router-link>
         </a>
       </h6>
       <ul class="meta list-inline mt-1 mb-0">
