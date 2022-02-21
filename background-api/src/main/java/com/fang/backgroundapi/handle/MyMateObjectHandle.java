@@ -19,7 +19,7 @@ public class MyMateObjectHandle implements MetaObjectHandler {
     //插入时的填充策略
     @Override
     public void insertFill(MetaObject metaObject) {
-        log.info("start insert fill......");
+        // log.info("start insert fill......");
         this.setFieldValByName("createTime", new Date(), metaObject);
         this.setFieldValByName("modifiedTime", new Date(), metaObject);
         // this.setFieldValByName();
@@ -28,7 +28,7 @@ public class MyMateObjectHandle implements MetaObjectHandler {
     //更新时的填充策略
     @Override
     public void updateFill(MetaObject metaObject) {
-        log.info("start update fill......");
+        // log.info("start update fill......");
         this.setFieldValByName("modifiedTime", new Date(), metaObject);
     }
 
