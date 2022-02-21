@@ -31,11 +31,12 @@ export function request(config) {
 
   // 2.2.响应拦截
   instance.interceptors.response.use(res => {
-    if(res.headers['refresh-token'] == 'true') {// token续约！
-      setCookie(res.headers['Authorization']);
-      setCookieAuthorId(getCookieAuthorId);
-      setCookieAvatarPath(getCookieAvatarPath);
-      setCookieNickName(getCookieNickName);
+    if(res.headers['refresh-token']) {// token续约！
+      setCookie(res.headers['authorization']);
+      setCookieAuthorId(getCookieAuthorId());
+      setCookieAvatarPath(getCookieAvatarPath());
+      setCookieNickName(getCookieNickName());
+      console.log("token续约");
     }
     if (res.data.status == 4003){
       Notification({
