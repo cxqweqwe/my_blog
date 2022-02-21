@@ -63,6 +63,7 @@ public class FavoriteRecordController extends BaseController {
     public ServerResponse unCollect(@PathVariable("id") String id) throws MyException {
         UpdateWrapper<FavoriteRecord> wrapper = new UpdateWrapper<>();
         wrapper.set("deleted", 1)
+                .eq("id", id)
                 .eq("author_id", super.getAuthorId());
         favoriteRecordService.update(wrapper);
         return ServerResponse.success();

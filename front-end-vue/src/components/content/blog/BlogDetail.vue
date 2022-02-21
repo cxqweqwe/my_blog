@@ -75,7 +75,7 @@
         </li>
         <li>
           <!-- 收藏 -->
-          <div v-if="isCollect == false" title="收藏该博客">
+          <div v-if="isCollect == false" title="收藏该博客" @click="showFavoritesPanel = true">
             <svg t="1645365677353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
                  p-id="6395" width="30" height="30">
               <path
@@ -114,6 +114,8 @@
         </li>
       </ul>
     </div>
+    <Favorite :showFavoritesPanel="showFavoritesPanel"
+              @closeFavoritesPanel="closePanel"/>
   </div>
 </template>
 
@@ -126,12 +128,13 @@
   import Comment from "components/content/comment/Comment";
   import {checkLike} from "network/likesRecord";
   import {getCookieAuthorId} from "common/cookieUtils";
-
+  import Favorite from "components/content/celebration/Favorite";
 
   export default {
     name: "BlogDetail",
     components: {
       Comment,
+      Favorite
     },
     data() {
       return {
@@ -160,6 +163,7 @@
         blogCollection: 0,
         likes: 0,
         isCollect: false, // 是否收藏该博客
+        showFavoritesPanel: false
       }
     },
     created() {
@@ -257,7 +261,9 @@
           this.likeOrNot = res.data;
         })
       },
-
+      closePanel(){
+        this.showFavoritesPanel = false;
+      }
       // 方法结束
     },
 
