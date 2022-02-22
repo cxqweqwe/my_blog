@@ -100,7 +100,7 @@
         </li>
         <li>
           <!-- 举报 -->
-          <div title="举报！">
+          <div title="举报！" @click="showReportPanel = true">
             <svg t="1645371875927" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
                  p-id="2860" width="30" height="30">
               <path
@@ -116,6 +116,7 @@
     </div>
     <Favorite :showFavoritesPanel="showFavoritesPanel"
               @closeFavoritesPanel="closePanel" :articleId="articleId"/>
+    <Report :showReportPanel="showReportPanel" :reportType=0 :report="articleId" @closeReportPanel="closeReport"/>
   </div>
 </template>
 
@@ -130,12 +131,14 @@
   import {getCookieAuthorId, getCookie} from "common/cookieUtils";
   import Favorite from "components/content/celebration/Favorite";
   import {check} from "network/favoriteRecord";
+  import Report from "components/common/report/Report";
 
   export default {
     name: "BlogDetail",
     components: {
       Comment,
-      Favorite
+      Favorite,
+      Report
     },
     data() {
       return {
@@ -164,7 +167,8 @@
         blogCollection: 0,
         likes: 0,
         isCollect: false, // 是否收藏该博客
-        showFavoritesPanel: false
+        showFavoritesPanel: false, // 收藏面板
+        showReportPanel: false, // 举报面板
       }
     },
     created() {
@@ -277,25 +281,28 @@
         }
         this.showFavoritesPanel = true
       },
-      checkFavorite(){
-        if (getCookie() == undefined){
+      checkFavorite() {
+        if (getCookie() == undefined) {
           return;
         }
-        check(this.articleId).then(res =>{
+        check(this.articleId).then(res => {
           // console.log(res);
-          if (res.data.length > 0){
+          if (res.data.length > 0) {
             this.isCollect = true;
-          }else {
+          } else {
             this.isCollect = false;
           }
 
         })
       },
-      cancelCollect(){
+      cancelCollect() {
         this.$Notice.warning({
           title: '只能在我的页面里面取消收藏'
         });
       },
+      closeReport(flag) {
+        this.showReportPanel = flag;
+      }
       // 方法结束
     },
 
