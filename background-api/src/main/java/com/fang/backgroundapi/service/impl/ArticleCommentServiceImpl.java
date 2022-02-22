@@ -73,7 +73,7 @@ public class ArticleCommentServiceImpl implements ArticleCommentService {
         List<ArticleCommentVO> firstCommentList = articleCommentVOS.stream().filter((articleComment) ->
                 "-1".equals(articleComment.getBeenCommentedId())
         ).collect(Collectors.toList());
-        firstCommentList.forEach(System.out::println);
+        // firstCommentList.forEach(System.out::println);
         for (ArticleCommentVO commentVO : firstCommentList) {
             List<ArticleCommentVO> commentGroup = articleCommentMapper.queryCommentGroup(commentVO.getId());
             List<ArticleCommentVO> sort = commentGroup.stream().sorted(Comparator.comparing(ArticleCommentVO::getTime)).collect(Collectors.toList());

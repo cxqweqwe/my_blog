@@ -81,5 +81,16 @@ public class FavoriteRecordController extends BaseController {
         return ServerResponse.success(list);
     }
 
+    @GetMapping("/check/{articleId}")
+    @ApiOperation(value = "查找收藏", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse check(@PathVariable("articleId") String articleId) throws MyException {
+        QueryWrapper<FavoriteRecord> wrapper = new QueryWrapper<>();
+        wrapper.eq("author_id", super.getAuthorId())
+                .eq("article_id", articleId)
+                .orderByDesc("create_time");
+        List<FavoriteRecord> list = favoriteRecordService.list(wrapper);
+        return ServerResponse.success(list);
+    }
+
 }
 

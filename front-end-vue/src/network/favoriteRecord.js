@@ -26,3 +26,9 @@ export function unCollect(id) {
     url: requestUrl + "/unCollect/" + id
   })
 }
+
+export function check(articleId) {
+  return request({
+    url: requestUrl + "/check/" + articleId
+  })
+}

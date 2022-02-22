@@ -75,7 +75,7 @@
         </li>
         <li>
           <!-- 收藏 -->
-          <div v-if="isCollect == false" title="收藏该博客" @click="showFavoritesPanel = true">
+          <div v-if="isCollect == false" title="收藏该博客" @click="openFavoritesPanel">
             <svg t="1645365677353" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
                  p-id="6395" width="30" height="30">
               <path
@@ -83,7 +83,7 @@
                   p-id="6396" fill="#707070"></path>
             </svg>
           </div>
-          <div v-else title="取消收藏该博客">
+          <div v-else title="取消收藏该博客" @click="cancelCollect">
             <svg t="1645365518520" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
                  p-id="5272" width="30" height="30">
               <path
@@ -115,7 +115,7 @@
       </ul>
     </div>
     <Favorite :showFavoritesPanel="showFavoritesPanel"
-              @closeFavoritesPanel="closePanel"/>
+              @closeFavoritesPanel="closePanel" :articleId="articleId"/>
   </div>
 </template>
 
@@ -127,8 +127,9 @@
 
   import Comment from "components/content/comment/Comment";
   import {checkLike} from "network/likesRecord";
-  import {getCookieAuthorId} from "common/cookieUtils";
+  import {getCookieAuthorId, getCookie} from "common/cookieUtils";
   import Favorite from "components/content/celebration/Favorite";
+  import {check} from "network/favoriteRecord";
 
   export default {
     name: "BlogDetail",
@@ -173,6 +174,7 @@
       this.getDetail(this.articleId);
       this.getBlogInfo(this.articleId);
       this.sendAndCheck(this.articleId);
+      this.checkFavorite();
     },
     computed: {},
     methods: {
@@ -261,9 +263,39 @@
           this.likeOrNot = res.data;
         })
       },
-      closePanel(){
-        this.showFavoritesPanel = false;
-      }
+      closePanel(flag) {
+        this.showFavoritesPanel = flag;
+        this.checkFavorite();
+      },
+      openFavoritesPanel() {
+        if (getCookie() == undefined) {
+          this.$notify({
+            message: "请先登录",
+            type: "warning"
+          })
+          return;
+        }
+        this.showFavoritesPanel = true
+      },
+      checkFavorite(){
+        if (getCookie() == undefined){
+          return;
+        }
+        check(this.articleId).then(res =>{
+          // console.log(res);
+          if (res.data.length > 0){
+            this.isCollect = true;
+          }else {
+            this.isCollect = false;
+          }
+
+        })
+      },
+      cancelCollect(){
+        this.$Notice.warning({
+          title: '只能在我的页面里面取消收藏'
+        });
+      },
       // 方法结束
     },
 
