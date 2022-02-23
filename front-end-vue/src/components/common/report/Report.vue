@@ -32,6 +32,9 @@
 </template>
 
 <script>
+  import {submitReport} from "network/reportInfo";
+  import {getCookieAuthorId} from "common/cookieUtils";
+
   export default {
     name: "Report",
     props: {
@@ -55,12 +58,24 @@
     },
     methods: {
       ok() {
-        this.$Message.info('Clicked ok');
+        // this.$Message.info('Clicked ok');
+        this.reportInfo.report = this.report;
+        this.reportInfo.reportType = this.reportType;
+        if (getCookieAuthorId() != undefined){
+          this.reportInfo.authorId = getCookieAuthorId();
+        }
         console.log(this.reportInfo);
+        submitReport(this.reportInfo).then(res => {
+          console.log(res);
+          this.$Notice.success({
+            title: res.msg,
+            desc: ''
+          });
+        })
         this.$emit("closeReportPanel", false);
       },
       cancel() {
-        this.$Message.info('Clicked cancel');
+        // this.$Message.info('Clicked cancel');
         this.$emit("closeReportPanel", false);
       }
     },

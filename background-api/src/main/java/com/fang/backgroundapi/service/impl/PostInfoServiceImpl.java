@@ -1,5 +1,6 @@
 package com.fang.backgroundapi.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.fang.backgroundapi.common.PagingData;
 import com.fang.backgroundapi.pojo.DO.PostInfo;
 import com.fang.backgroundapi.mapper.PostInfoMapper;
@@ -51,6 +52,21 @@ public class PostInfoServiceImpl extends ServiceImpl<PostInfoMapper, PostInfo> i
         List<PostInfoVO> postInfoVOList = postInfoMapper.selectPostInfo(curPage, size, null, authorId);
         Long total = postInfoMapper.countPostInfo(0, 1, null, null, authorId);
         return new PagingData(total, postInfoVOList);
+    }
+
+    /**
+     * Description: 修改状态
+     * @Author: Bernie_fang
+     * @Since: 2022/2/23 15:20
+     * @param postId:
+     * @param handleResult:  2表示代审核
+     * @return: void
+     **/
+    public void handleReport(String postId, Integer handleResult) {
+        UpdateWrapper<PostInfo> wrapper = new UpdateWrapper<>();
+        wrapper.set("deleted", handleResult)
+                .eq("post_id", postId);
+        postInfoMapper.update(null, wrapper);
     }
 
 }

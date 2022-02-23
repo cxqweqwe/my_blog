@@ -1,5 +1,6 @@
 package com.fang.backgroundapi.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.fang.backgroundapi.common.PagingData;
 import com.fang.backgroundapi.pojo.DO.PortComment;
 import com.fang.backgroundapi.mapper.PortCommentMapper;
@@ -30,6 +31,21 @@ public class PortCommentServiceImpl extends ServiceImpl<PortCommentMapper, PortC
         List<PortCommentVO> commentList = portCommentMapper.queryPortComment(portId, curPage, size);
         Long total = portCommentMapper.CommentCount(portId);
         return new PagingData(total, commentList);
+    }
+
+    /**
+     * Description: 修改状态
+     * @Author: Bernie_fang
+     * @Since: 2022/2/23 15:20
+     * @param id:
+     * @param handleResult:  2表示代审核
+     * @return: void
+     **/
+    public void handleReport(String id, Integer handleResult) {
+        UpdateWrapper<PortComment> wrapper = new UpdateWrapper<>();
+        wrapper.set("deleted", handleResult)
+                .eq("id", id);
+        portCommentMapper.update(null, wrapper);
     }
 
 }

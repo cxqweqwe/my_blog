@@ -2,6 +2,7 @@ package com.fang.backgroundapi.service.impl;
 
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.fang.backgroundapi.common.PagingData;
 import com.fang.backgroundapi.common.ServerResponse;
@@ -261,6 +262,21 @@ public class ArticleServiceImpl implements ArticleService {
         Integer total = articleMapper.latestPostsCount();
         PagingData data = new PagingData(Long.valueOf(total), popular);
         return data;
+    }
+
+    /**
+     * Description: 修改状态
+     * @Author: Bernie_fang
+     * @Since: 2022/2/23 15:20
+     * @param articleId:
+     * @param handleResult:  2表示代审核
+     * @return: void
+     **/
+    public void handleReport(String articleId, Integer handleResult) {
+        UpdateWrapper<Article> wrapper = new UpdateWrapper<>();
+        wrapper.set("deleted", handleResult)
+                .eq("article_id", articleId);
+        articleMapper.update(null, wrapper);
     }
 
 }

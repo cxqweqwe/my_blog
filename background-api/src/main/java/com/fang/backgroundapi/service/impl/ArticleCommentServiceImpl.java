@@ -2,6 +2,7 @@ package com.fang.backgroundapi.service.impl;
 
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.fang.backgroundapi.pojo.DO.ArticleComment;
 import com.fang.backgroundapi.mapper.ArticleCommentMapper;
 import com.fang.backgroundapi.pojo.VO.ArticleCommentVO;
@@ -9,7 +10,6 @@ import com.fang.backgroundapi.service.ArticleCommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -109,6 +109,21 @@ public class ArticleCommentServiceImpl implements ArticleCommentService {
     //     commentVO.
     //     return commentVO;
     // }
+
+    /**
+     * Description: 修改状态
+     * @Author: Bernie_fang
+     * @Since: 2022/2/23 15:20
+     * @param id:
+     * @param handleResult:  2表示代审核
+     * @return: void
+     **/
+    public void handleReport(String id, Integer handleResult) {
+        UpdateWrapper<ArticleComment> wrapper = new UpdateWrapper<>();
+        wrapper.set("deleted", handleResult)
+                .eq("id", id);
+        articleCommentMapper.update(null, wrapper);
+    }
 
 
 }
