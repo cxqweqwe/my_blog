@@ -13,6 +13,7 @@ const Personal = () => import('views/personal/Personal');
 const Article = () => import('views/blog/Article');
 const Forum = () => import('views/forum/Forum');
 const ForumDetail = () => import('views/forum/ForumDetail');
+const NotFount = () => import('views/404/404');
 
 const routes = [
   {
@@ -93,6 +94,14 @@ const routes = [
     meta: {
       hidden: true,
       title:"论坛-查看详情"
+    }
+  },
+  {
+    path: '/notFount/404',
+    component: NotFount,
+    meta: {
+      hidden: true,
+      title:"404 ~ NotFount！"
     }
   },
 

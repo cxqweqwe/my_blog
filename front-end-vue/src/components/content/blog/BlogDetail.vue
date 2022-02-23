@@ -185,16 +185,17 @@
       // 获取文章方法
       getDetail(id) {
         articleDetail(id).then(res => {
+          if (res.data == undefined){
+            this.$router.push("/notFount/404");
+          }
           this.article = res.data;
           this.labels = this.article.label.split(',');
           this.getAuthorInfo();
           document.title = this.article.title;
           this.$emit('returnData', this.article.authorId);
         }).catch(res => {
-          this.$notify.error({
-            title: '错误',
-            message: res.msg
-          });
+          console.log('获取博客详情出错');
+          console.log(res);
         })
       },
 
