@@ -28,7 +28,7 @@
         SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.modified_time,
                 uinfo.nick_name, ar.cover_path
         FROM article ar, blog_info info, user_info uinfo
-        WHERE ar.article_id = info.article_id AND ar.author_id = uinfo.author_id
+        WHERE ar.article_id = info.article_id AND ar.author_id = uinfo.author_id AND ar.deleted = 0
         ORDER BY info.likes
         LIMIT 0,#{quantity}
     </select>
@@ -36,7 +36,7 @@
     <select id="queryMostPopularPaging" parameterType="Integer" resultType="MostPopularInfoVO">
         SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.modified_time, us.nick_name, us.avatar_path
         FROM article ar, blog_info info, user_info us
-        WHERE ar.article_id = info.article_id AND us.author_id = ar.author_id
+        WHERE ar.article_id = info.article_id AND us.author_id = ar.author_id  AND ar.deleted = 0
         ORDER BY info.likes
         LIMIT #{curPage},#{size}
     </select>
@@ -50,6 +50,7 @@
     <select id="queryRecent" parameterType="Integer" resultType="MostPopularInfoVO">
         SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.modified_time, ar.cover_path
         FROM article ar
+        WHERE ar.deleted = 0
         ORDER BY ar.modified_time
         LIMIT 0,#{quantity}
     </select>
@@ -58,7 +59,7 @@
         SELECT DISTINCT ar.article_id, ar.title, ar.brief_introduction, ar.create_time, ar.cover_path,
         uin.author_id, uin.avatar_path, uin.nick_name, bin.pageviews, bin.likes, bin.collection
         FROM article ar,blog_info bin, user_info uin
-        WHERE ar.author_id = uin.author_id AND bin.article_id = ar.article_id
+        WHERE ar.author_id = uin.author_id AND bin.article_id = ar.article_id AND ar.deleted = 0
         AND (
         <foreach collection="keywordList" open="(" separator="or" close=")" item="keyword" index="index">
             ar.title like concat("%",#{keyword},"%")
@@ -77,7 +78,7 @@
     <select id="searchBlogCount" resultType="Integer">
         SELECT count(1)
         FROM article ar,blog_info bin, user_info uin
-        WHERE ar.author_id = uin.author_id AND bin.article_id = ar.article_id
+        WHERE ar.author_id = uin.author_id AND bin.article_id = ar.article_id AND ar.deleted = 0
         AND (
         <foreach collection="keywordList" open="(" separator="or" close=")" item="keyword" index="index">
             ar.title like concat("%",#{keyword},"%")
@@ -149,14 +150,14 @@
     <select id="queryPersonal"  resultType="MostPopularInfoVO">
         SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.create_time, ar.cover_path, us.nick_name, us.avatar_path
         FROM article ar, blog_info info, user_info us
-        WHERE ar.article_id = info.article_id AND us.author_id = ar.author_id AND ar.author_id = #{authorId}
+        WHERE ar.article_id = info.article_id AND ar.deleted = 0 AND us.author_id = ar.author_id AND ar.author_id = #{authorId}
         LIMIT #{curPage},#{size}
     </select>
 
     <select id="queryPersonalCount" resultType="Integer">
         SELECT count(article_id)
         FROM article
-        WHERE author_id = #{authorId}
+        WHERE author_id = #{authorId} AND deleted = 0
     </select>
 
     <select id="mostPageViews" resultType="PostShowVO">

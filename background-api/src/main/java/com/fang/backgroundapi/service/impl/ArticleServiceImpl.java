@@ -69,7 +69,8 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public PagingData findArticleAuthorId(String authorId, Integer currentPage, Integer size) {
         QueryWrapper<Article> wrapper = new QueryWrapper<>();
-        wrapper.eq("author_id", authorId);
+        wrapper.eq("author_id", authorId)
+                .eq("deleted", 0);
         Page<Article> page = new Page<>(currentPage, size);
         articleMapper.selectPage(page, wrapper);
         PagingData data = new PagingData(page.getTotal(), page.getRecords());
@@ -196,7 +197,8 @@ public class ArticleServiceImpl implements ArticleService {
         pagingData.setData(postShowVOList);
         return pagingData;
     }
-/**
+
+    /**
      * Description: 被收藏最多的
      * @Author: Bernie_fang
      * @Since: 2021/12/25 15:09
