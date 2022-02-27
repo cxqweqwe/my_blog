@@ -12,6 +12,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.fang.backgroundapi.utils.SnowflakeIdWorker;
 import nonapi.io.github.classgraph.json.Id;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,9 +57,22 @@ public class SysUsersServiceImpl implements SysUsersService {
         return null;
     }
 
+    /**
+     * Description:
+     * @Author: Bernie_fang
+     * @Since: 2022/2/27 16:55
+     * @param deleted:  3: 查询所有
+     * @return: java.util.List<com.fang.backgroundapi.pojo.DO.SysUsers>
+     **/
     @Override
-    public List<SysUsers> queryUser() {
-        List<SysUsers> usersList = sysUsersMapper.selectList(null);
+    public List<SysUsers> queryUser(Integer deleted) {
+        if (deleted == 3){
+            List<SysUsers> usersList = sysUsersMapper.selectList(null);
+            return usersList;
+        }
+        QueryWrapper<SysUsers> wrapper = new QueryWrapper<>();
+        wrapper.eq("deleted", deleted);
+        List<SysUsers> usersList = sysUsersMapper.selectList(wrapper);
         return usersList;
     }
 

@@ -21,6 +21,6 @@ public interface SysUsersService {
 
     public Integer updatePassword(SysUsers sysUsers);
 
-    public List<SysUsers> queryUser();
+    public List<SysUsers> queryUser(Integer deleted);
 
 }

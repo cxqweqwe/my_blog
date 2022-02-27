@@ -1,6 +1,7 @@
 package com.fang.backgroundapi.controller;
 
 
+import cn.hutool.core.util.ObjectUtil;
 import com.fang.backgroundapi.common.PagingData;
 import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.exception.MyException;
@@ -11,6 +12,7 @@ import com.fang.backgroundapi.pojo.VO.MostPopularInfoVO;
 import com.fang.backgroundapi.pojo.VO.SearchBlogVO;
 import com.fang.backgroundapi.service.impl.ArticleCommentServiceImpl;
 import com.fang.backgroundapi.service.impl.ArticleServiceImpl;
+import com.fang.backgroundapi.service.impl.BlogInfoServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -48,6 +50,9 @@ public class ArticleController extends BaseController {
     @Autowired
     private ArticleServiceImpl articleService;
 
+    @Autowired
+    private BlogInfoServiceImpl blogInfoService;
+
     @PostMapping("/release")
     @ApiOperation(value = "博客发布", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse releaseArticle(@RequestBody @Valid ArticleDTO articleDTO) throws MyException {
@@ -66,6 +71,9 @@ public class ArticleController extends BaseController {
     @ApiOperation(value = "获取博客详情", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse articleDetail(@PathVariable("articleId") @NotBlank(message = "博文ID不能为空")String articleId) {
         ArticleVO article = articleService.findArticleDetail(articleId);
+        if (ObjectUtil.isNotEmpty(article)){
+            blogInfoService.readBlog(articleId);
+        }
         return ServerResponse.success(article);
     }
 

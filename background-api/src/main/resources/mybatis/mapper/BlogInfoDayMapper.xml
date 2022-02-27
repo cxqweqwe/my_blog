@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fang.backgroundapi.mapper.BlogInfoDayMapper">
+
+    <select id="statisticsPLC" resultType="BlogInfoDay">
+        SELECT
+            SUM( info.pageviews ) pageviews,
+            SUM( info.likes ) likes,
+            SUM( info.collection ) collection
+        FROM
+            article ar
+            LEFT JOIN blog_info info ON ar.article_id = info.article_id
+        WHERE
+            ar.deleted = 0
+            AND ar.author_id = #{authorId}
+    </select>
+
+    <select id="statisticsSubscription" resultType="java.lang.Integer">
+        SELECT
+            COUNT( DISTINCT subscribe )
+        FROM
+            subscription
+        WHERE
+            deleted = 0
+            AND been_subscribed = #{authorId}
+    </select>
+
+    <select id="statisticsComment" resultType="java.lang.Integer">
+        SELECT
+            COUNT(DISTINCT comm.id)
+        FROM
+            article ar
+            LEFT JOIN article_comment comm ON ar.article_id = comm.article_id
+        WHERE
+            ar.deleted = 0
+            AND comm.deleted = 0
+            AND ar.author_id = #{authorId}
+    </select>
+
+</mapper>
