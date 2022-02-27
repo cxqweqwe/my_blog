@@ -11,7 +11,7 @@
  Target Server Version : 50734
  File Encoding         : 65001
 
- Date: 16/02/2022 23:27:19
+ Date: 27/02/2022 14:28:17
 */
 
 SET NAMES utf8mb4;
@@ -75,6 +75,21 @@ CREATE TABLE `blog_info`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客信息统计表' ROW_FORMAT = Compact;
 
 -- ----------------------------
+-- Table structure for favorite_record
+-- ----------------------------
+DROP TABLE IF EXISTS `favorite_record`;
+CREATE TABLE `favorite_record`  (
+  `id` varchar(35) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'ID',
+  `author_id` varchar(35) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户ID',
+  `favorites_id` varchar(35) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '收藏夹id',
+  `article_id` varchar(35) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收藏的博客id',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `modified_time` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
+  `deleted` int(1) NULL DEFAULT 0 COMMENT '软删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '收藏记录表' ROW_FORMAT = Compact;
+
+-- ----------------------------
 -- Table structure for favorites_bar
 -- ----------------------------
 DROP TABLE IF EXISTS `favorites_bar`;
@@ -83,10 +98,10 @@ CREATE TABLE `favorites_bar`  (
   `author_id` varchar(35) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户ID',
   `favorites_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '收藏夹名字',
   `favorites_intro` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '收藏夹简介',
-  `favorites_number` int(4) NULL DEFAULT 0 COMMENT '收藏数量(暂时限定上限1000条)',
+  `favorites_number` int(4) NULL DEFAULT 1000 COMMENT '收藏数量(暂时限定上限1000条)',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `modified_time` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
-  `deleted` int(1) NULL DEFAULT NULL COMMENT '软删除',
+  `deleted` int(1) NULL DEFAULT 0 COMMENT '软删除',
   PRIMARY KEY (`favorites_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '收藏夹信息表' ROW_FORMAT = Compact;
 
@@ -216,7 +231,7 @@ CREATE TABLE `report_info`  (
   `handling_time` datetime(0) NULL DEFAULT NULL COMMENT '处理时间',
   `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
   `modified_time` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
-  `deleted` int(1) NULL DEFAULT NULL COMMENT '软删除',
+  `deleted` int(1) NULL DEFAULT 0 COMMENT '软删除',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '举报信息表' ROW_FORMAT = Compact;
 
