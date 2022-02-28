@@ -1,5 +1,9 @@
 package com.fang.backgroundapi.service;
 
+import com.fang.backgroundapi.pojo.DO.BlogInfoDay;
+
+import java.util.List;
+
 /**
  * @author Bernie_fang
  * @Description: 定时任务接口
@@ -7,7 +11,7 @@ package com.fang.backgroundapi.service;
  **/
 public interface ScheduledService {
 
-    public void statistics();
+    public List<BlogInfoDay> statistics();
 
     public void dailyStatistics();
 

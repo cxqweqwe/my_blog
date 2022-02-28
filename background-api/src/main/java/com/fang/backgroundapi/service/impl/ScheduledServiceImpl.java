@@ -37,8 +37,8 @@ public class ScheduledServiceImpl implements ScheduledService {
      **/
     @Override
     // 秒 分 时 日 月 周几
-    @Scheduled(cron = "0 30 9 * * 7")// 每周日的9点30分执行
-    public void statistics() {
+    // @Scheduled(cron = "0 30 9 * * 7")// 每周日的9点30分执行
+    public List<BlogInfoDay> statistics() {
         Date endDate = new Date();                      //当前时间
         Calendar ca = Calendar.getInstance();           //得到一个Calendar的实例
         ca.setTime(endDate);                            //设置时间为当前时间
@@ -48,7 +48,8 @@ public class ScheduledServiceImpl implements ScheduledService {
 
         QueryWrapper<BlogInfoDay> blogInfoDayQueryWrapper = new QueryWrapper<>();
         blogInfoDayQueryWrapper.ge("create_time", startDay)
-                .lt("create_time", endDate);            //处于这几天的数据
+                .lt("create_time", endDate)
+                .orderByDesc("create_time");            //处于这几天的数据
 
         // Integer pageviews = 0;              // 浏览量
         // Integer likes = 0;                  // 点赞量
@@ -56,7 +57,7 @@ public class ScheduledServiceImpl implements ScheduledService {
         // Integer comment = 0;                // 评论量
         // Integer collection = 0;             // 收藏量
         List<BlogInfoDay> infoDayList = blogInfoDayService.list(blogInfoDayQueryWrapper);
-
+        return infoDayList;
     }
 
     /**

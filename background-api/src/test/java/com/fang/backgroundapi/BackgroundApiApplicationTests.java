@@ -25,7 +25,9 @@ class BackgroundApiApplicationTests {
 
     @Test
     void dailyStatistics() {
-        scheduledService.statistics();
+        for (int i = 0; i < 5; i++) {
+            scheduledService.dailyStatistics();
+        }
     }
 
 

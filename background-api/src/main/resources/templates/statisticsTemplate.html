@@ -45,16 +45,152 @@
   );
   function run(_rawData) {
     // var countries = ['Australia', 'Canada', 'China', 'Cuba', 'Finland', 'France', 'Germany', 'Iceland', 'India', 'Japan', 'North Korea', 'South Korea', 'New Zealand', 'Norway', 'Poland', 'Russia', 'Turkey', 'United Kingdom', 'United States'];
-    const countries = [
-      'Finland',
-      'Poland',
-      'Russia',
-      'United Kingdom'
+    // const countries = [
+    //   'Finland',
+    //   'Poland',
+    //   'Russia',
+    //   'United Kingdom'
+    // ];
+    const daysSet = [
+      '2022-02-28',
+      '2022-02-27',
+      '2022-02-26',
+      '2022-02-25',
+      '2022-02-24',
+      '2022-02-23',
+      '2022-02-22'
     ];
+    const _MyRawData = [
+      {
+        "modifiedTime": 1646059550000,
+        "subscription": 100,
+        "collection": 6661,
+        "authorId": "598108905656729600",
+        "pageviews": 162413,
+        "deleted": 0,
+        "createTime": "2022-02-28",
+        "comment": 9,
+        "id": "36880016897eb41caae60fb5450ad60d",
+        "likes": 44530
+      },
+      {
+        "modifiedTime": 1645971182000,
+        "subscription": 34,
+        "collection": 4961,
+        "authorId": "598108905656729600",
+        "pageviews": 152413,
+        "deleted": 0,
+        "createTime": "2022-02-27",
+        "comment": 9,
+        "id": "5da4b300fd39d7dd04dbe001f8270cf0",
+        "likes": 43530
+      },
+      {
+        "modifiedTime": 1646059440000,
+        "subscription": 43,
+        "collection": 4457,
+        "authorId": "598108905656729600",
+        "pageviews": 142413,
+        "deleted": 0,
+        "createTime": "2022-02-26",
+        "comment": 9,
+        "id": "8e0009ed5ee37da1634b5886b185d294",
+        "likes": 42530
+      },
+      {
+        "modifiedTime": 1646059550000,
+        "subscription": 15,
+        "collection": 4661,
+        "authorId": "598108905656729600",
+        "pageviews": 132413,
+        "deleted": 0,
+        "createTime": "2022-02-25",
+        "comment": 9,
+        "id": "b17bd13af6ee867e87391aceaedc6c43",
+        "likes": 41530
+      },
+      {
+        "modifiedTime": 1646059550000,
+        "subscription": 9,
+        "collection": 4135,
+        "authorId": "598108905656729600",
+        "pageviews": 122413,
+        "deleted": 0,
+        "createTime": "2022-02-24",
+        "comment": 9,
+        "id": "b27d06c0b5248fe152c7e3ad45996975",
+        "likes": 40530
+      },
+      {
+        "modifiedTime": 1646059550000,
+        "subscription": 5,
+        "collection": 3661,
+        "authorId": "598108905656729600",
+        "pageviews": 112413,
+        "deleted": 0,
+        "createTime": "2022-02-23",
+        "comment": 9,
+        "id": "d5de0a00b45ca2bb532f035a3ccf5ac1",
+        "likes": 39530
+      },
+      {
+        "modifiedTime": 1646059550000,
+        "subscription": 10,
+        "collection": 2661,
+        "authorId": "598108905656729600",
+        "pageviews": 102413,
+        "deleted": 0,
+        "createTime": "2022-02-22",
+        "comment": 9,
+        "id": "dcf1b305006cfaf4aa919053ccd1d132",
+        "likes": 38530
+      }
+    ]
     const datasetWithFilters = [];
     const seriesList = [];
-    echarts.util.each(countries, function (country) {
-      var datasetId = 'dataset_' + country;
+    // echarts.util.each(countries, function (country) {
+    //   var datasetId = 'dataset_' + country;
+    //   datasetWithFilters.push({
+    //     id: datasetId,
+    //     fromDatasetId: 'dataset_raw',
+    //     transform: {
+    //       type: 'filter',
+    //       config: {
+    //         and: [
+    //           { dimension: 'Year', gte: 2000 },
+    //           { dimension: 'Country', '=': country }
+    //         ]
+    //       }
+    //     }
+    //   });
+    //   seriesList.push({
+    //     type: 'line',
+    //     datasetId: datasetId,
+    //     showSymbol: false,
+    //     name: country,
+    //     endLabel: {
+    //       show: true,
+    //       formatter: function (params) {						// 折线端点标签信息展示
+    //         return params.value[3] + ': ' + params.value[0];
+    //       }
+    //     },
+    //     labelLayout: {
+    //       moveOverlap: 'shiftY'								// 表示标签重叠时表示垂直方向依次位移
+    //     },
+    //     emphasis: {
+    //       focus: 'series'											//设置高亮状态，鼠标放上去时其他折线隐藏
+    //     },
+    //     encode: {					//设置数据位置编码对象
+    //       x: 'Year',			// year数据映射到X轴
+    //       y: 'amount',		// amount数据映射到X轴
+    //       label: ['Country', 'amount'],
+    //       itemName: 'Year',
+    //       tooltip: ['Income']
+    //     }
+    //   });
+    // });
+    echarts.util.each(daysSet, function (day) {
+      var datasetId = 'dataset_' + day;
       datasetWithFilters.push({
         id: datasetId,
         fromDatasetId: 'dataset_raw',
@@ -62,8 +198,8 @@
           type: 'filter',
           config: {
             and: [
-              { dimension: 'Year', gte: 2000 },
-              { dimension: 'Country', '=': country }
+              // { dimension: 'Year', gte: 2000 },
+              { dimension: 'createTime', '=': day }
             ]
           }
         }
@@ -72,11 +208,11 @@
         type: 'line',
         datasetId: datasetId,
         showSymbol: false,
-        name: country,
+        name: day,
         endLabel: {
           show: true,
           formatter: function (params) {						// 折线端点标签信息展示
-            return params.value[3] + ': ' + params.value[0];
+            return params.value['createTime'] + ': ' + params.value['pageviews'];
           }
         },
         labelLayout: {
@@ -86,10 +222,10 @@
           focus: 'series'											//设置高亮状态，鼠标放上去时其他折线隐藏
         },
         encode: {					//设置数据位置编码对象
-          x: 'Year',			// year数据映射到X轴
+          x: 'createTime',			// year数据映射到X轴
           y: 'amount',		// amount数据映射到X轴
-          label: ['Country', 'amount'],
-          itemName: 'Year',
+          label: ['createTime', 'pageviews'],
+          itemName: 'createTime',
           tooltip: ['Income']
         }
       });
@@ -99,7 +235,8 @@
       dataset: [									// 数据集
         {
           id: 'dataset_raw',
-          source: _rawData
+          // source: _rawData
+          source: _MyRawData
         },
 				// 过滤后的数据
         ...datasetWithFilters
