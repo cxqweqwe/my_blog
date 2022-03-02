@@ -19,6 +19,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 用户信息表 服务实现类
@@ -95,6 +97,20 @@ public class UserInfoServiceImpl implements UserInfoService {
         pagingData.setTotal(page.getTotal());
         pagingData.setData(page.getRecords());
         return ServerResponse.success(pagingData);
+    }
+
+    /**
+     * Description: 查询所有用户信息
+     * @Author: Bernie_fang
+     * @Since: 2022/3/2 22:29
+     * @param deleted:
+     * @return: java.util.List<com.fang.backgroundapi.pojo.DO.UserInfo>
+     **/
+    public List<UserInfo> queryUserInfo(Integer deleted) {
+        QueryWrapper<UserInfo> wrapper = new QueryWrapper<>();
+        wrapper.eq("deleted", deleted);
+        List<UserInfo> userInfos = userInfoMapper.selectList(wrapper);
+        return userInfos;
     }
 
     @Override

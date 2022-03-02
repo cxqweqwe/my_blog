@@ -11,7 +11,7 @@ import java.util.List;
  **/
 public interface ScheduledService {
 
-    public List<BlogInfoDay> statistics();
+    public void statistics();
 
     public void dailyStatistics();
 

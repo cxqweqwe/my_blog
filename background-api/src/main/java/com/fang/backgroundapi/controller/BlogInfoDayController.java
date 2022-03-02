@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -36,11 +37,18 @@ public class BlogInfoDayController {
     private ScheduledServiceImpl scheduledService;
 
     @GetMapping("/get")
-    @ApiOperation(value = "退出登录接口", response = ServerResponse.class, httpMethod = "GET")
+    @ApiOperation(value = "获取statistics数据", response = ServerResponse.class, httpMethod = "GET")
     public String loginOut()  {
-        List<BlogInfoDay> statistics = scheduledService.statistics();
-        String jsonStr = JSONUtil.toJsonStr(statistics);
+        ArrayList<List<Object>> dataSet = scheduledService.getData("598108905656729600");
+        String jsonStr = JSONUtil.toJsonStr(dataSet);
         return jsonStr;
+    }
+
+    @GetMapping("/sendStatistics")
+    @ApiOperation(value = "测试发送数据", response = ServerResponse.class, httpMethod = "GET")
+    public String sendStatistics()  {
+        scheduledService.statistics();
+        return "success";
     }
 
 }

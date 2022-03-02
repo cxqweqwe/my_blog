@@ -13,7 +13,9 @@ import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Bernie_fang
@@ -69,6 +71,32 @@ public class AsyncService {
             mailSender.send(mimeMessage);
         } catch (MessagingException e) {
             System.out.println("用户注册的邮件任务发生异常------------>{}" + e.getMessage());
+        }
+    }
+
+    @Async
+    public void sendEmailStatistics(List<List<Object>> dateSet, String email) {
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,
+                    true);
+            // 设置渲染到html页面对应的值
+            Context context = new Context();
+            context.setVariable("msg", "测试测试");
+            // context.setVariable("dataSet", dateSet);
+
+            //利用模板引擎加载html文件进行渲染并生成对应的字符串
+            String emailContent = templateEngine.process("statisticsTemplate", context);
+            // 设置邮件标题
+            mimeMessageHelper.setSubject("来fangweb个人博客-论坛网站邮件");
+            mimeMessageHelper.setText(emailContent, true);
+            // 收件人
+            mimeMessageHelper.setTo(email);
+            // 发送人
+            mimeMessageHelper.setFrom(emailFrom);
+            mailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            System.out.println("用户统计的邮件任务发生异常------------>{}" + e.getMessage());
         }
     }
 
