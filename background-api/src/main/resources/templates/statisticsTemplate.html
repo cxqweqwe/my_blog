@@ -1,32 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th=http://www.thymeleaf.org style="height: 100%">
+
 <head>
-	<meta charset=UTF-8>
-	<title>数据统计/周</title>
-	<script src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/dist/echarts.js"></script>
+  <meta charset=UTF-8>
+  <title>数据统计/周</title>
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/dist/echarts.js"></script>
 </head>
+
 <body style="height: 100%; margin: 0">
 <div id="container" style="height: 100%"></div>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/dist/echarts.min.js"></script>
-<!-- Uncomment this line if you want to dataTool extension
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/dist/extension/dataTool.min.js"></script>
--->
-<!-- Uncomment this line if you want to use gl extension
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
--->
-<!-- Uncomment this line if you want to echarts-stat extension
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
--->
-<!-- Uncomment this line if you want to use map
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/map/js/china.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/map/js/world.js"></script>
--->
-<!-- Uncomment these two lines if you want to use bmap extension
-<script type="text/javascript" src="https://api.map.baidu.com/api?v=2.0&ak=<Your Key Here>"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@{{version}}/dist/extension/bmap.min.js"></script>
--->
+<script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 <script type="text/javascript">
   var dom = document.getElementById("container");
@@ -34,163 +20,116 @@
   var app = {};
 
   var option;
+  const _MyRawData = [
+    ['number', 'type', 'createTime'],
+    [1723, 'subscription', '2022-02-28'],
+    [1123, 'collection', '2022-02-28'],
+    [1923, 'pageviews', '2022-02-28'],
+    [123, 'comment', '2022-02-28'],
+    [2356, 'likes', '2022-02-28'],
+    [1888, 'subscription', '2022-02-27'],
+    [3333, 'collection', '2022-02-27'],
+    [1223, 'pageviews', '2022-02-27'],
+    [13, 'comment', '2022-02-27'],
+    [2235, 'likes', '2022-02-27'],
+    [21723, 'subscription', '2022-02-26'],
+    [21123, 'collection', '2022-02-26'],
+    [21923, 'pageviews', '2022-02-26'],
+    [2123, 'comment', '2022-02-26'],
+    [223, 'likes', '2022-02-26'],
+    [7983, 'subscription', '2022-02-25'],
+    [1354, 'collection', '2022-02-25'],
+    [3645, 'pageviews', '2022-02-25'],
+    [6975, 'comment', '2022-02-25'],
+    [1237, 'likes', '2022-02-25'],
+    [3745, 'subscription', '2022-02-24'],
+    [8786, 'collection', '2022-02-24'],
+    [4534, 'pageviews', '2022-02-24'],
+    [9878, 'comment', '2022-02-24'],
+    [6775, 'likes', '2022-02-24'],
+    [4532, 'subscription', '2022-02-23'],
+    [7869, 'collection', '2022-02-23'],
+    [3964, 'pageviews', '2022-02-23'],
+    [4531, 'comment', '2022-02-23'],
+    [7866, 'likes', '2022-02-23'],
+    [7864, 'subscription', '2022-02-22'],
+    [3452, 'collection', '2022-02-22'],
+    [9678, 'pageviews', '2022-02-22'],
+    [5434, 'comment', '2022-02-22'],
+    [987, 'likes', '2022-02-22'],
 
-  var ROOT_PATH = 'https://cdn.jsdelivr.net/gh/apache/echarts-website@asf-site/examples'
+    [8634, 'subscription', '2022-02-21'],
+    [373, 'collection', '2022-02-21'],
+    [4165, 'pageviews', '2022-02-21'],
+    [7375, 'comment', '2022-02-21'],
+    [7735, 'likes', '2022-02-21'],
+    [1237, 'subscription', '2022-02-20'],
+    [9875, 'collection', '2022-02-20'],
+    [6532, 'pageviews', '2022-02-20'],
+    [2413, 'comment', '2022-02-20'],
+    [7536, 'likes', '2022-02-20'],
+    [4566, 'subscription', '2022-02-19'],
+    [7863, 'collection', '2022-02-19'],
+    [4645, 'pageviews', '2022-02-19'],
+    [5156, 'comment', '2022-02-19'],
+    [4656, 'likes', '2022-02-19'],
+    [7954, 'subscription', '2022-02-18'],
+    [8775, 'collection', '2022-02-18'],
+    [5469, 'pageviews', '2022-02-18'],
+    [7892, 'comment', '2022-02-18'],
+    [3211, 'likes', '2022-02-18'],
+    [4610, 'subscription', '2022-02-17'],
+    [7489, 'collection', '2022-02-17'],
+    [4942, 'pageviews', '2022-02-17'],
+    [8949, 'comment', '2022-02-17'],
+    [9843, 'likes', '2022-02-17'],
+    [6541, 'subscription', '2022-02-16'],
+    [4789, 'collection', '2022-02-16'],
+    [4235, 'pageviews', '2022-02-16'],
+    [1255, 'comment', '2022-02-16'],
+    [7863, 'likes', '2022-02-16'],
+    [4517, 'subscription', '2022-02-15'],
+    [9375, 'collection', '2022-02-15'],
+    [7863, 'pageviews', '2022-02-15'],
+    [4537, 'comment', '2022-02-15'],
+    [8664, 'likes', '2022-02-15'],
+    [4517, 'subscription', '2022-02-14'],
+    [9375, 'collection', '2022-02-14'],
+    [7863, 'pageviews', '2022-02-14'],
+    [4537, 'comment', '2022-02-14'],
+    [8664, 'likes', '2022-02-14'],
+    [4517, 'subscription', '2022-02-13'],
+    [9375, 'collection', '2022-02-13'],
+    [7863, 'pageviews', '2022-02-13'],
+    [4537, 'comment', '2022-02-13'],
+    [8664, 'likes', '2022-02-13'],
+  ]
+  const transformCN = {
+    subscription: '被订阅数量',
+    collection: '博客收藏数量',
+    pageviews: '博客查阅数量',
+    comment: '博客评论数量',
+    likes: '博客点赞数量'
+  }
+  //转时间戳 实际使用时上面数据直接塞时间戳就好
+  for (let i = 1; i < _MyRawData.length; i++) {
+    _MyRawData[i][2] = moment(_MyRawData[i][2]).unix()
+  }
+  run(_MyRawData)
 
-  $.get(
-    ROOT_PATH + '/data/asset/data/life-expectancy-table.json',
-    function (_rawData) {
-      run(_rawData);
-    }
-  );
   function run(_rawData) {
-    // var countries = ['Australia', 'Canada', 'China', 'Cuba', 'Finland', 'France', 'Germany', 'Iceland', 'India', 'Japan', 'North Korea', 'South Korea', 'New Zealand', 'Norway', 'Poland', 'Russia', 'Turkey', 'United Kingdom', 'United States'];
-    // const countries = [
-    //   'Finland',
-    //   'Poland',
-    //   'Russia',
-    //   'United Kingdom'
-    // ];
-    const daysSet = [
-      '2022-02-28',
-      '2022-02-27',
-      '2022-02-26',
-      '2022-02-25',
-      '2022-02-24',
-      '2022-02-23',
-      '2022-02-22'
+    const Type = [
+      'subscription',
+      'collection',
+      'pageviews',
+      'comment',
+      'likes',
     ];
-    const _MyRawData = [
-      {
-        "modifiedTime": 1646059550000,
-        "subscription": 100,
-        "collection": 6661,
-        "authorId": "598108905656729600",
-        "pageviews": 162413,
-        "deleted": 0,
-        "createTime": "2022-02-28",
-        "comment": 9,
-        "id": "36880016897eb41caae60fb5450ad60d",
-        "likes": 44530
-      },
-      {
-        "modifiedTime": 1645971182000,
-        "subscription": 34,
-        "collection": 4961,
-        "authorId": "598108905656729600",
-        "pageviews": 152413,
-        "deleted": 0,
-        "createTime": "2022-02-27",
-        "comment": 9,
-        "id": "5da4b300fd39d7dd04dbe001f8270cf0",
-        "likes": 43530
-      },
-      {
-        "modifiedTime": 1646059440000,
-        "subscription": 43,
-        "collection": 4457,
-        "authorId": "598108905656729600",
-        "pageviews": 142413,
-        "deleted": 0,
-        "createTime": "2022-02-26",
-        "comment": 9,
-        "id": "8e0009ed5ee37da1634b5886b185d294",
-        "likes": 42530
-      },
-      {
-        "modifiedTime": 1646059550000,
-        "subscription": 15,
-        "collection": 4661,
-        "authorId": "598108905656729600",
-        "pageviews": 132413,
-        "deleted": 0,
-        "createTime": "2022-02-25",
-        "comment": 9,
-        "id": "b17bd13af6ee867e87391aceaedc6c43",
-        "likes": 41530
-      },
-      {
-        "modifiedTime": 1646059550000,
-        "subscription": 9,
-        "collection": 4135,
-        "authorId": "598108905656729600",
-        "pageviews": 122413,
-        "deleted": 0,
-        "createTime": "2022-02-24",
-        "comment": 9,
-        "id": "b27d06c0b5248fe152c7e3ad45996975",
-        "likes": 40530
-      },
-      {
-        "modifiedTime": 1646059550000,
-        "subscription": 5,
-        "collection": 3661,
-        "authorId": "598108905656729600",
-        "pageviews": 112413,
-        "deleted": 0,
-        "createTime": "2022-02-23",
-        "comment": 9,
-        "id": "d5de0a00b45ca2bb532f035a3ccf5ac1",
-        "likes": 39530
-      },
-      {
-        "modifiedTime": 1646059550000,
-        "subscription": 10,
-        "collection": 2661,
-        "authorId": "598108905656729600",
-        "pageviews": 102413,
-        "deleted": 0,
-        "createTime": "2022-02-22",
-        "comment": 9,
-        "id": "dcf1b305006cfaf4aa919053ccd1d132",
-        "likes": 38530
-      }
-    ]
+
     const datasetWithFilters = [];
     const seriesList = [];
-    // echarts.util.each(countries, function (country) {
-    //   var datasetId = 'dataset_' + country;
-    //   datasetWithFilters.push({
-    //     id: datasetId,
-    //     fromDatasetId: 'dataset_raw',
-    //     transform: {
-    //       type: 'filter',
-    //       config: {
-    //         and: [
-    //           { dimension: 'Year', gte: 2000 },
-    //           { dimension: 'Country', '=': country }
-    //         ]
-    //       }
-    //     }
-    //   });
-    //   seriesList.push({
-    //     type: 'line',
-    //     datasetId: datasetId,
-    //     showSymbol: false,
-    //     name: country,
-    //     endLabel: {
-    //       show: true,
-    //       formatter: function (params) {						// 折线端点标签信息展示
-    //         return params.value[3] + ': ' + params.value[0];
-    //       }
-    //     },
-    //     labelLayout: {
-    //       moveOverlap: 'shiftY'								// 表示标签重叠时表示垂直方向依次位移
-    //     },
-    //     emphasis: {
-    //       focus: 'series'											//设置高亮状态，鼠标放上去时其他折线隐藏
-    //     },
-    //     encode: {					//设置数据位置编码对象
-    //       x: 'Year',			// year数据映射到X轴
-    //       y: 'amount',		// amount数据映射到X轴
-    //       label: ['Country', 'amount'],
-    //       itemName: 'Year',
-    //       tooltip: ['Income']
-    //     }
-    //   });
-    // });
-    echarts.util.each(daysSet, function (day) {
-      var datasetId = 'dataset_' + day;
+    echarts.util.each(Type, function (type) {
+      var datasetId = 'dataset_' + type;
       datasetWithFilters.push({
         id: datasetId,
         fromDatasetId: 'dataset_raw',
@@ -198,8 +137,8 @@
           type: 'filter',
           config: {
             and: [
-              // { dimension: 'Year', gte: 2000 },
-              { dimension: 'createTime', '=': day }
+              // { dimension: 'createTime', gte: 2000 },
+              {dimension: 'type', '=': type}
             ]
           }
         }
@@ -208,11 +147,11 @@
         type: 'line',
         datasetId: datasetId,
         showSymbol: false,
-        name: day,
+        name: type,
         endLabel: {
           show: true,
           formatter: function (params) {						// 折线端点标签信息展示
-            return params.value['createTime'] + ': ' + params.value['pageviews'];
+            return params.value[1] + ':' + params.value[0]
           }
         },
         labelLayout: {
@@ -223,10 +162,9 @@
         },
         encode: {					//设置数据位置编码对象
           x: 'createTime',			// year数据映射到X轴
-          y: 'amount',		// amount数据映射到X轴
-          label: ['createTime', 'pageviews'],
+          y: 'number',		// amount数据映射到X轴
+          label: ['number'],
           itemName: 'createTime',
-          tooltip: ['Income']
         }
       });
     });
@@ -235,10 +173,9 @@
       dataset: [									// 数据集
         {
           id: 'dataset_raw',
-          // source: _rawData
-          source: _MyRawData
+          source: _rawData
         },
-				// 过滤后的数据
+        // 过滤后的数据
         ...datasetWithFilters
       ],
       title: {
@@ -246,14 +183,40 @@
       },
       tooltip: {
         order: 'valueDesc',					//根据数据值, 降序排列。
-        trigger: 'axis'							//坐标轴触发
+        trigger: 'axis',							//坐标轴触发
+        //自定义tooltip框内容
+        formatter(params) {
+          let str = `${moment.unix(params[0].value[2]).format('YYYY-MM-DD')}`
+          params.forEach(item => {
+            let strArr = `<div style="display:flex;justify-content:space-between;flex-direction:row;width:200px;margin-top:5px"><span>${item.marker}${transformCN[item.value[1]]} </span><span style="font-weight:bold"> ${item.value[0]}</span > </div>`
+            str += strArr
+          })
+          return str
+        }
+      },
+      toolbox: {
+        show: true,                       // 显示工具栏
+        feature: {
+          saveAsImage: {                  // 保存图片，为png格式
+            type: "png"
+          }
+        }
       },
       xAxis: {
         type: 'category',						//类目轴
-        nameLocation: 'middle'			//坐标轴名称显示位置
+        nameLocation: 'middle',			//坐标轴名称显示位置
+        // x轴label 名称
+        axisLabel: {
+          formatter: function (params) {
+            return moment.unix(params).format('YYYY-MM-DD')
+          },
+          interval: 0,               // 数据全部显示
+          rotate: 45
+        },
+
       },
       yAxis: {
-        name: 'amount'							// 坐标轴名称,可以随意更改
+        name: 'Total Number'							// 坐标轴名称,可以随意更改
       },
       grid: {
         right: 140									// 距离右边长度
@@ -269,4 +232,5 @@
 
 </script>
 </body>
+
 </html>
