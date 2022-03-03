@@ -75,18 +75,17 @@ public class AsyncService {
     }
 
     @Async
-    public void sendEmailStatistics(List<List<Object>> dateSet, String email) {
+    public void sendEmailStatistics(String href, String email) {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         try {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage,
                     true);
             // 设置渲染到html页面对应的值
             Context context = new Context();
-            context.setVariable("msg", "测试测试");
-            // context.setVariable("dataSet", dateSet);
+            context.setVariable("HREF", href);
 
             //利用模板引擎加载html文件进行渲染并生成对应的字符串
-            String emailContent = templateEngine.process("statisticsTemplate", context);
+            String emailContent = templateEngine.process("statisticsRemind", context);
             // 设置邮件标题
             mimeMessageHelper.setSubject("来fangweb个人博客-论坛网站邮件");
             mimeMessageHelper.setText(emailContent, true);

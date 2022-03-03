@@ -162,4 +162,35 @@ public class JWTUtil {
         }
     }
 
+    /**
+     * Description: 根据需要的时间生成token
+     * @Author: Bernie_fang
+     * @Since: 2022/3/3 22:37
+     * @param username:
+     * @param authorId:
+     * @param EXPIRE_TIME: 过期时长
+     * @return: java.lang.String
+     **/
+    public static String signToToken(String username,String authorId, Integer EXPIRE_TIME) {
+        try {
+            //过期时间
+            Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
+            //密钥及算法
+            Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
+            //设置头部信息
+            Map<String, Object> header = new HashMap<>(2);
+            header.put("typ", "JWT");
+            header.put("alg", "HS256");
+            //附带userId信息，生成签名
+            return JWT.create()
+                    .withHeader(header)
+                    .withClaim("username", username)
+                    .withClaim("authorId", authorId)
+                    .withExpiresAt(date)  //设置过期时间
+                    .sign(algorithm);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

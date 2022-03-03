@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th=http://www.thymeleaf.org>
+<head>
+	<meta charset=UTF-8>
+	<title>每周数据统计提醒</title>
+	<link rel="icon" type="image/x-icon" href="http://image.fangweb.top/FANG-Logo.png" />
+</head>
+<body>
+<script>
+
+</script>
+<div style="background: white;
+               width: 100%;
+               max-width: 800px;
+               margin: auto auto;
+               border-radius: 5px;
+               border:#1bc3fb 1px solid;
+               overflow: hidden;
+               -webkit-box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
+               box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.18);">
+	<div style="padding: 5px 20px; ">
+		<br>
+		<center>
+			<h3>
+				来自 <span style=" text-decoration: none;color: #FF779A;">fangweb网站</span> 的邮件提醒
+			</h3>
+			<p style="text-indent:2em;">
+				您收到这封电子邮件是因为您在<span style=" text-decoration: none;color: #1bc3fb "
+			>&nbsp;fangweb网站&nbsp;</span>发表过博客，每周定时整理数据以邮件形式告知。
+			</p>
+			<div style="background: #bce2fa repeating-linear-gradient(-45deg,#c4fffc,#fff 1.125rem,transparent 1.125rem,transparent 2.25rem);box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);margin:20px 0px;padding:15px;border-radius:5px;font-size:14px;color:#555555;text-align: center; ">
+				<a th:href="${HREF}" target="_blank"
+					 style=" color: #FF779A;font-weight: bolder;font-size: 25px;text-decoration:none" >查看上周数据</a><br>
+				注意:请您在收到邮件的三天内查看，否则该将无法查看。数据可以以图片的形式保存
+			</div>
+
+
+			<br>
+			<p style="font-size: 12px;text-align: center;color: #999; ">
+				© 2022
+			</p>
+			<p></p>
+		</center>
+	</div>
+</div>
+</body>
+</html>

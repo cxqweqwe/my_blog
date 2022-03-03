@@ -44,4 +44,9 @@ public class CommonInfo {
     public static final String PHONE_RECENT_REQUEST = "recent_phone_";
 
 
+    /**
+     * 3天毫秒数
+     */
+    public static final Integer THREE_DAY_EXPIRATION_TIME_MILLISECOND = 3 * 24 * 60 * 60 * 1000;
+
 }
