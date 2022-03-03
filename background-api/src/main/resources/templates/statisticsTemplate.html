@@ -17,8 +17,7 @@
 
 
 <script th:inline="javascript">
-  var msg = [[${msg}]];
-  console.log(msg);
+  const _MyRawData = [[${dataSet}]];  // 拿到数据
 </script>
 
 <script type="text/javascript">
@@ -27,9 +26,7 @@
   var app = {};
 
   var option;
-  const _MyRawData = [["number","type","createTime"],[5666,"subscription",1645627550000],[3661,"collection",1645627550000],[112413,"pageviews",1645627550000],[9,"comment",1645627550000],[257856,"likes",1645627550000],[9,"subscription",1645713950000],[4135,"collection",1645713950000],[5638,"pageviews",1645713950000],[9,"comment",1645713950000],[40530,"likes",1645713950000],[15,"subscription",1645800350000],[4661,"collection",1645800350000],[132413,"pageviews",1645800350000],[9,"comment",1645800350000],[41530,"likes",1645800350000],[43,"subscription",1645886640000],[4457,"collection",1645886640000],[2346,"pageviews",1645886640000],[9,"comment",1645886640000],[4769,"likes",1645886640000],[34,"subscription",1645971182000],[4961,"collection",1645971182000],[152413,"pageviews",1645971182000],[9,"comment",1645971182000],[43530,"likes",1645971182000],[100,"subscription",1646059550000],[6661,"collection",1646059550000],[162413,"pageviews",1646059550000],[9,"comment",1646059550000],[5879,"likes",1646059550000]];[["number","type","createTime"],[5666,"subscription",1645627550000],[3661,"collection",1645627550000],[112413,"pageviews",1645627550000],[9,"comment",1645627550000],[257856,"likes",1645627550000],[9,"subscription",1645713950000],[4135,"collection",1645713950000],[5638,"pageviews",1645713950000],[9,"comment",1645713950000],[40530,"likes",1645713950000],[15,"subscription",1645800350000],[4661,"collection",1645800350000],[132413,"pageviews",1645800350000],[9,"comment",1645800350000],[41530,"likes",1645800350000],[43,"subscription",1645886640000],[4457,"collection",1645886640000],[2346,"pageviews",1645886640000],[9,"comment",1645886640000],[4769,"likes",1645886640000],[34,"subscription",1645971182000],[4961,"collection",1645971182000],[152413,"pageviews",1645971182000],[9,"comment",1645971182000],[43530,"likes",1645971182000],[100,"subscription",1646059550000],[6661,"collection",1646059550000],[162413,"pageviews",1646059550000],[9,"comment",1646059550000],[5879,"likes",1646059550000]];
-
-  // const _MyRawData = [[msg]];
+  
   // const _MyRawData = [
   //   ['number', 'type', 'createTime'],
   //   [1723, 'subscription', '2022-02-28'],
