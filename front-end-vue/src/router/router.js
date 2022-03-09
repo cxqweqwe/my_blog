@@ -14,6 +14,8 @@ const Article = () => import('views/blog/Article');
 const Forum = () => import('views/forum/Forum');
 const ForumDetail = () => import('views/forum/ForumDetail');
 const NotFount = () => import('views/404/404');
+const AdminLogin = () => import('views/admin/AdminLogin');
+const AdminMain = () => import('views/admin/AdminMain');
 
 const routes = [
   {
@@ -104,6 +106,22 @@ const routes = [
       title:"404 ~ NotFount！"
     }
   },
+  {
+    path: '/sysAdmin',
+    component: AdminLogin,
+    meta: {
+      hidden: true,
+      title: "管理员登录"
+    }
+  },
+  {
+    path: '/admin/main',
+    component: AdminMain,
+    meta: {
+      hidden: true,
+      title: "管理界面"
+    }
+  }
 
 ];
 

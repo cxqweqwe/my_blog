@@ -54,9 +54,9 @@ public class UserRealm extends AuthorizingRealm {
         // log.info("账号验证===============>{}", username);
 
         SysUsers currentUser = (SysUsers)redisUtils.get(CommonInfo.SYS_USER + authorId);
-        // if (currentUser == null){
-        //     currentUser = sysUsersService.findUserById(authorId);
-        // }
+        if (currentUser == null){
+            currentUser = sysUsersService.findUserById(authorId);
+        }
         try {
             //通过认证后返回
             if (currentUser != null && JWTUtil.verify(token)){
