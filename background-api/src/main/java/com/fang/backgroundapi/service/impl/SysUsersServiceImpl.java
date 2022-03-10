@@ -3,6 +3,8 @@ package com.fang.backgroundapi.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.fang.backgroundapi.common.ServerResponse;
+import com.fang.backgroundapi.mapper.ReportInfoMapper;
+import com.fang.backgroundapi.pojo.DO.ReportInfo;
 import com.fang.backgroundapi.pojo.DO.SysUsers;
 import com.fang.backgroundapi.mapper.SysUsersMapper;
 import com.fang.backgroundapi.pojo.DO.UserInfo;
@@ -28,7 +30,7 @@ import java.util.List;
  * @since 2021-08-15
  */
 @Service
-public class SysUsersServiceImpl implements SysUsersService {
+public class SysUsersServiceImpl extends ServiceImpl<SysUsersMapper, SysUsers>  implements SysUsersService {
 
     @Autowired
     private SysUsersMapper sysUsersMapper;

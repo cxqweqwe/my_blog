@@ -99,14 +99,6 @@ const routes = [
     }
   },
   {
-    path: '/notFount/404',
-    component: NotFount,
-    meta: {
-      hidden: true,
-      title:"404 ~ NotFount！"
-    }
-  },
-  {
     path: '/sysAdmin',
     component: AdminLogin,
     meta: {
@@ -121,7 +113,15 @@ const routes = [
       hidden: true,
       title: "管理界面"
     }
-  }
+  },
+  {
+    path: '/notFount/404',
+    component: NotFount,
+    meta: {
+      hidden: true,
+      title:"404 ~ NotFount！"
+    }
+  },
 
 ];
 

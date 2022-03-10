@@ -56,7 +56,14 @@
         </Sider>
         <Layout :style="{padding: '24px 24px 24px 24px', height: '100vh'}">
           <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
-            <h1>{{active}}</h1>
+            <div v-if="authority === 'admin' || authority === 'root'">
+              <h1>{{active}}</h1>
+              <div v-if="active == 1"></div>
+              <div v-if="active == 2"></div>
+              <div v-if="active == 3"></div>
+              <div v-if="active == 4"></div>
+              <div v-if="active == 5"></div>
+            </div>
           </Content>
         </Layout>
       </Layout>
@@ -65,16 +72,40 @@
 </template>
 
 <script>
+  import {checkAdmin, queryUser} from "network/admin";
+
   export default {
     name: "AdminMain",
     data() {
       return {
         active: 1,
+        authority: '',
+
+        selectArr: [],  // 存放已经发送数据的标题数字
       }
     },
+    created() {
+      this.check();
+      this.getUser(1);
+    },
     methods: {
+      check(){
+        checkAdmin().then(res => {
+          this.authority = res.data[0];
+          if (!(this.authority === 'root' || this.authority === 'admin')){
+            this.$router.push("/sysAdmin");
+          }
+        })
+      },
       select(name) {
         this.active = name;
+      },
+      getUser(curPage){
+        // const isSend = this.selectArr.indexOf(4);
+        queryUser(curPage,10).then(res => {
+          console.log(res);
+        })
+
       }
     }
   }

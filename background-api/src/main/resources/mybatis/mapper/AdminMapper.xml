@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fang.backgroundapi.mapper.AdminMapper">
+
+    <select id="queryUser" resultType="com.fang.backgroundapi.pojo.VO.AdminUser">
+        SELECT
+            sysu.author_id,
+            info.nick_name,
+            sysu.deleted
+        FROM
+            sys_users sysu,
+            user_info info
+        WHERE
+            sysu.author_id = info.author_id
+        LIMIT #{curPage},#{size}
+    </select>
+
+</mapper>

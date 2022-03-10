@@ -37,4 +37,12 @@ public class SysUsersAuthorityServiceImpl extends ServiceImpl<SysUsersAuthorityM
         return authorities;
     }
 
+    @Override
+    public Integer addSysUsersAuthorityByAuthorId(String authorityRole, String authorId) {
+        SysUsersAuthority authority = new SysUsersAuthority();
+        authority.setAuthorityRole(authorityRole);
+        authority.setAuthorId(authorId);
+        return authorityMapper.insert(authority);
+    }
+
 }

@@ -17,4 +17,6 @@ public interface SysUsersAuthorityService extends IService<SysUsersAuthority> {
 
     public List<String> querySysUsersAuthorityByAuthorId(String authorId);
 
+    public Integer addSysUsersAuthorityByAuthorId(String authorityRole, String authorId);
+
 }
