@@ -39,11 +39,8 @@ public class AdminServiceImpl {
      * @param status:  1:删除  2: 封禁
      * @return: boolean
      **/
-    public boolean changeUser(String authorId, Integer status) {
-        UpdateWrapper<SysUsers> wrapper = new UpdateWrapper<>();
-        wrapper.set("deleted", status)
-                .eq("author_id", authorId);
-        return sysUsersService.update(wrapper);
+    public Integer changeUser(String authorId, Integer status) {
+        return adminMapper.changeUser(authorId, status);
     }
 
 

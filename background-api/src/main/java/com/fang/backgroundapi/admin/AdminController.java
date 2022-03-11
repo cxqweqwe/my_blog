@@ -53,5 +53,15 @@ public class AdminController extends BaseController {
         return ServerResponse.success(data);
     }
 
+    @GetMapping("/trial/user")
+    @ApiOperation(value = "审判用户", response = ServerResponse.class, httpMethod = "GET")
+    @RequiresRoles(value = {"root", "admin"}, logical = Logical.OR)
+    public ServerResponse trialUser(@RequestParam("authorId") String authorId, @RequestParam("status") Integer status) {
+        adminService.changeUser(authorId, status);
+        return ServerResponse.success();
+    }
+
+
+
 
 }

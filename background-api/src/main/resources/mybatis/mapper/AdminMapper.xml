@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.fang.backgroundapi.mapper.AdminMapper">
 
+    <update id="changeUser">
+        UPDATE sys_users SET deleted=#{status} WHERE author_id != '598108905656729600' AND author_id = #{authorId}
+    </update>
+
     <select id="queryUser" resultType="com.fang.backgroundapi.pojo.VO.AdminUser">
         SELECT
             sysu.author_id,

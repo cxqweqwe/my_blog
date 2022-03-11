@@ -1,31 +1,6 @@
 <template>
   <div class="layout">
     <Layout>
-      <!--      <Header class="back-color">-->
-      <!--        <Menu mode="horizontal" theme="dark" active-name="1" class="back-color">-->
-      <!--          <div class="" style="width: 200px; height: 100%; background: white">-->
-      <!--            <img src="http://image.fangweb.top/FANG-Logo.png" alt="logo">-->
-      <!--          </div>-->
-      <!--          <div class="layout-nav">-->
-      <!--            <MenuItem name="1">-->
-      <!--              <Icon type="ios-navigate"></Icon>-->
-      <!--              Item 1-->
-      <!--            </MenuItem>-->
-      <!--            <MenuItem name="2">-->
-      <!--              <Icon type="ios-keypad"></Icon>-->
-      <!--              Item 2-->
-      <!--            </MenuItem>-->
-      <!--            <MenuItem name="3">-->
-      <!--              <Icon type="ios-analytics"></Icon>-->
-      <!--              Item 3-->
-      <!--            </MenuItem>-->
-      <!--            <MenuItem name="4">-->
-      <!--              <Icon type="ios-paper"></Icon>-->
-      <!--              Item 4-->
-      <!--            </MenuItem>-->
-      <!--          </div>-->
-      <!--        </Menu>-->
-      <!--      </Header>-->
       <Layout>
         <Sider hide-trigger :style="{background: '#fff'}" class="height">
           <Menu active-name="1" width="auto" @on-select="select">
@@ -50,19 +25,30 @@
                 <Icon type="md-alert"/>
                 举报管理
               </MenuItem>
-
             </MenuGroup>
           </Menu>
         </Sider>
         <Layout :style="{padding: '24px 24px 24px 24px', height: '100vh'}">
           <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
             <div v-if="authority === 'admin' || authority === 'root'">
-              <h1>{{active}}</h1>
-              <div v-if="active == 1"></div>
-              <div v-if="active == 2"></div>
-              <div v-if="active == 3"></div>
-              <div v-if="active == 4"></div>
-              <div v-if="active == 5"></div>
+              <div v-if="active == 1">
+                fdjshlkjfgdlkhjngflkdjnlkfghdjnmo
+              </div>
+              <div v-if="active == 2">
+                flksgjhnbklfgdjnh
+              </div>
+              <div v-if="active == 3">
+                skdgfjnbklgfsnhk
+              </div>
+              <div v-if="active == 4">
+                <Table stripe :columns="userColumns" :data="usersList"></Table>
+                <div class="center top-space">
+                  <Page :total="usersTotal" show-elevator/>
+                </div>
+              </div>
+              <div v-if="active == 5">
+                是的感觉好难的疯狂过后
+              </div>
             </div>
           </Content>
         </Layout>
@@ -72,7 +58,7 @@
 </template>
 
 <script>
-  import {checkAdmin, queryUser} from "network/admin";
+  import {checkAdmin, queryUser, trialUser} from "network/admin";
 
   export default {
     name: "AdminMain",
@@ -82,30 +68,167 @@
         authority: '',
 
         selectArr: [],  // 存放已经发送数据的标题数字
+        userColumns: [{
+          title: '会员ID',
+          key: 'authorId'
+        }, {
+          title: '会员昵称',
+          key: 'nickName'
+        }, {
+          title: '账号状态',
+          key: 'deleted',
+          render: (h, params) => {
+            let deleted = params.row.deleted;
+            if (deleted == 0) {
+              return h('div', [
+                h('Tag', {
+                  style: {
+                    background: '#b4f60e'
+                  },
+                  on: {}
+                }, '正常'),
+              ])
+            } else if (deleted == 2) {
+              return h('div', [
+                h('Tag', {
+                  style: {
+                    background: '#f90'
+                  },
+                  on: {}
+                }, '封禁'),
+              ])
+            } else if (deleted == 1) {
+              return h('div', [
+                h('Tag', {
+                  style: {
+                    background: '#ed4014'
+                  },
+                  on: {}
+                }, '删除'),
+              ])
+            }
+          }
+        }, {
+          title: 'Action',
+          key: 'action',
+          width: 250,
+          align: 'center',
+          render: (h, params) => {
+            return h('div', [
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.activation(params.row)
+                  }
+                }
+              }, '激活'),
+              h('Button', {
+                props: {
+                  type: 'warning',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.ban(params.row)
+                  }
+                }
+              }, '封禁'),
+              h('Button', {
+                props: {
+                  type: 'error',
+                  size: 'small'
+                },
+                on: {
+                  click: () => {
+                    this.remove(params.row)
+                  }
+                }
+              }, '删除')
+            ]);
+          }
+        }
+        ],
+        usersList: [],
+        usersTotal: 0,
       }
     },
     created() {
       this.check();
-      this.getUser(1);
+
     },
     methods: {
-      check(){
+      check() {
         checkAdmin().then(res => {
           this.authority = res.data[0];
-          if (!(this.authority === 'root' || this.authority === 'admin')){
+          if (!(this.authority === 'root' || this.authority === 'admin')) {
             this.$router.push("/sysAdmin");
           }
         })
       },
       select(name) {
         this.active = name;
+        if (-1 !== this.selectArr.indexOf(name)) {
+          return;
+        }
+        this.selectArr.push(name);
+        switch (name) {
+          case '1':
+            break;
+          case '2':
+            break;
+          case '3':
+            break;
+          case '4':
+            this.getUser(1);
+            break;
+          case '5':
+            break;
+          default:
+            break;
+        }
+
       },
-      getUser(curPage){
-        // const isSend = this.selectArr.indexOf(4);
-        queryUser(curPage,10).then(res => {
-          console.log(res);
+      getUser(curPage) {
+        queryUser(curPage, 10).then(res => {
+          this.usersTotal = res.data.total;
+          this.usersList = res.data.data;
         })
 
+      },
+      activation(row) {
+        this.toTrialUser(row.authorId, 0);
+        row.deleted = 0;
+      },
+      ban(row) {
+        this.toTrialUser(row.authorId, 2);
+        row.deleted = 2;
+      },
+      remove(row) {
+        this.toTrialUser(row.authorId, 1);
+        row.deleted = 1;
+      },
+      toTrialUser(id, status) {
+        trialUser(id, status).then(res => {
+          if (res.status === 2000) {
+            this.$notify.success({
+              message: res.msg
+            })
+          } else {
+            this.$notify.error({
+              message: res.msg
+            })
+          }
+        })
       }
     }
   }
@@ -121,24 +244,11 @@
     overflow: hidden;
   }
 
-  .layout-logo {
-    width: 100px;
-    height: 30px;
-    background: #5b6270;
-    border-radius: 3px;
-    float: left;
-    position: relative;
-    top: 15px;
-    left: 20px;
+  .center {
+    text-align: center;
   }
 
-  .layout-nav {
-    width: 420px;
-    margin: 0 auto;
-    margin-right: 20px;
-  }
-
-  .back-color {
-    background: linear-gradient(to right, #FE4F70 0%, #FFA387 100%);
+  .top-space {
+    margin: 15px 0;
   }
 </style>
