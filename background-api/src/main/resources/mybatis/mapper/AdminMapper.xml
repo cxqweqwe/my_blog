@@ -33,4 +33,49 @@
         UPDATE article SET deleted=#{status}, modified_time=#{modifiedTime} WHERE article_id=#{articleId}
     </update>
 
+    <select id="queryComment" resultType="com.fang.backgroundapi.pojo.VO.AdminComment">
+        SELECT
+            acom.id id,
+            '博客' type,
+            CONCAT( #{blogURL}, acom.article_id ) commentObject,
+            acom.comment_content content,
+            acom.author_id authorId,
+            info.nick_name nickName,
+            acom.create_time createTime,
+            acom.deleted deleted
+        FROM
+            article_comment acom
+            LEFT JOIN user_info info ON acom.author_id = info.author_id
+        UNION
+        SELECT PORT
+            .id id,
+            '论贴' type,
+            CONCAT( #{forumURL}, PORT.port_id ) commentObject,
+            PORT.comment_content content,
+            PORT.author_id authorId,
+            info.nick_name nickName,
+            PORT.create_time createTime,
+            PORT.deleted deleted
+        FROM
+            port_comment
+            PORT LEFT JOIN user_info info ON PORT.author_id = info.author_id
+        LIMIT #{curPage},#{size}
+    </select>
+
+    <select id="countComment" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT id) itemCount FROM article_comment
+	    UNION
+	    SELECT COUNT(DISTINCT id) itemCount FROM port_comment
+    </select>
+
+    <update id="trialArticleComment">
+        UPDATE article_comment SET deleted=#{status}, modified_time=#{modifiedTime} WHERE id=#{id}
+    </update>
+
+    <update id="trialPortComment">
+        UPDATE port_comment SET deleted=#{status}, modified_time=#{modifiedTime} WHERE id=#{id}
+    </update>
+
+
+
 </mapper>

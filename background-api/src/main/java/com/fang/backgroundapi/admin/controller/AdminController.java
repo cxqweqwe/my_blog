@@ -99,4 +99,20 @@ public class AdminController extends BaseController {
         return ServerResponse.success();
     }
 
+    @GetMapping("/query/comment")
+    @ApiOperation(value = "查询评论", response = ServerResponse.class, httpMethod = "GET")
+    @RequiresRoles(value = {"root", "admin"}, logical = Logical.OR)
+    public ServerResponse queryComment(@RequestParam("curPage") Integer curPage, @RequestParam("size") Integer size) {
+        PagingData data = adminService.queryComment(curPage, size);
+        return ServerResponse.success(data);
+    }
+
+    @GetMapping("/trial/comment")
+    @ApiOperation(value = "审判评论", response = ServerResponse.class, httpMethod = "GET")
+    @RequiresRoles(value = {"root", "admin"}, logical = Logical.OR)
+    public ServerResponse trialComment(@RequestParam("type") Integer type, @RequestParam("id") String id, @RequestParam("status") Integer status) {
+        adminService.trialComment(type, id, status);
+        return ServerResponse.success();
+    }
+
 }

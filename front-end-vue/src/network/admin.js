@@ -65,3 +65,23 @@ export function trialArticle(articleId, status) {
   })
 }
 
+export function queryComment(curPage, size) {
+  return request({
+    url: requestUrl + "/query/comment",
+    params: {
+      curPage,
+      size
+    }
+  })
+}
+
+export function trialComment(type, id, status) {
+  return request({
+    url: requestUrl + "/trial/comment",
+    params: {
+      type,
+      id,
+      status
+    }
+  })
+}

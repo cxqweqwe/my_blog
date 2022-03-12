@@ -27,3 +27,5 @@ spring:
 com:
   fang:
     baseURL: http://localhost:8081
+    blogURL: http://localhost:8080/blog/
+    forumURL: http://localhost:8080/forumDetail/

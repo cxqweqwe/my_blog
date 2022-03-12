@@ -1,6 +1,7 @@
 package com.fang.backgroundapi.admin.mapper;
 
 import com.fang.backgroundapi.pojo.VO.AdminArticle;
+import com.fang.backgroundapi.pojo.VO.AdminComment;
 import com.fang.backgroundapi.pojo.VO.AdminUser;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -28,5 +29,13 @@ public interface AdminMapper {
 
     public Integer trialArticle(@Param("articleId")String articleId, @Param("status") Integer status, @Param("modifiedTime") Date modifiedTime);
 
+    public List<AdminComment> queryComment(@Param("blogURL") String blogURL, @Param("forumURL") String forumURL,
+            @Param("curPage") Integer curPage, @Param("size") Integer size);
+
+    public List<Long> countComment();
+
+    public Integer trialArticleComment(@Param("id")String id, @Param("status") Integer status, @Param("modifiedTime") Date modifiedTime);
+
+    public Integer trialPortComment(@Param("id")String id, @Param("status") Integer status, @Param("modifiedTime") Date modifiedTime);
 
 }

@@ -4,9 +4,11 @@ import com.fang.backgroundapi.common.PagingData;
 import com.fang.backgroundapi.admin.mapper.AdminMapper;
 import com.fang.backgroundapi.mapper.ArticleMapper;
 import com.fang.backgroundapi.pojo.VO.AdminArticle;
+import com.fang.backgroundapi.pojo.VO.AdminComment;
 import com.fang.backgroundapi.pojo.VO.AdminUser;
 import com.fang.backgroundapi.service.impl.SysUsersServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -26,8 +28,11 @@ public class AdminServiceImpl {
     @Autowired
     private SysUsersServiceImpl sysUsersService;
 
-    @Autowired
-    private ArticleMapper articleMapper;
+    @Value("${com.fang.blogURL}")
+    private String blogURL;
+
+    @Value("${com.fang.forumURL}")
+    private String forumURL;
 
     public PagingData queryUser(Integer curPage, Integer size) {
         curPage = (curPage - 1) * size;
@@ -57,8 +62,27 @@ public class AdminServiceImpl {
     }
 
     public Integer trialArticle(String articleId, Integer status) {
-        adminMapper.trialArticle(articleId, status, new Date());
-        return null;
+        return adminMapper.trialArticle(articleId, status, new Date());
+    }
+
+
+    public PagingData queryComment(Integer curPage, Integer size) {
+        curPage = (curPage - 1) * size;
+        List<AdminComment> commentList = adminMapper.queryComment(blogURL, forumURL, curPage, size);
+        List<Long> longs = adminMapper.countComment();
+        Long total = longs.get(0) + longs.get(1);
+        return new PagingData(total, commentList);
+    }
+
+    public Integer trialComment(Integer type, String id, Integer status) {
+        if (type == 0) {
+            // 0为博客
+            adminMapper.trialArticleComment(id, status, new Date());
+        }else {
+            // 1为论贴
+            adminMapper.trialPortComment(id, status, new Date());
+        }
+        return 1;
     }
 
 
