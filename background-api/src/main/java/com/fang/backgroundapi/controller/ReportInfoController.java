@@ -1,8 +1,5 @@
 package com.fang.backgroundapi.controller;
 
-
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fang.backgroundapi.common.PagingData;
 import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.exception.MyException;
 import com.fang.backgroundapi.pojo.DO.ReportInfo;
@@ -19,13 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -79,22 +73,6 @@ public class ReportInfoController {
             default: break;
         }
         return ServerResponse.success();
-    }
-
-    @GetMapping("/queryReport")
-    @ApiOperation(value = "查找信息举报", response = ServerResponse.class, httpMethod = "GET")
-    public ServerResponse queryReport(@RequestParam("curPage") Integer curPage,
-                                 @RequestParam("size") Integer size) {
-        Page<ReportInfo> page = new Page<>(curPage, size);
-        reportInfoService.page(page);
-        return ServerResponse.success(new PagingData(page.getTotal(), page.getRecords()));
-    }
-
-    @GetMapping("/findReport/{id}")
-    @ApiOperation(value = "查找信息举报", response = ServerResponse.class, httpMethod = "GET")
-    public ServerResponse findReport(@PathVariable("id") String id) {
-        ReportInfo reportInfo = reportInfoService.getById(id);
-        return ServerResponse.success(reportInfo);
     }
 
 

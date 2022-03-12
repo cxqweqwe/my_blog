@@ -65,7 +65,9 @@
                 </div>
               </div>
               <div v-if="active == 5">
-                是的感觉好难的疯狂过后
+                <div class="center top-space">
+                  <h4>暂无数据</h4>
+                </div>
               </div>
             </div>
           </Content>
@@ -77,7 +79,7 @@
 
 <script>
   import {checkAdmin, queryUser, trialUser, changeSetting, querySetting, queryArticle, trialArticle,
-    queryComment, trialComment} from "network/admin";
+    queryComment, trialComment, queryReport} from "network/admin";
 
   export default {
     name: "AdminMain",
@@ -426,6 +428,7 @@
             this.getUser(1);
             break;
           case '5':
+            this.getReport(1);
             break;
           default:
             break;
@@ -569,8 +572,13 @@
       },
       userChange(curPage){
         this.getUser(curPage);
+      },
+      // 评论管理
+      getReport(curPage){
+        queryReport(curPage,10).then(res => {
+          console.log(res);
+        })
       }
-
 
     }
   }

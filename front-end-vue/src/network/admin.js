@@ -85,3 +85,24 @@ export function trialComment(type, id, status) {
     }
   })
 }
+
+export function queryReport(curPage, size) {
+  return request({
+    url: requestUrl + "/query/report",
+    params: {
+      curPage,
+      size
+    }
+  })
+}
+
+export function trialReport(type, id, status) {
+  return request({
+    url: requestUrl + "/trial/report",
+    params: {
+      type,
+      id,
+      status
+    }
+  })
+}
