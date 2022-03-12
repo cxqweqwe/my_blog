@@ -32,7 +32,20 @@
           <Content :style="{padding: '24px', minHeight: '280px', background: '#fff'}">
             <div v-if="authority === 'admin' || authority === 'root'">
               <div v-if="active == 1">
-                fdjshlkjfgdlkhjngflkdjnlkfghdjnmo
+                <Table stripe :columns="settingColumns" :data="settingList">
+                  <template slot-scope="{ row, index }" slot="settingName">
+                    <span>{{ row.name }}</span>
+                  </template>
+
+                  <template slot-scope="{ row, index }" slot="action">
+                    <el-switch
+                        v-model="row.allowOrNot==1?true:false"
+                        active-color="#13ce66"
+                        inactive-color="#ff4949"
+                        @change="changeSetting(row)">
+                    </el-switch>
+                  </template>
+                </Table>
               </div>
               <div v-if="active == 2">
                 flksgjhnbklfgdjnh
@@ -58,7 +71,7 @@
 </template>
 
 <script>
-  import {checkAdmin, queryUser, trialUser} from "network/admin";
+  import {checkAdmin, queryUser, trialUser, changeSetting, querySetting} from "network/admin";
 
   export default {
     name: "AdminMain",
@@ -68,6 +81,15 @@
         authority: '',
 
         selectArr: [],  // 存放已经发送数据的标题数字
+        settingList: [],
+        settingColumns: [{
+          title: '设置项',
+          key: 'settingName'
+        }, {
+          title: '操作',
+          slot: 'action'
+        }],
+
         userColumns: [{
           title: '会员ID',
           key: 'authorId'
@@ -164,7 +186,7 @@
     },
     created() {
       this.check();
-
+      this.getSetting();
     },
     methods: {
       check() {
@@ -183,6 +205,7 @@
         this.selectArr.push(name);
         switch (name) {
           case '1':
+            this.getSetting();
             break;
           case '2':
             break;
@@ -197,6 +220,21 @@
             break;
         }
 
+      },
+      getSetting() {
+        querySetting().then(res => {
+          this.settingList = res.data;
+        })
+      },
+      changeSetting(row) {
+        changeSetting(row.id, row.allowOrNot == 1 ? 0 : 1).then(res => {
+          if (res.status==2000){
+            this.$notify.success({
+              message: res.msg
+            })
+          }
+        })
+        row.allowOrNot = row.allowOrNot == 1 ? 0 : 1;
       },
       getUser(curPage) {
         queryUser(curPage, 10).then(res => {
@@ -230,6 +268,8 @@
           }
         })
       }
+
+
     }
   }
 </script>

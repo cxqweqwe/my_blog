@@ -27,3 +27,20 @@ export function trialUser(authorId, status) {
     }
   })
 }
+
+export function querySetting(authorId, status) {
+  return request({
+    url: requestUrl + "/query/setting",
+
+  })
+}
+
+export function changeSetting(settingId, isAllow) {
+  return request({
+    url: requestUrl + "/change/setting",
+    params: {
+      settingId,
+      isAllow
+    }
+  })
+}
