@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.fang.backgroundapi.mapper.AdminMapper">
+<mapper namespace="com.fang.backgroundapi.admin.mapper.AdminMapper">
 
     <update id="changeUser">
-        UPDATE sys_users SET deleted=#{status} WHERE author_id != '598108905656729600' AND author_id = #{authorId}
+        UPDATE sys_users SET deleted=#{status}, modified_time=#{modifiedTime} WHERE author_id != '598108905656729600' AND author_id = #{authorId}
     </update>
 
     <select id="queryUser" resultType="com.fang.backgroundapi.pojo.VO.AdminUser">
@@ -18,5 +18,19 @@
             sysu.author_id = info.author_id
         LIMIT #{curPage},#{size}
     </select>
+
+    <select id="queryArticle" resultType="AdminArticle">
+        SELECT ar.article_id ,ar.title, info.nick_name, ar.deleted
+        FROM article ar LEFT JOIN user_info info ON ar.author_id = info.author_id
+        LIMIT #{curPage},#{size}
+    </select>
+
+    <select id="countArticle" resultType="java.lang.Long">
+        SELECT COUNT(DISTINCT article_id) FROM article
+    </select>
+
+    <update id="trialArticle">
+        UPDATE article SET deleted=#{status}, modified_time=#{modifiedTime} WHERE article_id=#{articleId}
+    </update>
 
 </mapper>

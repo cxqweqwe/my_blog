@@ -48,7 +48,10 @@
                 </Table>
               </div>
               <div v-if="active == 2">
-                flksgjhnbklfgdjnh
+                <Table stripe :columns="articleColumns" :data="articleList"></Table>
+                <div class="center top-space">
+                  <Page :total="articleTotal" show-elevator/>
+                </div>
               </div>
               <div v-if="active == 3">
                 skdgfjnbklgfsnhk
@@ -71,7 +74,7 @@
 </template>
 
 <script>
-  import {checkAdmin, queryUser, trialUser, changeSetting, querySetting} from "network/admin";
+  import {checkAdmin, queryUser, trialUser, changeSetting, querySetting, queryArticle, trialArticle} from "network/admin";
 
   export default {
     name: "AdminMain",
@@ -89,6 +92,101 @@
           title: '操作',
           slot: 'action'
         }],
+        articleColumns: [{
+            title: '文章ID',
+            key: 'articleId'
+          }, {
+            title: '文章标题',
+            key: 'title'
+          }, {
+            title: '文章作者昵称',
+            key: 'nickName'
+          }, {
+            title: '文章状态',
+            key: 'deleted',
+            render: (h, params) => {
+              let deleted = params.row.deleted;
+              if (deleted == 0) {
+                return h('div', [
+                  h('Tag', {
+                    style: {
+                      background: '#b4f60e'
+                    },
+                    on: {}
+                  }, '正常'),
+                ])
+              } else if (deleted == 2) {
+                return h('div', [
+                  h('Tag', {
+                    style: {
+                      background: '#f90'
+                    },
+                    on: {}
+                  }, '封禁'),
+                ])
+              } else if (deleted == 1) {
+                return h('div', [
+                  h('Tag', {
+                    style: {
+                      background: '#ed4014'
+                    },
+                    on: {}
+                  }, '删除'),
+                ])
+              }
+            }
+          }, {
+            title: 'Action',
+            key: 'action',
+            width: 250,
+            align: 'center',
+            render: (h, params) => {
+              return h('div', [
+                h('Button', {
+                  props: {
+                    type: 'primary',
+                    size: 'small'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      this.articleActivation(params.row)
+                    }
+                  }
+                }, '激活'),
+                h('Button', {
+                  props: {
+                    type: 'warning',
+                    size: 'small'
+                  },
+                  style: {
+                    marginRight: '5px'
+                  },
+                  on: {
+                    click: () => {
+                      this.articleBan(params.row)
+                    }
+                  }
+                }, '封禁'),
+                h('Button', {
+                  props: {
+                    type: 'error',
+                    size: 'small'
+                  },
+                  on: {
+                    click: () => {
+                      this.ArticleRemove(params.row)
+                    }
+                  }
+                }, '删除')
+              ]);
+            }
+          }
+        ],
+        articleList: [],
+        articleTotal: 1,
 
         userColumns: [{
           title: '会员ID',
@@ -147,7 +245,7 @@
                 },
                 on: {
                   click: () => {
-                    this.activation(params.row)
+                    this.userActivation(params.row)
                   }
                 }
               }, '激活'),
@@ -161,7 +259,7 @@
                 },
                 on: {
                   click: () => {
-                    this.ban(params.row)
+                    this.userBan(params.row)
                   }
                 }
               }, '封禁'),
@@ -172,7 +270,7 @@
                 },
                 on: {
                   click: () => {
-                    this.remove(params.row)
+                    this.userRemove(params.row)
                   }
                 }
               }, '删除')
@@ -208,6 +306,7 @@
             this.getSetting();
             break;
           case '2':
+            this.getArticle(1);
             break;
           case '3':
             break;
@@ -236,6 +335,25 @@
         })
         row.allowOrNot = row.allowOrNot == 1 ? 0 : 1;
       },
+      getArticle(curPage){
+        queryArticle(curPage,10).then(res => {
+          this.articleList = res.data.data;
+          this.articleTotal = res.data.total;
+        })
+      },
+      articleActivation(row){
+        this.toTrialArticle(row.articleId, 0);
+        row.deleted = 0;
+      },
+      articleBan(row){
+        this.toTrialArticle(row.articleId, 2);
+        row.deleted = 2;
+      },
+      ArticleRemove(row){
+        this.toTrialArticle(row.articleId, 1);
+        row.deleted = 1;
+      },
+
       getUser(curPage) {
         queryUser(curPage, 10).then(res => {
           this.usersTotal = res.data.total;
@@ -243,20 +361,33 @@
         })
 
       },
-      activation(row) {
+      userActivation(row) {
         this.toTrialUser(row.authorId, 0);
         row.deleted = 0;
       },
-      ban(row) {
+      userBan(row) {
         this.toTrialUser(row.authorId, 2);
         row.deleted = 2;
       },
-      remove(row) {
+      userRemove(row) {
         this.toTrialUser(row.authorId, 1);
         row.deleted = 1;
       },
       toTrialUser(id, status) {
         trialUser(id, status).then(res => {
+          if (res.status === 2000) {
+            this.$notify.success({
+              message: res.msg
+            })
+          } else {
+            this.$notify.error({
+              message: res.msg
+            })
+          }
+        })
+      },
+      toTrialArticle(id, status) {
+        trialArticle(id, status).then(res => {
           if (res.status === 2000) {
             this.$notify.success({
               message: res.msg

@@ -44,3 +44,24 @@ export function changeSetting(settingId, isAllow) {
     }
   })
 }
+
+export function queryArticle(curPage, size) {
+  return request({
+    url: requestUrl + "/query/article",
+    params: {
+      curPage,
+      size
+    }
+  })
+}
+
+export function trialArticle(articleId, status) {
+  return request({
+    url: requestUrl + "/trial/article",
+    params: {
+      articleId,
+      status
+    }
+  })
+}
+

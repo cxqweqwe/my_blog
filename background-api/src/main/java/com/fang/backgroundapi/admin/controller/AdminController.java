@@ -66,7 +66,7 @@ public class AdminController extends BaseController {
 
     @GetMapping("/change/setting")
     @ApiOperation(value = "更改系统设置", response = ServerResponse.class, httpMethod = "GET")
-    // @RequiresRoles(value = {"root", "admin"}, logical = Logical.OR)
+    @RequiresRoles(value = {"root", "admin"}, logical = Logical.OR)
     public ServerResponse changeSetting(@RequestParam("settingId") String settingId, @RequestParam("isAllow") Integer isAllow) {
         SystemSettings systemSettings = new SystemSettings();
         systemSettings.setId(settingId);
@@ -77,13 +77,26 @@ public class AdminController extends BaseController {
 
     @GetMapping("/query/setting")
     @ApiOperation(value = "查询系统设置", response = ServerResponse.class, httpMethod = "GET")
-    // @RequiresRoles(value = {"root", "admin"}, logical = Logical.OR)
+    @RequiresRoles(value = {"root", "admin"}, logical = Logical.OR)
     public ServerResponse querySetting() {
         List<SystemSettings> systemSettings = settingsService.querySystemSetting();
         return ServerResponse.success(systemSettings);
     }
 
+    @GetMapping("/query/article")
+    @ApiOperation(value = "查询文章", response = ServerResponse.class, httpMethod = "GET")
+    @RequiresRoles(value = {"root", "admin"}, logical = Logical.OR)
+    public ServerResponse queryArticle(@RequestParam("curPage") Integer curPage, @RequestParam("size") Integer size) {
+        PagingData data = adminService.queryArticle(curPage, size);
+        return ServerResponse.success(data);
+    }
 
-
+    @GetMapping("/trial/article")
+    @ApiOperation(value = "审判文章", response = ServerResponse.class, httpMethod = "GET")
+    @RequiresRoles(value = {"root", "admin"}, logical = Logical.OR)
+    public ServerResponse trialArticle(@RequestParam("articleId") String articleId, @RequestParam("status") Integer status) {
+        adminService.trialArticle(articleId, status);
+        return ServerResponse.success();
+    }
 
 }
