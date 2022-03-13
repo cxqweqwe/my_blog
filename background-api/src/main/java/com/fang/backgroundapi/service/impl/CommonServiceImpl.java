@@ -55,6 +55,9 @@ public class CommonServiceImpl {
     @Autowired
     private UserInfoServiceImpl userInfoService;
 
+    @Autowired
+    private SysUsersAuthorityServiceImpl authorityService;
+
 
     /**
      * @param username:
@@ -257,7 +260,8 @@ public class CommonServiceImpl {
         userInfo.setNickName(id.toString());
         userInfo.setEmail(new Encrypt(registerDTO.getEmail()));
         userInfoService.insertUserInfo(userInfo);
-        return ServerResponse.success(2000, "成功注册！", null);// TODO: 需要返回数据，暂时先不处理
+        authorityService.addSysUsersAuthorityByAuthorId("userVip", id.toString()); // 赋予普通会员权限
+        return ServerResponse.success(2000, "成功注册！", null);
     }
 
 
