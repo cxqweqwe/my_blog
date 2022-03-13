@@ -65,6 +65,20 @@ public class CommonController {
         return commonService.getEmailCode(email);
     }
 
+    @GetMapping("/reset/code/email/{username}")
+    @ApiOperation(value = "修改密码时获取邮箱验证码", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse sendResetEmailCode(@PathVariable("username") String username) {
+        return commonService.sendResetEmailCode(username);
+    }
+
+    @PostMapping("/reset/password")
+    @ApiOperation(value = "修改密码时获取邮箱验证码", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse resetPassword(@RequestParam("username") String username,
+                                        @RequestParam("password") String password,
+                                        @RequestParam("code") String code) {
+        return commonService.resetPassword(username, password, code);
+    }
+
     @GetMapping("/code/phone/{phone}")
     @ApiOperation(value = "获取手机验证码", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse getPhoneCode(@PathVariable("phone")
@@ -74,12 +88,12 @@ public class CommonController {
     }
 
     /**
-     * @Description: 改为由前端生成随机的验证码传到后端。本来应该在前端做图片生成，但是前端不熟悉+后端代码有现成的
-     * @Author: Bernie_fang
-     * @Since: 2021/9/15 17:58
      * @param codeString:
      * @param request:
      * @param response:
+     * @Description: 改为由前端生成随机的验证码传到后端。本来应该在前端做图片生成，但是前端不熟悉+后端代码有现成的
+     * @Author: Bernie_fang
+     * @Since: 2021/9/15 17:58
      * @return: void
      **/
     @GetMapping("/code/captcha")
@@ -96,10 +110,10 @@ public class CommonController {
     }
 
     /**
+     * @param registerDTO:
      * @Description: 向两个表操作，需要开启事务
      * @Author: Bernie_fang
      * @Since: 2021/9/15 20:55
-     * @param registerDTO:
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
     @PostMapping("/registe")

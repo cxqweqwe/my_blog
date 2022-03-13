@@ -30,5 +30,22 @@ export function login(params) {
   })
 }
 
+export function resetForEmail(username) {
+  return request({
+    url: requestUrl + "/reset/code/email/" + username
+  })
+}
+
+export function resetPassword(username, password, code) {
+  return request({
+    url: requestUrl + "/reset/password",
+    method: 'post',
+    params: {
+      username,
+      password,
+      code
+    }
+  })
+}
 
 // localhost:8081/common/code/captcha

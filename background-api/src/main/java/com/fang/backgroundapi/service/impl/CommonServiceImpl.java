@@ -83,7 +83,7 @@ public class CommonServiceImpl {
         if (sysUser == null) {
             throw new MyException(ResponseCode.EMPTY_ACCOUNT.getDesc(), ResponseCode.EMPTY_ACCOUNT.getCode());
         }
-        String encodePassword = PasswordUtil.sha1Encode(password); //暂时关闭，后面记得开启
+        String encodePassword = PasswordUtil.sha1Encode(password);
         if (!sysUser.getPassword().equals(encodePassword)) {
             // 密码错误
             throw new MyException(ResponseCode.ERROR_PASSWORD.getDesc(), ResponseCode.ERROR_PASSWORD.getCode());
@@ -269,5 +269,29 @@ public class CommonServiceImpl {
         return ServerResponse.success(2000, "成功注册！", null);
     }
 
+
+    public ServerResponse sendResetEmailCode(String username) {
+        String email = sysUsersService.findEmailByUsername(username);
+        if (StringUtils.isEmpty(email)){
+            return ServerResponse.error(4000, "该用户名不存在绑定的邮箱，无法发送验证码", null);
+        }
+        this.getEmailCode(email);
+
+        return ServerResponse.success("验证码已发送至邮箱,请稍后查收");
+    }
+
+    public ServerResponse resetPassword(String username, String password, String code) {
+        String email = sysUsersService.findEmailByUsername(username);
+        String redisCode = (String) redisUtils.get(CommonInfo.EMAIL_CODE + email);
+        if (StringUtils.isEmpty(redisCode)){
+            return ServerResponse.error(4000, "验证码不存在或已失效，请重新获取", null);
+        }
+        if (!redisCode.equals(code)) {
+            return ServerResponse.error(4000, "验证码错误", null);
+        }
+        String encodePassword = PasswordUtil.sha1Encode(password);
+        sysUsersService.updatePassword(username,encodePassword);
+        return ServerResponse.success();
+    }
 
 }

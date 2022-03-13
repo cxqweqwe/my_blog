@@ -123,57 +123,59 @@
       <div class="head">
         修改密码
       </div>
-      <!--      <div class="body">-->
-      <!--        <div class="space"></div>-->
-      <!--        <div class="space"></div>-->
-      <!--        <el-input-->
-      <!--            placeholder="请输入用户名"-->
-      <!--            v-model="register.username"-->
-      <!--            prefix-icon="el-icon-user"-->
-      <!--            clearable>-->
-      <!--        </el-input>-->
-      <!--        <div class="space"></div>-->
-      <!--        <div class="space"></div>-->
-      <!--        <el-input-->
-      <!--            placeholder="请输入密码"-->
-      <!--            v-model="register.password"-->
-      <!--            prefix-icon="el-icon-lock"-->
-      <!--            show-password>-->
-      <!--        </el-input>-->
-      <!--        <div class="space"></div>-->
-      <!--        <div class="space"></div>-->
-      <!--        <el-input-->
-      <!--            placeholder="请输入邮箱"-->
-      <!--            v-model="register.email"-->
-      <!--            prefix-icon="el-icon-lock"-->
-      <!--            show-password>-->
-      <!--        </el-input>-->
-      <!--        <div class="space"></div>-->
-      <!--        <div class="space"></div>-->
-      <!--        <div class="captcha">-->
-      <!--          <div class="captcha-left">-->
-      <!--            <el-input-->
-      <!--                placeholder="请输入验证码"-->
-      <!--                v-model="register.captcha"-->
-      <!--                prefix-icon="el-icon-s-grid">-->
-      <!--            </el-input>-->
-      <!--          </div>-->
-      <!--          <div class="captcha-right">-->
-      <!--            <el-button type="primary" size="medium">获取验证码</el-button>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </div>-->
-      <!--      <div class="foot">-->
-      <!--        <el-button type="primary" size="medium">登录</el-button>-->
-      <!--        <div class="foot-text">-->
-      <!--          <div class="foot-text-left" @click="show = 1">-->
-      <!--            已有账号？去登陆-->
-      <!--          </div>-->
-      <!--          <div class="foot-text-right" @click="show = 3">-->
-      <!--            忘记密码-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </div>-->
+      <div class="body">
+        <div class="space"></div>
+        <div class="space"></div>
+        <el-input
+            placeholder="请输入用户名"
+            v-model="resetUsername"
+            prefix-icon="el-icon-user"
+            clearable>
+        </el-input>
+        <div class="space"></div>
+        <div class="space"></div>
+        <el-input
+            placeholder="请输入密码"
+            v-model="resetPassword"
+            prefix-icon="el-icon-lock"
+            show-password>
+        </el-input>
+        <div class="space"></div>
+        <div class="space"></div>
+        <el-input
+            placeholder="请重复密码"
+            v-model="resetConfirm"
+            prefix-icon="el-icon-lock"
+            show-password>
+        </el-input>
+        <div class="space"></div>
+        <div class="space"></div>
+        <div class="captcha">
+          <div class="captcha-left">
+            <el-input
+                placeholder="请输入验证码"
+                v-model="resetCode"
+                prefix-icon="el-icon-s-grid">
+            </el-input>
+          </div>
+          <div class="captcha-right">
+            <el-button type="primary" size="medium" @click="resetEmail">获取邮箱验证码</el-button>
+          </div>
+        </div>
+        <div class="space"></div>
+        <div class="space"></div>
+      </div>
+      <div class="foot" style="margin-top: 50px">
+        <el-button type="primary" size="medium" @click="reset">修改密码</el-button>
+        <div class="foot-text">
+          <div class="foot-text-left" @click="show = 1">
+            已有账号？去登陆
+          </div>
+          <div class="foot-text-right" @click="show = 2">
+            没有账号？去注册
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -188,6 +190,7 @@ import {checkEmail, randomCode} from "common/commonUtils";
 import sha1 from "common/sha1";
 import {setCookie, setCookieAuthorId, setCookieAvatarPath, setCookieNickName} from "common/cookieUtils";
 import { ParticlesBg } from "particles-bg-vue";
+import {resetForEmail, resetPassword} from "network/personal";
 
 export default {
   name: "Login",
@@ -210,7 +213,14 @@ export default {
       },
       show: 1,
       imgCode: '',
-      codeString: '' //临时存储图片验证码
+      codeString: '', //临时存储图片验证码
+
+      // 修改密码
+      resetUsername: '',
+      resetPassword: '',
+      resetConfirm: '',
+      resetCode: ''
+
     }
   },
   created() {
@@ -408,6 +418,70 @@ export default {
       })
 
     },
+
+    resetEmail(){
+      resetForEmail(this.resetUsername).then(res => {
+        if (res.status === 2000) {
+          this.$notify.success({
+            message: res.msg
+          })
+        } else {
+          this.$notify.error({
+            message: res.msg
+          })
+        }
+      })
+    },
+    reset(){
+      if (this.resetUsername.trim() == ''){
+        this.$Message.warning({
+          background: true,
+          content: '用户名不能为空'
+        });
+        return;
+      }if (this.resetPassword.trim() == ''){
+        this.$Message.warning({
+          background: true,
+          content: '密码不能为空'
+        });
+        return;
+      }
+      if (this.resetConfirm.trim() == ''){
+        this.$Message.warning({
+          background: true,
+          content: '确认密码不能为空'
+        });
+        return;
+      }
+      if (this.resetPassword !== this.resetConfirm){
+        this.$Message.warning({
+          background: true,
+          content: '两次密码不一致'
+        });
+        return;
+      }
+      if (this.resetPassword !== this.resetConfirm){
+        this.$Message.warning({
+          background: true,
+          content: '两次密码不一致'
+        });
+        return;
+      }
+      let encodePassword = sha1.sha1(this.resetPassword);
+      resetPassword(this.resetUsername,encodePassword,this.resetCode).then(res => {
+        if (res.status === 2000) {
+          this.$notify.success({
+            message: res.msg
+          })
+          this.show = 1;
+        } else {
+          this.$notify.error({
+            message: res.msg
+          })
+        }
+      })
+
+    }
   }
 }
 </script>

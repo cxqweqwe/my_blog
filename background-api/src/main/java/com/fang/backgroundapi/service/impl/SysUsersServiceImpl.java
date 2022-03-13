@@ -1,24 +1,15 @@
 package com.fang.backgroundapi.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.fang.backgroundapi.common.ServerResponse;
-import com.fang.backgroundapi.mapper.ReportInfoMapper;
-import com.fang.backgroundapi.pojo.DO.ReportInfo;
 import com.fang.backgroundapi.pojo.DO.SysUsers;
 import com.fang.backgroundapi.mapper.SysUsersMapper;
-import com.fang.backgroundapi.pojo.DO.UserInfo;
-import com.fang.backgroundapi.pojo.DTO.SystemUserDTO;
 import com.fang.backgroundapi.service.SysUsersService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.fang.backgroundapi.utils.SnowflakeIdWorker;
-import nonapi.io.github.classgraph.json.Id;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Delete;
-import org.springframework.beans.BeanUtils;
+import com.fang.backgroundapi.typehandler.Encrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,8 +46,16 @@ public class SysUsersServiceImpl extends ServiceImpl<SysUsersMapper, SysUsers>  
 
     @Override
     public Integer updatePassword(SysUsers sysUsers) {
-
         return null;
+    }
+
+    public Integer updatePassword(String username, String password) {
+        return sysUsersMapper.updatePassword(username,password, new Date());
+    }
+
+    public String findEmailByUsername(String username){
+        Encrypt email = sysUsersMapper.findEmailByUsername(username);
+        return email.getValue();
     }
 
     /**
