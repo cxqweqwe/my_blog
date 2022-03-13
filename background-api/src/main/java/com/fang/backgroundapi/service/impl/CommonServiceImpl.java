@@ -1,5 +1,6 @@
 package com.fang.backgroundapi.service.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import com.aliyun.dysmsapi20170525.Client;
 import com.aliyun.dysmsapi20170525.models.SendSmsRequest;
@@ -234,11 +235,15 @@ public class CommonServiceImpl {
                     "用户名和密码均不能为空");
         }
         // UserInfo infoByEmail = userInfoService.findUserInfoByEmail(registerDTO.getEmail());
+        SysUsers sysUser = sysUsersService.findUserByUsername(username);
+        if (ObjectUtil.isNotEmpty(sysUser)) {
+            return ServerResponse.error(4000, "用户名已被占用，请重新输入", null);
+        }
         UserInfo infoByEmail = userInfoService.findUserInfoByEmail(new Encrypt(registerDTO.getEmail()));
         if (infoByEmail != null) {
             return ServerResponse.error(4000, "该邮箱已经绑定账号，请更换邮箱", null);
         }
-        String email = (String) redisUtils.get(CommonInfo.EMAIL_CODE + registerDTO.getEmail());//拿到之前报错的验证码
+        String email = (String) redisUtils.get(CommonInfo.EMAIL_CODE + registerDTO.getEmail());//拿到之前保存的验证码
         if (StringUtils.isEmpty(email)) {
             return ServerResponse.error(4000, "验证码不存在或已失效，请重新获取", null);
         }
