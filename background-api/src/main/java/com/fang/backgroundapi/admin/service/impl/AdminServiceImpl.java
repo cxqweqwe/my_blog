@@ -54,6 +54,10 @@ public class AdminServiceImpl {
         return adminMapper.changeUser(authorId, status, new Date());
     }
 
+    public void settingCancelAdmin(String authorId, Integer admin) {
+        adminMapper.settingCancelAdmin(authorId,admin, new Date());
+    }
+
     public PagingData queryArticle(Integer curPage, Integer size) {
         curPage = (curPage - 1) * size;
         List<AdminArticle> adminArticles = adminMapper.queryArticle(curPage, size);

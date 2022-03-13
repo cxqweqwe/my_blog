@@ -6,16 +6,36 @@
         UPDATE sys_users SET deleted=#{status}, modified_time=#{modifiedTime} WHERE author_id != '598108905656729600' AND author_id = #{authorId}
     </update>
 
+    <update id="settingCancelAdmin">
+        UPDATE sys_users_authority
+        SET authority_role = ( SELECT authority_role FROM sys_authority WHERE id = #{admin} ) , modified_time = #{modifiedTime}
+        WHERE
+            author_id = #{authorId}
+    </update>
+
     <select id="queryUser" resultType="com.fang.backgroundapi.pojo.VO.AdminUser">
         SELECT
             sysu.author_id,
             info.nick_name,
-            sysu.deleted
+            sysu.deleted,
+            sysu.create_time,
+            sysa.authority_role, (
+                CASE authority_role
+                WHEN 'root' THEN
+                    '超级管理员'
+                WHEN 'admin' THEN
+                    '管理员'
+                ELSE
+                    '会员'
+                END
+            ) role
         FROM
             sys_users sysu,
-            user_info info
+            user_info info,
+            sys_users_authority sysa
         WHERE
             sysu.author_id = info.author_id
+            AND sysu.author_id = sysa.author_id
         LIMIT #{curPage},#{size}
     </select>
 

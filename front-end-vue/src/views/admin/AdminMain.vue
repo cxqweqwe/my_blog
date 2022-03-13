@@ -53,7 +53,7 @@
                 </div>
               </div>
               <div v-if="active == 3">
-                <Table stripe :columns="commentColumns" :data="commentList" ></Table>
+                <Table stripe :columns="commentColumns" :data="commentList"></Table>
                 <div class="center top-space">
                   <Page :total="commentTotal" show-elevator @on-change="commentChange"/>
                 </div>
@@ -78,8 +78,10 @@
 </template>
 
 <script>
-  import {checkAdmin, queryUser, trialUser, changeSetting, querySetting, queryArticle, trialArticle,
-    queryComment, trialComment, queryReport} from "network/admin";
+  import {
+    checkAdmin, queryUser, trialUser, changeSetting, querySetting, queryArticle, trialArticle,
+    queryComment, trialComment, queryReport, settingCancelAdmin
+  } from "network/admin";
 
   export default {
     name: "AdminMain",
@@ -100,97 +102,97 @@
         }],
         // 文章管理
         articleColumns: [{
-            title: '文章ID',
-            key: 'articleId'
-          }, {
-            title: '文章标题',
-            key: 'title'
-          }, {
-            title: '文章作者昵称',
-            key: 'nickName'
-          }, {
-            title: '文章状态',
-            key: 'deleted',
-            render: (h, params) => {
-              let deleted = params.row.deleted;
-              if (deleted == 0) {
-                return h('div', [
-                  h('Tag', {
-                    style: {
-                      background: '#b4f60e'
-                    },
-                    on: {}
-                  }, '正常'),
-                ])
-              } else if (deleted == 2) {
-                return h('div', [
-                  h('Tag', {
-                    style: {
-                      background: '#f90'
-                    },
-                    on: {}
-                  }, '封禁'),
-                ])
-              } else if (deleted == 1) {
-                return h('div', [
-                  h('Tag', {
-                    style: {
-                      background: '#ed4014'
-                    },
-                    on: {}
-                  }, '删除'),
-                ])
-              }
-            }
-          }, {
-            title: 'Action',
-            key: 'action',
-            width: 250,
-            align: 'center',
-            render: (h, params) => {
+          title: '文章ID',
+          key: 'articleId'
+        }, {
+          title: '文章标题',
+          key: 'title'
+        }, {
+          title: '文章作者昵称',
+          key: 'nickName'
+        }, {
+          title: '文章状态',
+          key: 'deleted',
+          render: (h, params) => {
+            let deleted = params.row.deleted;
+            if (deleted == 0) {
               return h('div', [
-                h('Button', {
-                  props: {
-                    type: 'primary',
-                    size: 'small'
-                  },
+                h('Tag', {
                   style: {
-                    marginRight: '5px'
+                    background: '#b4f60e'
                   },
-                  on: {
-                    click: () => {
-                      this.articleActivation(params.row)
-                    }
-                  }
-                }, '激活'),
-                h('Button', {
-                  props: {
-                    type: 'warning',
-                    size: 'small'
-                  },
+                  on: {}
+                }, '正常'),
+              ])
+            } else if (deleted == 2) {
+              return h('div', [
+                h('Tag', {
                   style: {
-                    marginRight: '5px'
+                    background: '#f90'
                   },
-                  on: {
-                    click: () => {
-                      this.articleBan(params.row)
-                    }
-                  }
+                  on: {}
                 }, '封禁'),
-                h('Button', {
-                  props: {
-                    type: 'error',
-                    size: 'small'
+              ])
+            } else if (deleted == 1) {
+              return h('div', [
+                h('Tag', {
+                  style: {
+                    background: '#ed4014'
                   },
-                  on: {
-                    click: () => {
-                      this.ArticleRemove(params.row)
-                    }
-                  }
-                }, '删除')
-              ]);
+                  on: {}
+                }, '删除'),
+              ])
             }
           }
+        }, {
+          title: 'Action',
+          key: 'action',
+          width: 250,
+          align: 'center',
+          render: (h, params) => {
+            return h('div', [
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.articleActivation(params.row)
+                  }
+                }
+              }, '激活'),
+              h('Button', {
+                props: {
+                  type: 'warning',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.articleBan(params.row)
+                  }
+                }
+              }, '封禁'),
+              h('Button', {
+                props: {
+                  type: 'error',
+                  size: 'small'
+                },
+                on: {
+                  click: () => {
+                    this.ArticleRemove(params.row)
+                  }
+                }
+              }, '删除')
+            ]);
+          }
+        }
         ],
         articleList: [],
         articleTotal: 1,
@@ -204,13 +206,13 @@
         }, {
           title: '评论者',
           key: 'nickName'
-        },{
+        }, {
           title: '评论者昵称',
           key: 'nickName'
-        },{
+        }, {
           title: '评论内容',
           key: 'content'
-        },{
+        }, {
           title: '时间',
           key: 'createTime'
         }, {
@@ -342,9 +344,46 @@
             }
           }
         }, {
+          title: '角色',
+          key: 'role',
+          render: (h, params) => {
+            let role = params.row.role;
+            if (role == '超级管理员') {
+              return h('div', [
+                h('Tag', {
+                  style: {
+                    background: '#11fafa'
+                  },
+                  on: {}
+                }, '超级管理员'),
+              ])
+            } else if (role == '管理员') {
+              return h('div', [
+                h('Tag', {
+                  style: {
+                    background: '#12b6a8'
+                  },
+                  on: {}
+                }, '管理员'),
+              ])
+            } else if (role == '会员') {
+              return h('div', [
+                h('Tag', {
+                  style: {
+                    background: '#498699'
+                  },
+                  on: {}
+                }, '会员'),
+              ])
+            }
+          }
+        }, {
+          title: '注册时间',
+          key: 'createTime'
+        }, {
           title: 'Action',
           key: 'action',
-          width: 250,
+          width: 450,
           align: 'center',
           render: (h, params) => {
             return h('div', [
@@ -381,12 +420,45 @@
                   type: 'error',
                   size: 'small'
                 },
+                style: {
+                  marginRight: '5px'
+                },
                 on: {
                   click: () => {
                     this.userRemove(params.row)
                   }
                 }
-              }, '删除')
+              }, '删除'),
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small',
+                  disabled: this.authority !== 'root'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.settingAdmin(params.row)
+                  }
+                }
+              }, '设为管理员'),
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small',
+                  disabled: this.authority !== 'root'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.cancelAdmin(params.row)
+                  }
+                }
+              }, '取消管理员')
             ]);
           }
         }
@@ -443,7 +515,7 @@
       },
       changeSetting(row) {
         changeSetting(row.id, row.allowOrNot == 1 ? 0 : 1).then(res => {
-          if (res.status==2000){
+          if (res.status == 2000) {
             this.$notify.success({
               message: res.msg
             })
@@ -452,21 +524,21 @@
         row.allowOrNot = row.allowOrNot == 1 ? 0 : 1;
       },
       // 文章管理
-      getArticle(curPage){
-        queryArticle(curPage,10).then(res => {
+      getArticle(curPage) {
+        queryArticle(curPage, 10).then(res => {
           this.articleList = res.data.data;
           this.articleTotal = res.data.total;
         })
       },
-      articleActivation(row){
+      articleActivation(row) {
         this.toTrialArticle(row.articleId, 0);
         row.deleted = 0;
       },
-      articleBan(row){
+      articleBan(row) {
         this.toTrialArticle(row.articleId, 2);
         row.deleted = 2;
       },
-      ArticleRemove(row){
+      ArticleRemove(row) {
         this.toTrialArticle(row.articleId, 1);
         row.deleted = 1;
       },
@@ -483,7 +555,7 @@
           }
         })
       },
-      articleChange(curPage){
+      articleChange(curPage) {
         this.getArticle(curPage);
       },
 
@@ -494,24 +566,24 @@
           this.commentTotal = res.data.total;
         })
       },
-      commentChange(curPage){
+      commentChange(curPage) {
         this.getComment(curPage);
       },
-      commentActivation(row){
+      commentActivation(row) {
         this.toTrialComment(row.type, row.id, 0);
         row.deleted = 0;
       },
-      commentBan(row){
+      commentBan(row) {
         this.toTrialComment(row.type, row.id, 2);
         row.deleted = 2;
       },
-      commentRemove(row){
+      commentRemove(row) {
         this.toTrialComment(row.type, row.id, 1);
         row.deleted = 1;
       },
-      toTrialComment(type, id, status){
-        if (type == '博客'){
-          trialComment(0 ,id, status).then(res => {
+      toTrialComment(type, id, status) {
+        if (type == '博客') {
+          trialComment(0, id, status).then(res => {
             if (res.status === 2000) {
               this.$notify.success({
                 message: res.msg
@@ -522,8 +594,8 @@
               })
             }
           })
-        }else {
-          trialComment(1 ,id, status).then(res => {
+        } else {
+          trialComment(1, id, status).then(res => {
             if (res.status === 2000) {
               this.$notify.success({
                 message: res.msg
@@ -557,6 +629,27 @@
         this.toTrialUser(row.authorId, 1);
         row.deleted = 1;
       },
+      settingAdmin(row) {
+        this.toSettingCancelAdmin(row.authorId, 2);
+        row.role = '管理员';
+      },
+      cancelAdmin(row) {
+        this.toSettingCancelAdmin(row.authorId, 3);
+        row.role = '会员';
+      },
+      toSettingCancelAdmin(authorId, admin) {
+        settingCancelAdmin(authorId, admin).then(res => {
+          if (res.status === 2000) {
+            this.$notify.success({
+              message: res.msg
+            })
+          } else {
+            this.$notify.error({
+              message: res.msg
+            })
+          }
+        })
+      },
       toTrialUser(id, status) {
         trialUser(id, status).then(res => {
           if (res.status === 2000) {
@@ -570,12 +663,12 @@
           }
         })
       },
-      userChange(curPage){
+      userChange(curPage) {
         this.getUser(curPage);
       },
       // 评论管理
-      getReport(curPage){
-        queryReport(curPage,10).then(res => {
+      getReport(curPage) {
+        queryReport(curPage, 10).then(res => {
           console.log(res);
         })
       }

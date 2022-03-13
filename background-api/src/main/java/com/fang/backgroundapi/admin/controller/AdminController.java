@@ -82,6 +82,14 @@ public class AdminController extends BaseController {
         return ServerResponse.success();
     }
 
+    @GetMapping("/setting_cancel/admin")
+    @ApiOperation(value = "审判用户", response = ServerResponse.class, httpMethod = "GET")
+    @RequiresRoles(value = {"root", "admin"}, logical = Logical.OR)
+    public ServerResponse setting_cancel_admin(@RequestParam("authorId") String authorId, @RequestParam("admin") Integer admin) {
+        adminService.settingCancelAdmin(authorId, admin);
+        return ServerResponse.success();
+    }
+
     @GetMapping("/change/setting")
     @ApiOperation(value = "更改系统设置", response = ServerResponse.class, httpMethod = "GET")
     @RequiresRoles(value = {"root", "admin"}, logical = Logical.OR)

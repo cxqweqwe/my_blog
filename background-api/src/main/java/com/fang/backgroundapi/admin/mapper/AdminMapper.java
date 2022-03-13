@@ -23,6 +23,8 @@ public interface AdminMapper {
 
     public Integer changeUser(@Param("authorId")String authorId, @Param("status") Integer status, @Param("modifiedTime") Date modifiedTime);
 
+    public void settingCancelAdmin(@Param("authorId")String authorId, @Param("admin")Integer admin,  @Param("modifiedTime")Date modifiedTime);
+
     public List<AdminArticle> queryArticle(@Param("curPage") Integer curPage, @Param("size") Integer size);
 
     public Long countArticle();

@@ -28,6 +28,16 @@ export function trialUser(authorId, status) {
   })
 }
 
+export function settingCancelAdmin(authorId, admin) {
+  return request({
+    url: requestUrl + "/setting_cancel/admin",
+    params: {
+      authorId,
+      admin
+    }
+  })
+}
+
 export function querySetting(authorId, status) {
   return request({
     url: requestUrl + "/query/setting",
