@@ -121,7 +121,7 @@ const routes = [
       hidden: true,
       title:"404 ~ NotFount！"
     }
-  },
+  }
 
 ];
 
