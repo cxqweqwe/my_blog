@@ -35,6 +35,9 @@ public class ArticleServiceImpl implements ArticleService {
     @Autowired
     private ArticleMapper articleMapper;
 
+    @Autowired
+    private InfoNoticeServiceImpl infoNoticeService;
+
     @Override
     public Integer insertArticle(Article article) {
         int insert = articleMapper.insert(article);
@@ -134,6 +137,7 @@ public class ArticleServiceImpl implements ArticleService {
         String simpleUUID = IdUtil.simpleUUID();
         article.setArticleId(simpleUUID);
         Integer integer = this.insertArticle(article);
+        infoNoticeService.handleReleaseArticle(article.getAuthorId(), simpleUUID, article.getTitle());// 处理订阅相关信息
         return ServerResponse.success(simpleUUID);
     }
 

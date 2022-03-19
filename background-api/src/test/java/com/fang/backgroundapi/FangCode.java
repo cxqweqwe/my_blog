@@ -64,7 +64,7 @@ public class FangCode {
         //4、策略配置
         StrategyConfig strategy = new StrategyConfig();
         // TODO :表名字
-        strategy.setInclude("blog_info_day");//映射表名字，可以多个
+        strategy.setInclude("Info_notice");//映射表名字，可以多个
         strategy.setNaming(NamingStrategy.underline_to_camel);//支持下划线转驼峰命名
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);//列的名字 也支持下划线转驼峰命名
         // strategy.setSuperEntityClass("你自己的父类实体,没有就不用设置!");

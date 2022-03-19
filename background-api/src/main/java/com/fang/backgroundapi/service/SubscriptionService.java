@@ -3,6 +3,8 @@ package com.fang.backgroundapi.service;
 import com.fang.backgroundapi.pojo.DO.Subscription;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 订阅记录表 服务类
@@ -43,22 +45,22 @@ public interface SubscriptionService extends IService<Subscription> {
     public Subscription findSubscription(String subscribe, String beenSubscribed);
 
     /**
-     * Description: 查找关注的人  //TODO： 返回类还没写
+     * Description: 查找关注 ${param} 的人
      * @Author: Bernie_fang
      * @Since: 2022/2/8 16:00
-     * @param subscribe:
-     * @return: java.lang.Integer
-     **/
-    public Integer querySubscribe(String subscribe);
-
-    /**
-     * Description: 查找被关注的人  //TODO： 返回类还没写
-     * @Author: Bernie_fang
-     * @Since: 2022/2/8 16:03
      * @param beenSubscribed:
      * @return: java.lang.Integer
      **/
-    public Integer queryBeenSubscribed(String beenSubscribed);
+    public List<Subscription> querySubscribe(String beenSubscribed);
+
+    /**
+     * Description: 查找被 ${param} 关注的人
+     * @Author: Bernie_fang
+     * @Since: 2022/2/8 16:03
+     * @param subscribe:
+     * @return: java.lang.Integer
+     **/
+    public List<Subscription> queryBeenSubscribed(String subscribe);
 
 
 

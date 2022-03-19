@@ -8,6 +8,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  * 订阅记录表 服务实现类
@@ -40,13 +42,22 @@ public class SubscriptionServiceImpl extends ServiceImpl<SubscriptionMapper, Sub
        return subscriptionMapper.selectOne(wrapper);
     }
 
+    /**
+     * Description: 查找关注 ${param} 的人
+     * @Author: Bernie_fang
+     * @Since: 2022/2/8 16:00
+     * @param beenSubscribed:
+     * @return: java.lang.Integer
+     **/
     @Override
-    public Integer querySubscribe(String subscribe) {
-        return null;
+    public List<Subscription> querySubscribe(String beenSubscribed) {
+        QueryWrapper<Subscription> wrapper = new QueryWrapper<>();
+        wrapper.eq("been_subscribed", beenSubscribed);
+        return subscriptionMapper.selectList(wrapper);
     }
 
     @Override
-    public Integer queryBeenSubscribed(String beenSubscribed) {
+    public List<Subscription> queryBeenSubscribed(String subscribe) {
         return null;
     }
 
