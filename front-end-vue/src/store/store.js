@@ -51,5 +51,12 @@ export default new Vuex.Store({
   },
   actions: {
     //最主要是做异步操作,暂时用不到
+    // 例子
+    // add(context, payload){
+    //   // oldLoad = context.state.xxx   //获取state里面的对象，找
+    //   // context.commit('addxxx', oldLoad);        // addxxx是mutations定义的方法，修改state
+    //
+    //   // context.commit('addxxx', payload);        // addxxx是mutations定义的方法，state新加
+    // }
   }
 })

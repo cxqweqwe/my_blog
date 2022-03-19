@@ -1,4 +1,5 @@
 export const base_url = "http://localhost:8081";
+export const BASE_WS_URL = "ws://localhost:8081/websocket/"
 export const IMAGE_URL = "http://fangweb.top/image/";
 export const IMAGE_URL_DEV = "D:\\tmp\\upload-image";
 export const COOKIE_KEY = "Authorization";

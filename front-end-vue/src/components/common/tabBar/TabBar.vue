@@ -79,6 +79,7 @@
 
 <script>
 import {getCookie, getCookieAuthorId, getCookieAvatarPath} from "common/cookieUtils";
+import {BASE_WS_URL} from "common/common_variable";
 
 export default {
   name: "TabBar",
@@ -95,11 +96,13 @@ export default {
       authorId: '',
       avatarPath: '',
       searchInput: '',
+      webSocket: '',
     }
   },
   created() {
     this.authorId = getCookieAuthorId();
     this.avatarPath = getCookieAvatarPath();
+    this.initWebSocket();
   },
   methods: {
     toSearch() {
@@ -158,8 +161,76 @@ export default {
         query: {},
       });
       window.open(href, "_blank");
-    }
+    },
 
+    initWebSocket(){
+      // console.log(this.authorId);
+      if (!this.authorId){
+        // console.log(this.authorId);
+        return;
+      }
+      const wsuri = BASE_WS_URL + this.authorId;
+      this.webSocket = new WebSocket(wsuri);
+      this.webSocket.onmessage = this.websocketOnmessage;
+      // this.webSocket.onclose = this.websocketClose;// 断开连接，不处理
+      this.webSocket.onopen = this.websocketOpen;
+      this.webSocket.onerror = this.websocketError;
+    },
+    websocketOpen(e){
+      console.log("打开连接");
+    },
+    websocketOnmessage(e){ //数据接收
+      console.log(e.data);
+    },
+    websocketSend(agentData){//数据发送
+      this.webSocket.send(agentData);
+    },
+    websocketClose(e){  //关闭
+      console.log("connection closed (" + e.code + ")");
+    },
+    websocketError(e){
+      this.initWebSocket();
+    },
+    // threadPoxi(){  // 实际调用的方法
+    //   //参数
+    //   const agentData = "mymessage";
+    //   //若是ws开启状态
+    //   if (this.webSocket.readyState === this.websock.OPEN) {
+    //     this.websocketSend(agentData)
+    //   }
+    //   // 若是 正在开启状态，则等待300毫秒
+    //   else if (this.webSocket.readyState === this.websock.CONNECTING) {
+    //     let that = this;//保存当前对象this
+    //     setTimeout(function () {
+    //       that.websocketSend(agentData)
+    //     }, 300);
+    //   }
+    //   // 若未开启 ，则等待500毫秒
+    //   else {
+    //     this.initWebSocket();
+    //     let that = this;//保存当前对象this
+    //     setTimeout(function () {
+    //       that.websocketSend(agentData)
+    //     }, 500);
+    //   }
+    // },
+    checkWebSocket() {
+      if (this.webSocket.readyState === this.webSocket.CLOSED) {
+        this.initWebSocket();
+      }
+    }
+  },
+  watch: {
+
+  },
+  mounted() {
+    const chat = this;
+    document.addEventListener("visibilitychange", function () {
+      if (!document.hidden) {
+        //处于当前页面 do something
+        chat.initWebSocket();
+      }
+    });
   }
 }
 </script>

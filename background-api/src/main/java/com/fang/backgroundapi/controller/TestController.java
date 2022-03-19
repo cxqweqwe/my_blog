@@ -2,9 +2,12 @@ package com.fang.backgroundapi.controller;
 
 import com.fang.backgroundapi.exception.MyException;
 import com.fang.backgroundapi.pojo.VO.TestVO;
+import com.fang.backgroundapi.webSocket.SessionPool;
 import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -55,6 +58,15 @@ public class TestController extends BaseController {
         testVOList.add(testVO);
         testVOList.add(testVO);
         return testVOList;
+    }
+
+    @Autowired
+    private SessionPool sessionPool;
+
+    @GetMapping("/send")
+    public String test(@RequestParam() String authorId, @RequestParam String message){
+        sessionPool.sendMessageToAuthor(authorId,message);
+        return "success";
     }
 
 }
