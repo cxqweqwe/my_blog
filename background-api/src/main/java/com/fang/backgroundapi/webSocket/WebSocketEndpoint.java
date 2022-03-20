@@ -1,5 +1,8 @@
 package com.fang.backgroundapi.webSocket;
 
+import com.fang.backgroundapi.service.impl.InfoNoticeServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.OnClose;
@@ -22,15 +25,17 @@ public class WebSocketEndpoint {
 
     private Session session;
 
+    public static InfoNoticeServiceImpl infoNoticeService;
+
     @OnOpen
     public void onOpen(Session session, @PathParam("authorId") String authorId) {
         // 存储会话
         SessionPool.sessions.put(authorId, session);
+        this.handleSession(authorId, session);
     }
 
     @OnClose
     public void onClose(Session session) throws IOException {
-        System.out.println(SessionPool.sessions.size());
         SessionPool.close(session.getId());
         session.close();
     }
@@ -40,5 +45,8 @@ public class WebSocketEndpoint {
         SessionPool.sendMessage(message);
     }
 
-
+    public void handleSession(String authorId, Session session){
+        Long count = infoNoticeService.queryUnreadCount(authorId);
+        session.getAsyncRemote().sendText(String.valueOf(count));
+    }
 }

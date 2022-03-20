@@ -31,10 +31,19 @@ public class InfoNoticeController {
 
     @GetMapping("/query/{authorId}")
     @ApiOperation(value = "获取全部", response = ServerResponse.class, httpMethod = "GET")
-    public ServerResponse articleDetail(@PathVariable("authorId") String authorId) {
+    public ServerResponse queryNotice(@PathVariable("authorId") String authorId) {
         List<InfoNotice> infoNoticeList = infoNoticeService.readAndQueryInfoNotice(authorId);
         return ServerResponse.success(infoNoticeList);
     }
+
+    @GetMapping("/unRead/{authorId}")
+    @ApiOperation(value = "获取全部", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse unReadCount(@PathVariable("authorId") String authorId) {
+         Long count = infoNoticeService.queryUnreadCount(authorId);
+         return ServerResponse.success(count);
+    }
+
+
 
 }
 

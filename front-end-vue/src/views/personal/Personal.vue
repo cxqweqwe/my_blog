@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TabBar v-if="reload"></TabBar>
+    <TabBar v-if="reload" :unRead="unReadCount.toString()"></TabBar>
     <section class="main-content">
       <div class="container-xl">
         <div class="row gy-4">
@@ -43,8 +43,17 @@
                     您还未发布任何论贴。。。
                   </div>
                 </TabPane>
-                <TabPane label="信息留言" icon="md-chatboxes" name="voicemail">
-                  <MessageBox />
+                <TabPane :label="msgLabel"  name="information">
+<!--                  <MessageBox />-->
+                  <div class="message-box" v-for="(item, index) in informationList" :index="index">
+                    <div class="box-head">
+                      {{ item.createTime }}
+                    </div>
+                    <div class="box-body">
+                      <router-link target="_blank" :to="{path:'/user/' + item.authorId}">{{ item.nickName }}</router-link>
+                      : 嘿，我发布了新的博客<router-link target="_blank" :to="{path:'/blog/' + item.articleId}">{{ item.title }}</router-link>, 快来看看
+                    </div>
+                  </div>
                 </TabPane>
                 <TabPane label="个人信息" icon="ios-person" name="personalInfo">
 
@@ -199,9 +208,10 @@
 
 
                 </TabPane>
-                <TabPane label="设置" icon="ios-build" name="setting">
-                  设置
-                </TabPane>
+                <!-- 暂时不写 -->
+<!--                <TabPane label="设置" icon="ios-build" name="setting">-->
+<!--                  设置-->
+<!--                </TabPane>-->
               </Tabs>
             </div>
             <div v-else class="">
@@ -260,6 +270,7 @@
   import ForumItem from "components/common/forum/ForumItem";
   import {getPersonal} from "network/postInfo";
   import MessageBox from "components/content/message/MessageBox";
+  import {getUnReadCount, queryNotice} from "network/infoNotice";
 
   export default {
     name: "Personal",
@@ -328,6 +339,20 @@
         isPostLoad: false,
         postLoading: true,
 
+        unReadCount: 0,
+        msgLabel: (h) => {
+          return h('div', [
+            h('span', '信息'),
+            h('Badge', {
+              props: {
+                count: this.unReadCount
+              }
+            })
+          ])
+        },
+        informationLoad: false,
+        informationList: [],
+
       }
     },
     created() {
@@ -340,6 +365,7 @@
       this.authorId = paramsId;
       this.sendPersonalBlog();
       this.uploadUrl = IMAGE_UPLOAD_URL;
+      this.getUnRead();
     },
     methods: {
       sendPersonalBlog() {
@@ -393,13 +419,15 @@
             // 加载好了，第二次点击不再发送请求
             this.isPostLoad = true;
           }
-        }else if (name == 'setting') {
-          if (!this.settingLoad) {
+        }else if (name == 'information') {
+          if (!this.informationLoad) {
             //还没加载
-
-
+            queryNotice(this.authorId).then(res => {
+              this.informationList = res.data;
+              this.unReadCount = 0;
+            })
             // 加载好了，第二次点击不再发送请求
-            this.settingLoad = true;
+            this.informationLoad = true;
           }
         }
       },
@@ -582,6 +610,11 @@
         }).finally(() => {
           this.postLoading = false;
         })
+      },
+      getUnRead(){
+        getUnReadCount(this.authorId).then(res => {
+          this.unReadCount = Number.parseInt(res.data);
+        })
       }
     },
     computed: {
@@ -629,5 +662,24 @@
 
   .space10{
     height: 10px;
+  }
+
+  .message-box{
+    width: 100%;
+    height: 50px;
+    padding: 5px;
+    margin-top: 15px;
+    border: 1px solid rgba(207, 204, 204, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04)
+  }
+
+  .box-head{
+    width: 100%;
+    text-align: left;
+  }
+
+  .box-body{
+
   }
 </style>

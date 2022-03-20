@@ -40,7 +40,9 @@
                 <a href=""><router-link :to="{path:'/login'}">登录/注册</router-link></a>
               </li>
               <li class="list-inline-item" v-else>
-                <a href=""><router-link :to="{path:'/user/' + authorId}"><Avatar :src="avatarPath" class="avatar"/></router-link></a>
+                <el-badge :value="unReadCount" class="item">
+                  <a href=""><router-link :to="{path:'/user/' + authorId}"><Avatar :src="avatarPath" class="avatar"/></router-link></a>
+                </el-badge>
               </li>
             </ul>
 
@@ -87,6 +89,10 @@ export default {
     isAction: {
       type: Number,
       default: 1
+    },
+    unRead: {
+      type: String,
+      default: '0'
     }
   },
   data() {
@@ -97,6 +103,7 @@ export default {
       avatarPath: '',
       searchInput: '',
       webSocket: '',
+      unReadCount: '0',
     }
   },
   created() {
@@ -180,7 +187,7 @@ export default {
       console.log("打开连接");
     },
     websocketOnmessage(e){ //数据接收
-      console.log(e.data);
+      this.unReadCount = e.data;
     },
     websocketSend(agentData){//数据发送
       this.webSocket.send(agentData);
@@ -214,14 +221,11 @@ export default {
     //     }, 500);
     //   }
     // },
-    checkWebSocket() {
-      if (this.webSocket.readyState === this.webSocket.CLOSED) {
-        this.initWebSocket();
-      }
-    }
   },
   watch: {
-
+    unRead(n){
+      this.unReadCount = n;
+    }
   },
   mounted() {
     const chat = this;
