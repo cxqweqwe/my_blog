@@ -11,7 +11,7 @@
  Target Server Version : 50734
  File Encoding         : 65001
 
- Date: 27/02/2022 14:28:17
+ Date: 21/03/2022 21:37:51
 */
 
 SET NAMES utf8mb4;
@@ -73,6 +73,24 @@ CREATE TABLE `blog_info`  (
   `deleted` int(1) NULL DEFAULT NULL COMMENT '软删除',
   PRIMARY KEY (`article_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客信息统计表' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Table structure for blog_info_day
+-- ----------------------------
+DROP TABLE IF EXISTS `blog_info_day`;
+CREATE TABLE `blog_info_day`  (
+  `id` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT 'id',
+  `author_id` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户ID',
+  `pageviews` int(8) NULL DEFAULT 0 COMMENT '浏览量',
+  `likes` int(8) NULL DEFAULT 0 COMMENT '点赞量',
+  `subscription` int(8) NULL DEFAULT 0 COMMENT '订阅量',
+  `comment` int(8) NULL DEFAULT 0 COMMENT '评论量',
+  `collection` int(8) NULL DEFAULT 0 COMMENT '收藏量',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `modified_time` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
+  `deleted` int(1) NULL DEFAULT 0 COMMENT '软删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '博客信息统计，每天' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Table structure for favorite_record
@@ -137,6 +155,24 @@ CREATE TABLE `image_upload`  (
   `size` bigint(3) NULL DEFAULT NULL COMMENT '图片大小,最大500k',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '图片上传信息类\r\n' ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for info_notice
+-- ----------------------------
+DROP TABLE IF EXISTS `info_notice`;
+CREATE TABLE `info_notice`  (
+  `id` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `be_notified` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '被通知人',
+  `article_id` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '新发布的博客id',
+  `author_id` varchar(35) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '博文作者Id',
+  `nick_name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '作者昵称',
+  `title` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL COMMENT '博文标题',
+  `is_read` int(1) NULL DEFAULT 0 COMMENT '是否已读，0:未读，1:已读',
+  `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
+  `modified_time` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
+  `deleted` int(1) NULL DEFAULT 0 COMMENT '是否删除',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci COMMENT = '信息通知记录表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for label_class
