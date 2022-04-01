@@ -4,6 +4,8 @@ import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.pojo.DO.InfoNotice;
 import com.fang.backgroundapi.service.impl.InfoNoticeServiceImpl;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +32,7 @@ public class InfoNoticeController {
     private InfoNoticeServiceImpl infoNoticeService;
 
     @GetMapping("/query/{authorId}")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "获取全部", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse queryNotice(@PathVariable("authorId") String authorId) {
         List<InfoNotice> infoNoticeList = infoNoticeService.readAndQueryInfoNotice(authorId);
@@ -37,6 +40,7 @@ public class InfoNoticeController {
     }
 
     @GetMapping("/unRead/{authorId}")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "获取全部", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse unReadCount(@PathVariable("authorId") String authorId) {
          Long count = infoNoticeService.queryUnreadCount(authorId);

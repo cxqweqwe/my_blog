@@ -11,6 +11,8 @@ import com.fang.backgroundapi.pojo.DTO.PortCommentDTO;
 import com.fang.backgroundapi.service.impl.PortCommentServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -43,6 +45,7 @@ public class PortCommentController extends BaseController {
     private PortCommentServiceImpl portCommentService;
 
     @PostMapping("/release")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "论贴评论发布", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse releasePortComment(@RequestBody @Valid PortCommentDTO portCommentDTO) throws MyException {
         PortComment comment = new PortComment();
@@ -62,6 +65,7 @@ public class PortCommentController extends BaseController {
     }
 
     @GetMapping("/delete/{id}")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "论贴评论删除", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse deletePortComment(@PathVariable("id") String id) throws MyException {
         UpdateWrapper<PortComment> wrapper = new UpdateWrapper<>();

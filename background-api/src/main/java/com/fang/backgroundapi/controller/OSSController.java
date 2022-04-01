@@ -16,6 +16,8 @@ import com.qiniu.util.Auth;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +45,7 @@ public class OSSController extends BaseController {
     private final String BUCKET = "fangweb";
 
     @PostMapping("/upload")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "上传接口", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse upload(MultipartFile file) throws MyException {
         if (file.isEmpty()) {

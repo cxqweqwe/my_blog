@@ -16,6 +16,8 @@ import com.fang.backgroundapi.service.impl.BlogInfoServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -54,6 +56,7 @@ public class ArticleController extends BaseController {
     private BlogInfoServiceImpl blogInfoService;
 
     @PostMapping("/release")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "博客发布", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse releaseArticle(@RequestBody @Valid ArticleDTO articleDTO) throws MyException {
         articleDTO.setAuthorId(super.getAuthorId());
@@ -61,6 +64,7 @@ public class ArticleController extends BaseController {
     }
 
     @PostMapping("/update")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "博客更新", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse updateArticle(@RequestBody @Valid ArticleDTO articleDTO) throws MyException {
         articleDTO.setAuthorId(super.getAuthorId());
@@ -78,6 +82,7 @@ public class ArticleController extends BaseController {
     }
 
     @GetMapping("/delete/{articleId}")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "删除博客", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse deleteArticle(@PathVariable("articleId") @NotBlank(message = "博文ID不能为空")String articleId) {
         Integer delete = articleService.deleteArticle(articleId);

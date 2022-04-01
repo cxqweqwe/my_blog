@@ -12,6 +12,8 @@ import com.fang.backgroundapi.service.impl.FavoriteRecordServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -49,6 +51,7 @@ public class FavoriteRecordController extends BaseController {
     private FavoriteRecordServiceImpl favoriteRecordService;
 
     @PostMapping("/collect")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "收藏", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse collect(@RequestBody @Valid FavoriteRecordDTO favoriteRecordDTO) throws MyException {
         FavoriteRecord record = new FavoriteRecord();
@@ -59,6 +62,7 @@ public class FavoriteRecordController extends BaseController {
     }
 
     @GetMapping("/unCollect/{id}")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "取消收藏", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse unCollect(@PathVariable("id") String id) throws MyException {
         UpdateWrapper<FavoriteRecord> wrapper = new UpdateWrapper<>();
@@ -82,7 +86,8 @@ public class FavoriteRecordController extends BaseController {
     }
 
     @GetMapping("/check/{articleId}")
-    @ApiOperation(value = "查找收藏", response = ServerResponse.class, httpMethod = "GET")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
+    @ApiOperation(value = "确认是否收藏", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse check(@PathVariable("articleId") String articleId) throws MyException {
         QueryWrapper<FavoriteRecord> wrapper = new QueryWrapper<>();
         wrapper.eq("author_id", super.getAuthorId())

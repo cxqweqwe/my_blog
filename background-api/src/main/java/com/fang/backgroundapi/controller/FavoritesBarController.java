@@ -8,6 +8,8 @@ import com.fang.backgroundapi.pojo.DTO.FavoritesBarDTO;
 import com.fang.backgroundapi.service.impl.FavoritesBarServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -40,6 +42,7 @@ public class FavoritesBarController extends BaseController {
     private FavoritesBarServiceImpl favoritesBarService;
 
     @PostMapping("/create")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "创建收藏夹", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse create(@RequestBody @Valid FavoritesBarDTO favoritesBarDTO) throws MyException {
         FavoritesBar favoritesBar = new FavoritesBar();
@@ -50,6 +53,7 @@ public class FavoritesBarController extends BaseController {
     }
 
     @PostMapping("/update")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "修改收藏夹", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse update(@RequestBody @Valid FavoritesBarDTO favoritesBarDTO) throws MyException {
         FavoritesBar favoritesBar = new FavoritesBar();
@@ -60,6 +64,7 @@ public class FavoritesBarController extends BaseController {
     }
 
     @GetMapping("/delete/{id}")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "删除收藏夹", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse delete(@PathVariable("id") String id) throws MyException {
         favoritesBarService.removeById(id);
@@ -68,7 +73,7 @@ public class FavoritesBarController extends BaseController {
 
 
     @GetMapping("/query/{authorId}")
-    @ApiOperation(value = "删除收藏夹", response = ServerResponse.class, httpMethod = "GET")
+    @ApiOperation(value = "查询收藏夹", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse query(@PathVariable("authorId") String authorId) {
         QueryWrapper<FavoritesBar> wrapper = new QueryWrapper<>();
         wrapper.eq("author_id", authorId);

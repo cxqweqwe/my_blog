@@ -11,6 +11,8 @@ import com.fang.backgroundapi.service.impl.PostInfoServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +43,7 @@ public class PostInfoController extends BaseController {
     private PostInfoServiceImpl postInfoService;
 
     @PostMapping("/release")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "论坛新帖发布", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse releasePostInfo(@RequestBody @Valid PostInfoDTO postInfoDTO) throws MyException {
         PostInfo info = new PostInfo();

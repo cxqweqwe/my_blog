@@ -8,6 +8,8 @@ import com.fang.backgroundapi.pojo.VO.ArticleCommentVO;
 import com.fang.backgroundapi.service.impl.ArticleCommentServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +42,7 @@ public class ArticleCommentController extends BaseController {
     private ArticleCommentServiceImpl articleCommentService;
 
     @PostMapping("/publish")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "发表评论", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse publishComment(@RequestBody @Valid ArticleCommentVO articleCommentVO) throws MyException {
         String authorId = super.getAuthorId();
@@ -56,6 +59,7 @@ public class ArticleCommentController extends BaseController {
     }
 
     @GetMapping("/delete/{id}")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "删除评论", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse deleteComment(@PathVariable("id") @NotBlank(message = "参数不为空") String id) throws MyException {
         String authorId = super.getAuthorId();

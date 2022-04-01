@@ -8,6 +8,8 @@ import com.fang.backgroundapi.service.impl.SysUsersServiceImpl;
 import com.fang.backgroundapi.service.impl.UserInfoServiceImpl;
 import com.fang.backgroundapi.utils.JWTUtil;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,6 +37,7 @@ public class StatisticsController {
     private ScheduledServiceImpl scheduledService;
 
     @GetMapping("/show/{token}/{date}")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "获取statistics数据", response = ServerResponse.class, httpMethod = "GET")
     public String show(@PathVariable("token") String token, @PathVariable("date") String strDate,
                        Model model) {

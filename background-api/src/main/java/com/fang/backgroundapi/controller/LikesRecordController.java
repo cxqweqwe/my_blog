@@ -5,6 +5,8 @@ import com.fang.backgroundapi.common.ServerResponse;
 import com.fang.backgroundapi.service.impl.LikesRecordServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +35,7 @@ public class LikesRecordController extends BaseController {
     private LikesRecordServiceImpl recordService;
 
     @GetMapping("/checkLike")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "获取博客信息", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse checkLike(@RequestParam("articleId") @NotBlank(message = "参数不能为空") String articleId,
                                     @RequestParam("authorId") @NotBlank(message = "参数不能为空") String authorId) {

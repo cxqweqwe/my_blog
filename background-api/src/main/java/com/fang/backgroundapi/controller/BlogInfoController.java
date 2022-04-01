@@ -7,6 +7,8 @@ import com.fang.backgroundapi.pojo.DO.BlogInfo;
 import com.fang.backgroundapi.service.impl.BlogInfoServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,6 +37,7 @@ public class BlogInfoController extends BaseController {
     private BlogInfoServiceImpl blogInfoService;
 
     @GetMapping("/likeBlog/{articleId}")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "为博客点赞", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse likeBlog(@PathVariable("articleId") @NotBlank(message = "参数不能为空") String articleId) throws MyException {
         String authorId = super.getAuthorId();  //authorId从token拿
@@ -43,6 +46,7 @@ public class BlogInfoController extends BaseController {
     }
 
     @GetMapping("/unLikeBlog/{articleId}")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "取消为为博客点赞", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse unLikeBlog(@PathVariable("articleId") @NotBlank(message = "参数不能为空") String articleId) throws MyException {
         String authorId = super.getAuthorId();  //authorId从token拿
@@ -51,6 +55,7 @@ public class BlogInfoController extends BaseController {
     }
 
     @GetMapping("/readBlog/{articleId}")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "记录博客阅读量", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse readBlog(@PathVariable("articleId") @NotBlank(message = "参数不能为空") String articleId) {
         blogInfoService.readBlog(articleId);

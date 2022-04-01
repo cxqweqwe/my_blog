@@ -8,6 +8,8 @@ import com.fang.backgroundapi.exception.MyException;
 import com.fang.backgroundapi.pojo.DO.Subscription;
 import com.fang.backgroundapi.service.impl.SubscriptionServiceImpl;
 import io.swagger.annotations.ApiOperation;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +35,7 @@ public class SubscriptionController extends BaseController {
     private SubscriptionServiceImpl subscriptionService;
 
     @GetMapping("/subscribe/{beenSubscribed}")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "添加订阅", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse addSubscription(@PathVariable("beenSubscribed") @NotBlank(message = "参数能为空")String beenSubscribed) throws MyException {
         String subscribe = super.getAuthorId();
@@ -59,6 +62,7 @@ public class SubscriptionController extends BaseController {
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
     @GetMapping("/unSubscribe/{beenSubscribed}")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "取消订阅", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse unSubscription(@PathVariable("beenSubscribed") @NotBlank(message = "参数不能为空") String beenSubscribed) throws MyException {
         UpdateWrapper<Subscription> wrapper = new UpdateWrapper<>();
@@ -70,6 +74,7 @@ public class SubscriptionController extends BaseController {
     }
 
     @GetMapping("/check/{beenSubscribed}")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "查询是否订阅", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse checkSubscription(@PathVariable("beenSubscribed") @NotBlank(message = "参数不能为空") String beenSubscribed) throws MyException {
         String subscribe = super.getAuthorId();

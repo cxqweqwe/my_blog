@@ -9,6 +9,8 @@ import com.fang.backgroundapi.service.impl.UserInfoServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.shiro.authz.annotation.Logical;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -64,6 +66,7 @@ public class UserInfoController extends BaseController {
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
     @PostMapping("/updateUserInfo")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "修改/填写 用户信息", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse updateUserInfo(@RequestBody @Valid UserInfoDTO userInfoDTO) {
         return userInfoService.updateUserInfo(userInfoDTO);
@@ -77,6 +80,7 @@ public class UserInfoController extends BaseController {
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
     @PostMapping("/update/phone")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "修改手机号码", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse updatePhone(@NotBlank(message = "参数不能为空")  @RequestParam String phoneNumber,@NotBlank(message = "参数不能为空") @RequestParam String code) throws MyException {
         String authorId = super.getAuthorId();
@@ -91,6 +95,7 @@ public class UserInfoController extends BaseController {
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
     @PostMapping("/update/email")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "修改邮箱", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse updateEmail(@Email(message = "email不合法") @RequestParam String email,@NotBlank(message = "参数不能为空") @RequestParam String code) throws MyException {
         String authorId = super.getAuthorId();
@@ -105,6 +110,7 @@ public class UserInfoController extends BaseController {
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
     @PostMapping("/update/avatar")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "修改手机号码", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse updateAvatar(@NotBlank(message = "email不合法") String avatar) throws MyException {
         String authorId = super.getAuthorId();
@@ -112,6 +118,7 @@ public class UserInfoController extends BaseController {
     }
 
     @GetMapping("/inquire/{authorId}")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "查询一个用户信息", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse findUserInfoByAuthorId(@PathVariable("authorId") @NotBlank(message = "参数不能为空") @ApiParam("作者ID") String authorId) {
         UserInfo info = userInfoService.findUserInfoByAuthorId(authorId);
@@ -126,13 +133,14 @@ public class UserInfoController extends BaseController {
     }
 
     @GetMapping("/inquire/all")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "查询全部用户信息", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse queryUserInfo(@RequestParam @ApiParam("参数必须为数字") Integer currentPage,
                                         @RequestParam @ApiParam("参数必须为数字") Integer size) {
         return userInfoService.queryUserInfo(currentPage,size);
     }
 
-     @GetMapping("/blogger/{authorId}")
+    @GetMapping("/blogger/{authorId}")
     @ApiOperation(value = "查询全部用户信息", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse getBlogger(@PathVariable("authorId") String authorId) {
          return userInfoService.getBlogger(authorId);
