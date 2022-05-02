@@ -118,7 +118,7 @@ public class UserInfoController extends BaseController {
     }
 
     @GetMapping("/inquire/{authorId}")
-    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
+    // @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "查询一个用户信息", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse findUserInfoByAuthorId(@PathVariable("authorId") @NotBlank(message = "参数不能为空") @ApiParam("作者ID") String authorId) {
         UserInfo info = userInfoService.findUserInfoByAuthorId(authorId);

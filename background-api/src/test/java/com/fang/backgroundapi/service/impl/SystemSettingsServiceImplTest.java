@@ -18,33 +18,33 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class SystemSettingsServiceImplTest {
 
-    @Autowired
-    private SystemSettingsServiceImpl settingsService;
+    // @Autowired
+    // private SystemSettingsServiceImpl settingsService;
 
-    @Test
-    void updateSystemSetting() {
+    // @Test
+    // void updateSystemSetting() {
+    //
+    // }
 
-    }
-
-    @Test
-    void insertSystemSetting() {
-        SystemSettings settings = new SystemSettings();
-        settings.setSettingName("allow_phone");
-        settings.setAllowOrNot(0);
-        settingsService.insertSystemSetting(settings);
-    }
-
-    @Test
-    void querySystemSetting() {
-        List<SystemSettings> systemSettings = settingsService.querySystemSetting();
-        for (SystemSettings systemSetting : systemSettings) {
-            if (systemSetting.getSettingName().equals("注册")){
-                systemSetting.setSettingName("allow_register");
-                settingsService.updateSystemSetting(systemSetting);
-                break;
-            }
-        }
-
-    }
+    // @Test
+    // void insertSystemSetting() {
+    //     SystemSettings settings = new SystemSettings();
+    //     settings.setSettingName("allow_phone");
+    //     settings.setAllowOrNot(0);
+    //     settingsService.insertSystemSetting(settings);
+    // }
+    //
+    // @Test
+    // void querySystemSetting() {
+    //     List<SystemSettings> systemSettings = settingsService.querySystemSetting();
+    //     for (SystemSettings systemSetting : systemSettings) {
+    //         if (systemSetting.getSettingName().equals("注册")){
+    //             systemSetting.setSettingName("allow_register");
+    //             settingsService.updateSystemSetting(systemSetting);
+    //             break;
+    //         }
+    //     }
+    //
+    // }
 
 }
