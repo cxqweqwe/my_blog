@@ -1,18 +1,13 @@
 package com.fang.backgroundapi.pojo.DTO;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author Bernie_fang
@@ -20,6 +15,8 @@ import java.util.Date;
  * @create 2021/9/13 16:15
  **/
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class UserInfoDTO implements Serializable {
 
@@ -28,12 +25,14 @@ public class UserInfoDTO implements Serializable {
      * 用户ID
      */
     @ApiModelProperty("用户ID，服务器生成")
+    @JsonProperty(value = "authorId")
     private String authorId;
 
     /**
      * 昵称
      */
     @ApiModelProperty("昵称")
+    @JsonProperty(value = "nickName")
     private String nickName;
 
     /**

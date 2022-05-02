@@ -8,11 +8,11 @@ export function getAuthorInfo(param){
     })
 }
 
-export function updateUserInfo(params) {
+export function updateUserInfo(userInfoDTO) {
     return request({
         url: requestUrl + '/updateUserInfo',
         method: 'post',
-        data: params
+        data: userInfoDTO
     })
 }
 

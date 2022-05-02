@@ -66,9 +66,9 @@ public class UserInfoController extends BaseController {
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
     @PostMapping("/updateUserInfo")
-    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
+    // @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "修改/填写 用户信息", response = ServerResponse.class, httpMethod = "POST")
-    public ServerResponse updateUserInfo(@RequestBody @Valid UserInfoDTO userInfoDTO) {
+    public ServerResponse updateUserInfo(@RequestBody UserInfoDTO userInfoDTO) {
         return userInfoService.updateUserInfo(userInfoDTO);
     }
 
@@ -127,7 +127,7 @@ public class UserInfoController extends BaseController {
         }
         UserInfoVO infoVO = new UserInfoVO();
         BeanUtils.copyProperties(info, infoVO);
-        infoVO.setPhoneNumber(info.getPhoneNumber().getValue());
+        infoVO.setPhoneNumber(info.getPhoneNumber()==null?"":info.getPhoneNumber().getValue());
         infoVO.setEmail(info.getEmail().getValue());
         return ServerResponse.success(infoVO);
     }
