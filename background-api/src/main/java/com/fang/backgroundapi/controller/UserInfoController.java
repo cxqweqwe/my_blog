@@ -66,7 +66,7 @@ public class UserInfoController extends BaseController {
      * @return: com.fang.backgroundapi.common.ServerResponse
      **/
     @PostMapping("/updateUserInfo")
-    // @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "修改/填写 用户信息", response = ServerResponse.class, httpMethod = "POST")
     public ServerResponse updateUserInfo(@RequestBody UserInfoDTO userInfoDTO) {
         return userInfoService.updateUserInfo(userInfoDTO);

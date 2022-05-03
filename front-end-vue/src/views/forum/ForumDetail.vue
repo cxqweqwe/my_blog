@@ -205,11 +205,13 @@
 
     },
     mounted() {
-      const ViewerDom = document.getElementById('details-img');
-      this.viewer = new Viewer(ViewerDom, {
-        // 相关配置项,详情见下面
-        rotatable: false,
-      });
+      setTimeout(function(){
+        const ViewerDom = document.getElementById('details-img');
+        this.viewer = new Viewer(ViewerDom, {
+          // 相关配置项,详情见下面
+          rotatable: false,
+        });
+      },3000);
     }
   }
 </script>
