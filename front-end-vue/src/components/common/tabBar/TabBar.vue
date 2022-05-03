@@ -12,13 +12,13 @@
             <!-- menus -->
             <ul class="navbar-nav mr-auto">
               <li class="nav-item dropdown" :class="{active:isAction==1}">
-                <a class="nav-link dropdown-toggle" @click="goNewPage2('/')">Home</a>
+                <router-link :to="{path:'/index'}"><a class="nav-link dropdown-toggle">Home</a></router-link>
                 <ul class="dropdown-menu">
                   <li><a class="dropdown-item" @click="goNewPage1('/user/')">我的</a></li>
                 </ul>
               </li>
               <li class="nav-item dropdown" :class="{active:isAction==2}">
-                <router-link target="_blank" :to="{path:'/article'}"><a class="nav-link dropdown-toggle">Blog</a></router-link>
+                <router-link :to="{path:'/article'}"><a class="nav-link dropdown-toggle">Blog</a></router-link>
                 <ul class="dropdown-menu">
                   <li>
                     <router-link target="_blank" :to="{path:'/blogEdit/not_checkout'}"><a class="dropdown-item">撰写博客</a></router-link>
@@ -26,7 +26,7 @@
                 </ul>
               </li>
               <li class="nav-item" :class="{active:isAction==3}">
-                <router-link target="_blank" :to="{path:'/forum'}"><a class="nav-link">Forum</a></router-link>
+                <router-link :to="{path:'/forum'}"><a class="nav-link">Forum</a></router-link>
               </li>
             </ul>
           </div>
