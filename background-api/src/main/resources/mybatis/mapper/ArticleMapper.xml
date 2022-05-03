@@ -149,8 +149,10 @@
 
     <select id="queryPersonal"  resultType="MostPopularInfoVO">
         SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.create_time, ar.cover_path, us.nick_name, us.avatar_path
-        FROM article ar, blog_info info, user_info us
-        WHERE ar.article_id = info.article_id AND ar.deleted = 0 AND us.author_id = ar.author_id AND ar.author_id = #{authorId}
+        FROM article ar LEFT JOIN blog_info info on ar.article_id = info.article_id
+	        LEFT JOIN user_info us on us.author_id = ar.author_id
+        WHERE ar.deleted = 0 AND ar.author_id = #{authorId}
+        ORDER BY ar.create_time DESC
         LIMIT #{curPage},#{size}
     </select>
 
