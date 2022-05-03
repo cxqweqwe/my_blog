@@ -35,7 +35,7 @@
     </insert>
 
     <select id="queryUnreadCount" resultType="java.lang.Long">
-        SELECT COUNT(DISTINCT id) FROM info_notice WHERE deleted=0 AND be_notified=#{beNotified}
+        SELECT COUNT(DISTINCT id) FROM info_notice WHERE deleted=0 AND be_notified=#{beNotified} AND is_read = 0
     </select>
 
 
