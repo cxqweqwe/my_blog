@@ -16,7 +16,7 @@
                     <div class="padding-30 rounded bordered">
                       <div class="row">
                         <LatestPostsItem v-for="(itemData,index) in personalArticleList" :key="index"
-                                         :item="itemData"></LatestPostsItem>
+                                         :item="itemData" @personal-reload="personalArticleListReload"></LatestPostsItem>
                       </div>
                     </div>
                     <div class="space"></div>
@@ -376,6 +376,10 @@
         }).finally(() => {
           this.loading = false;
         })
+      },
+      personalArticleListReload() {
+        console.log("reload");
+        this.sendPersonalBlog();
       },
       loadMore() {
         if (this.curPage * this.size >= this.total) {

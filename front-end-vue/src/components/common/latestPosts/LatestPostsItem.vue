@@ -36,6 +36,8 @@
           </div>
           <div class="more-button float-end">
             <a @click="share"><span class="icon-options"></span></a>
+            &nbsp;
+            <a @click="deleteBlog" v-if="authorId === item.authorId"><span class="el-icon-delete-solid"></span></a>
           </div>
         </div>
       </div>
@@ -44,10 +46,15 @@
 </template>
 
 <script>
+import {getCookieAuthorId} from "common/cookieUtils";
+import {deleteDetail} from "network/article";
+
 export default {
   name: "LatestPostsItem",
   props: {
     item: {
+      articleId: String,
+      authorId: String,
       coverPath: String,
       avatarPath: String,
       authorName: String,
@@ -57,7 +64,9 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      authorId: getCookieAuthorId()
+    }
   },
   created() {
   },
@@ -66,6 +75,14 @@ export default {
       // console.log(articleId);
       //  跳到详情页
       // this.$router.push('/blog/' + this.postItem.articleId);
+    },
+    deleteBlog(){
+      deleteDetail(this.item.articleId).then(res => {
+        this.$Notice.success({
+          title: res.msg
+        })
+      })
+      this.$emit("personal-reload")
     },
     share() {
       this.$notify.info({

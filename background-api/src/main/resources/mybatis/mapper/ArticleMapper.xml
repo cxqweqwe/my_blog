@@ -51,7 +51,7 @@
         SELECT ar.article_id, ar.author_id, ar.title, ar.brief_introduction, ar.modified_time, ar.cover_path
         FROM article ar
         WHERE ar.deleted = 0
-        ORDER BY ar.modified_time
+        ORDER BY ar.create_time DESC
         LIMIT 0,#{quantity}
     </select>
 
