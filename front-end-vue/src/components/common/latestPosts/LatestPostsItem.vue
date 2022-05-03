@@ -38,6 +38,8 @@
             <a @click="share"><span class="icon-options"></span></a>
             &nbsp;
             <a @click="deleteBlog" v-if="authorId === item.authorId"><span class="el-icon-delete-solid"></span></a>
+            &nbsp;
+            <a @click="editBlog" v-if="authorId === item.authorId"><span class="el-icon-edit"></span></a>
           </div>
         </div>
       </div>
@@ -83,6 +85,10 @@ export default {
         })
       })
       this.$emit("personal-reload")
+    },
+    editBlog() {
+      // blogEdit
+      this.$router.push("/blogEdit/" + this.item.articleId);
     },
     share() {
       this.$notify.info({
