@@ -267,6 +267,7 @@ export default {
       }
       if (data.isRelease == true){
         this.releaseBlog();
+        this.$router.push("/blog/" + this.article.articleId);
       }
       this.centerDialogVisible = false;//关闭上传页面
     },
