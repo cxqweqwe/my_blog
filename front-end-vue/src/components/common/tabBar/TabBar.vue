@@ -6,7 +6,7 @@
         <div class="container-xl">
           <!-- site logo -->
           <a class="navbar-brand" href="">
-            <router-link target="_blank" :to="{path:'/index'}"><img src="~assets/img/logo/FANG-Logo.svg" alt="logo" class="logo-image"/></router-link>
+            <router-link :to="{path:'/index'}"><img src="~assets/img/logo/FANG-Logo.svg" alt="logo" class="logo-image"/></router-link>
           </a>
           <div class="collapse navbar-collapse">
             <!-- menus -->
