@@ -161,6 +161,7 @@ export default {
           document.cookie = keys[i] + '=0;expires=' + new Date(0).toUTCString();
       }
       this.$store.commit('checkLogin', false);
+      window.location.reload();
     },
     search(){
       const {href} = this.$router.resolve({
