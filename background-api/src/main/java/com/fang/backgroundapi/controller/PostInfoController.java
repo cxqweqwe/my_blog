@@ -16,6 +16,7 @@ import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,6 +68,13 @@ public class PostInfoController extends BaseController {
     public ServerResponse findPostInfo(@RequestParam("postId") String postId) {
         PostInfoVO postInfo = postInfoService.findPostInfo(postId);
         return ServerResponse.success(postInfo);
+    }
+
+    @GetMapping("/delete/{postId}")
+    @ApiOperation(value = "帖子查询", response = ServerResponse.class, httpMethod = "GET")
+    public ServerResponse deletePostInfo(@PathVariable("postId") String postId) {
+        postInfoService.removeById(postId);
+        return ServerResponse.success();
     }
 
     @GetMapping("/personal")

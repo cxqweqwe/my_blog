@@ -14,6 +14,9 @@
       </Col>
       <Col span="3">
         <div class="span-text">{{forumItem.commonCount}}</div>
+        <a @click="deleteForum" v-if="authorId === forumItem.authorId"><span class="el-icon-delete-solid"></span></a>
+        &nbsp;
+        <a @click="editForum" v-if="authorId === forumItem.authorId"><span class="el-icon-edit"></span></a>
       </Col>
     </Row>
     <div @click="lookDetail">
@@ -45,6 +48,9 @@
   import Viewer from 'viewerjs';
   import 'viewerjs/dist/viewer.css';
 
+  import {getCookieAuthorId} from "common/cookieUtils";
+  import {deletePostInfo} from "network/postInfo";
+
   export default {
     name: "ForumItem",
     props: {
@@ -65,6 +71,7 @@
       return {
         imageList: [],
         viewer: undefined,
+        authorId: getCookieAuthorId()
       }
     },
     created() {
@@ -94,6 +101,17 @@
         });
         window.open(href, "_blank");
       },
+      editForum() {
+
+      },
+      deleteForum() {
+        deletePostInfo(this.forumItem.postId).then(res => {
+          this.$notify.success({
+            title: res.msg
+          });
+          this.$emit("forum-reload");
+        })
+      }
     },
     mounted() {
       const ViewerDom = document.getElementById('images' + this.idCount);

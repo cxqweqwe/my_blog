@@ -31,7 +31,7 @@
                   <div v-if="itemDataList != null && itemDataList.length != 0" v-loading="postLoading">
                     <div class="forum-main" v-loading="loading">
                       <ForumItem v-for="(item,index) in itemDataList" :forumItem="item" :key="index"
-                                 :idCount="index + ''"/>
+                                 :idCount="index + ''" @forum-reload="itemDataListReload" />
                     </div>
                     <div class="space10"></div>
                     <div class="space10"></div>
@@ -605,6 +605,9 @@
         this.reload = false;
         await this.$nextTick();
         this.reload = true;
+      },
+      itemDataListReload() {
+        this.postChange(1);
       },
       postChange(curPage){
         this.postLoading = true;

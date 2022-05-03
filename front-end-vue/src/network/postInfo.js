@@ -32,6 +32,13 @@ export function getPostInfo(postId) {
   })
 }
 
+export function deletePostInfo(postId) {
+  return request({
+    url: requestUrl + "/delete/" + postId,
+    method: 'get',
+  })
+}
+
 export function getPersonal(curPage, size, authorId) {
   return request({
     url: requestUrl + "/personal",
