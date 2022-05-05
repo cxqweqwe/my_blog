@@ -54,6 +54,17 @@ public class PostInfoController extends BaseController {
         return ServerResponse.success();
     }
 
+    @PostMapping("/update")
+    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
+    @ApiOperation(value = "论坛新帖发布", response = ServerResponse.class, httpMethod = "POST")
+    public ServerResponse updatePostInfo(@RequestBody @Valid PostInfoDTO postInfoDTO) throws MyException {
+        PostInfo info = new PostInfo();
+        BeanUtils.copyProperties(postInfoDTO, info);
+        info.setAuthorId(super.getAuthorId());
+        postInfoService.updateById(info);
+        return ServerResponse.success();
+    }
+
     @GetMapping("/query")
     @ApiOperation(value = "帖子查询", response = ServerResponse.class, httpMethod = "GET")
     public ServerResponse queryPostInfo(@RequestParam("curPage") Integer curPage,

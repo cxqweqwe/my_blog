@@ -10,6 +10,14 @@ export function releasePostInfo(param) {
   })
 }
 
+export function updatePostInfo(param) {
+  return request({
+    url: requestUrl + "/update",
+    method: 'post',
+    data: param
+  })
+}
+
 export function query(curPage, size, keywords) {
   return request({
     url: requestUrl + "/query",
