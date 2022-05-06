@@ -14,8 +14,12 @@
                 文章管理
               </MenuItem>
               <MenuItem name="3">
-                <Icon type="md-chatbubbles"/>
+                <Icon type="ios-chatbubbles" />
                 评论管理
+              </MenuItem>
+              <MenuItem name="6">
+                <Icon type="md-chatbubbles"/>
+                论贴管理
               </MenuItem>
               <MenuItem name="4">
                 <Icon type="md-heart"/>
@@ -69,6 +73,12 @@
                   <h4>暂无数据</h4>
                 </div>
               </div>
+              <div v-if="active == 6">
+                <Table stripe :columns="forumsColumns" :data="forumsList"></Table>
+                <div class="center top-space">
+                  <Page :total="forumsTotal" show-elevator @on-change="userChange"/>
+                </div>
+              </div>
             </div>
           </Content>
         </Layout>
@@ -80,7 +90,7 @@
 <script>
   import {
     checkAdmin, queryUser, trialUser, changeSetting, querySetting, queryArticle, trialArticle,
-    queryComment, trialComment, queryReport, settingCancelAdmin
+    queryComment, trialComment, queryReport, settingCancelAdmin, queryForum, trialForum
   } from "network/admin";
 
   export default {
@@ -196,6 +206,136 @@
         ],
         articleList: [],
         articleTotal: 1,
+        // 论贴管理
+        forumsColumns: [{
+          title: '论贴ID',
+          key: 'postId'
+        }, {
+          title: '论贴标题',
+          key: 'postName'
+        }, {
+          title: '论贴作者昵称',
+          key: 'nickName'
+        }, {
+          title: '违规状态',
+          key: 'state',
+          render: (h, params) => {
+            let deleted = params.row.state;
+            if (deleted == 0) {
+              return h('div', [
+                h('Tag', {
+                  style: {
+                    background: '#ed4014'
+                  },
+                  on: {}
+                }, '违规'),
+              ])
+            } else if (deleted == 2) {
+              return h('div', [
+                h('Tag', {
+                  style: {
+                    background: '#f90'
+                  },
+                  on: {}
+                }, '等待审核'),
+              ])
+            } else if (deleted == 1) {
+              return h('div', [
+                h('Tag', {
+                  style: {
+                    background: '#b4f60e'
+                  },
+                  on: {}
+                }, '正常'),
+              ])
+            }
+          }
+        }, {
+          title: '删除状态',
+          key: 'deleted',
+          render: (h, params) => {
+            let deleted = params.row.deleted;
+            if (deleted == 0) {
+              return h('div', [
+                h('Tag', {
+                  style: {
+                    background: '#b4f60e'
+                  },
+                  on: {}
+                }, '正常'),
+              ])
+            } else if (deleted == 2) {
+              return h('div', [
+                h('Tag', {
+                  style: {
+                    background: '#f90'
+                  },
+                  on: {}
+                }, '封禁'),
+              ])
+            } else if (deleted == 1) {
+              return h('div', [
+                h('Tag', {
+                  style: {
+                    background: '#ed4014'
+                  },
+                  on: {}
+                }, '删除'),
+              ])
+            }
+          }
+        }, {
+          title: 'Action',
+          key: 'action',
+          width: 250,
+          align: 'center',
+          render: (h, params) => {
+            return h('div', [
+              h('Button', {
+                props: {
+                  type: 'primary',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.forumActivation(params.row)
+                  }
+                }
+              }, '激活'),
+              h('Button', {
+                props: {
+                  type: 'warning',
+                  size: 'small'
+                },
+                style: {
+                  marginRight: '5px'
+                },
+                on: {
+                  click: () => {
+                    this.forumBan(params.row)
+                  }
+                }
+              }, '封禁'),
+              h('Button', {
+                props: {
+                  type: 'error',
+                  size: 'small'
+                },
+                on: {
+                  click: () => {
+                    this.forumRemove(params.row)
+                  }
+                }
+              }, '删除')
+            ]);
+          }
+        }
+        ],
+        forumsList: [],
+        forumsTotal: 1,
         // 评论管理
         commentColumns: [{
           title: '评论来源',
@@ -502,6 +642,9 @@
           case '5':
             this.getReport(1);
             break;
+          case '6':
+            this.getForums(1);
+            break;
           default:
             break;
         }
@@ -671,7 +814,44 @@
         queryReport(curPage, 10).then(res => {
           console.log(res);
         })
+      },
+      getForums(curPage) {
+        queryForum(curPage, 10).then(res => {
+          this.forumsList = res.data.data;
+          this.forumsTotal = res.data.total;
+          // console.log(res);
+        })
+      },
+      forumActivation(row) {
+        // 激活变成正常
+        this.toTrialForum(row.postId, 0);
+        row.state = 1;
+        row.deleted = 0;
+      },
+      forumBan(row) {
+        // 封禁
+        this.toTrialForum(row.postId, 2);
+        row.state = 0;
+      },
+      forumRemove(row) {
+        // 删除
+        this.toTrialForum(row.postId, 1);
+        row.deleted = 1;
+      },
+      toTrialForum(postId, state) {
+        trialForum(postId, state).then(res => {
+          if (res.status === 2000) {
+            this.$notify.success({
+              message: res.msg
+            })
+          } else {
+            this.$notify.error({
+              message: res.msg
+            })
+          }
+        })
       }
+
 
     }
   }

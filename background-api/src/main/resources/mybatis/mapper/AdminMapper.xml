@@ -96,6 +96,34 @@
         UPDATE port_comment SET deleted=#{status}, modified_time=#{modifiedTime} WHERE id=#{id}
     </update>
 
+    <select id="queryForum" resultType="com.fang.backgroundapi.pojo.VO.AdminForum">
+        SELECT pinfo.post_id, pinfo.author_id, pinfo.post_name, pinfo.state, pinfo.deleted,
+            uinfo.nick_name
+        FROM
+            post_info pinfo, user_info uinfo
+        WHERE
+            uinfo.author_id = pinfo.author_id
+        LIMIT #{curPage}, #{size}
+    </select>
 
+    <select id="countForum" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM post_info
+    </select>
+
+    <update id="updateForum">
+        UPDATE post_info
+        <set>
+            <if test="status != null">
+                state = #{status},
+            </if>
+            <if test="deleted != null">
+                deleted = #{deleted},
+            </if>
+            <if test="modifiedTime != null">
+                modified_time = #{modifiedTime}
+            </if>
+        </set>
+        WHERE post_id = #{postId}
+    </update>
 
 </mapper>

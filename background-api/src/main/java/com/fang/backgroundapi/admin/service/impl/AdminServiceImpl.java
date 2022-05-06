@@ -5,6 +5,7 @@ import com.fang.backgroundapi.admin.mapper.AdminMapper;
 import com.fang.backgroundapi.mapper.ArticleMapper;
 import com.fang.backgroundapi.pojo.VO.AdminArticle;
 import com.fang.backgroundapi.pojo.VO.AdminComment;
+import com.fang.backgroundapi.pojo.VO.AdminForum;
 import com.fang.backgroundapi.pojo.VO.AdminUser;
 import com.fang.backgroundapi.service.impl.SysUsersServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,4 +91,24 @@ public class AdminServiceImpl {
     }
 
 
+    public PagingData queryForum(Integer curPage, Integer size) {
+        curPage = (curPage - 1) * size;
+        List<AdminForum> adminForums = adminMapper.queryForum(curPage, size);
+        Long total = adminMapper.countForum();
+        return new PagingData(total, adminForums);
+    }
+
+    public Integer trialForum(String postId, Integer status) {
+        if (0 == status) {
+            // 正常
+            adminMapper.updateForum(postId,1, 0, new Date());
+        } else if (1 == status) {
+            // 删除
+            adminMapper.updateForum(postId,null, 1, new Date());
+        } else if (2 == status){
+            // 封禁
+            adminMapper.updateForum(postId,0,null, new Date());
+        }
+        return 1;
+    }
 }

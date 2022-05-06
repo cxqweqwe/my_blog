@@ -175,4 +175,21 @@ public class AdminController extends BaseController {
     }
 
 
+    @GetMapping("/query/forum")
+    @ApiOperation(value = "查询论贴", response = ServerResponse.class, httpMethod = "GET")
+    @RequiresRoles(value = {"root", "admin"}, logical = Logical.OR)
+    public ServerResponse queryForum(@RequestParam("curPage") Integer curPage, @RequestParam("size") Integer size) {
+        PagingData data = adminService.queryForum(curPage, size);
+        return ServerResponse.success(data);
+    }
+
+    @GetMapping("/trial/forum")
+    @ApiOperation(value = "审判论贴", response = ServerResponse.class, httpMethod = "GET")
+    @RequiresRoles(value = {"root", "admin"}, logical = Logical.OR)
+    public ServerResponse trialForum(@RequestParam("postId") String postId, @RequestParam("status") Integer status) {
+        adminService.trialForum(postId, status);
+        return ServerResponse.success();
+    }
+
+
 }

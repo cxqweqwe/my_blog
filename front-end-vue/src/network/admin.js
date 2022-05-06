@@ -116,3 +116,23 @@ export function trialReport(type, id, status) {
     }
   })
 }
+
+export function queryForum(curPage, size) {
+  return request({
+    url: requestUrl + "/query/forum",
+    params: {
+      curPage,
+      size
+    }
+  })
+}
+
+export function trialForum(postId, status) {
+  return request({
+    url: requestUrl + "/trial/forum",
+    params: {
+      postId,
+      status
+    }
+  })
+}
