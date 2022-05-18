@@ -37,7 +37,7 @@ public class StatisticsController {
     private ScheduledServiceImpl scheduledService;
 
     @GetMapping("/show/{token}/{date}")
-    @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
+    // @RequiresRoles(value = {"root", "admin", "userVip"}, logical = Logical.OR)
     @ApiOperation(value = "获取statistics数据", response = ServerResponse.class, httpMethod = "GET")
     public String show(@PathVariable("token") String token, @PathVariable("date") String strDate,
                        Model model) {
